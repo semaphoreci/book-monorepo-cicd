@@ -1,0 +1,12 @@
+---
+title: CI/CD for Monoreops
+subtitle: Building, testing and deploying effectively code with monorepos
+author: Semaphore
+language: en-US
+toc: true
+fontsize: 12pt
+colorlinks: true
+urlcolor: blue
+include-before:
+- '`\newpage{}`{=latex}'
+...
