@@ -1,16 +1,16 @@
 \newpage
 
-# Monorepo Continuous Deployment
+# 3 Monorepo Continuous Deployment
 
 The previous chapter left us with a working CI pipeline and a preliminary deployment step. Having covered the basics, we can now focus on setting up proper continuous deployment (CD).
 
-## Why Heroku
+## 3.1 Why Heroku
 
 There are hundreds of services out there that can host our services. I aspire to cover all the nitty-gritty details needed to send out the applications in the monorepo into the world. But, at the same time, I want this book to end at some point.
 
 Having a uniform deployment process will help us keep things straight. On that account, [Heroku (<https://heroku.com>)](https://heroku.com) is almost a perfect fit for our demo project. It supports all the languages used so far: Go, Ruby, and Elixir—we can pretty much copy-and-paste the same deployment commands everywhere. And, best of all, we don't need a paid account or a credit card to try it out.
 
-## Prerequisites
+## 3.2 Prerequisites
 
 You can continue from the point left in the previous chapter. Nevertheless, if you want to start from a fresh copy, create a new project on Semaphore and, in the <u>Try a quick experiment</u> section, choose the monorepo example. This will fork and clone the demo project in your GitHub account.
 
@@ -20,7 +20,7 @@ To follow along, you will need a Heroku account and its [management command-line
 
 When you have finished installing the CLI, type `heroku login` and follow the authentication process.
 
-## Deployment strategy
+## 3.3 Deployment strategy
 
 We begin with a look at deploying the monorepo services as separate applications on Heroku. Later on, we'll see how to incorporate a staging step to run tests on a live environment before deployment occurs.
 
@@ -38,7 +38,7 @@ The order in which we deploy the applications the first time matters. The UI ser
 
 ![](./figures/04-service-dependency.png)
 
-## Preparing the services for deployment
+## 3.4 Preparing the services for deployment
 
 We can pretty much push the code as-is using Git. We only need to add a `Procfile` for each service, which tells Heroku how to start it.
 
@@ -76,7 +76,7 @@ $ git commit -m "Prepare for Heroku"
 $ git push origin master
 ```
 
-## Deploying the first service
+## 3.5 Deploying the first service
 
 You can create an empty application on Heroku with the CLI or via the [dashboard](https://dashboard.heroku.com).
 
@@ -105,7 +105,7 @@ After you confirm the deployment is complete, you can delete the temporary Git r
 $ rm -rf .git
 ```
 
-## Deploying all services
+## 3.6 Deploying all services
 
 Time to deploy Billing and UI. From the root of the repository run:
 
@@ -148,11 +148,11 @@ Good! The three services should now be online:
 
 $ heroku list `=` tom@example.com Apps monorepo-billing monorepo-ui monorepo-users
 
-## Continuous Deployment
+## 3.7 Continuous Deployment
 
 With the services online, the trick now is to automate things, so we don't need to worry about deploying new versions.
 
-### Staging environment
+### 3.7.1 Staging environment
 
 We want a sturdy CI/CD process. Testing the services in CI is no guarantee of zero errors in production, though. We gain an extra degree of confidence by using a staging environment.
 
@@ -190,7 +190,7 @@ You can mix and match the criteria to fit your needs. For example:
 
 For **users** we'll just deploy all changes where tests have passed. In **billing**, on the other hand, we'll only deploy tagged changes. Lastly, in **ui**, we'll deploy changes once merged to the master branch.
 
-### Secrets and variables
+### 3.7.2 Secrets and variables
 
 Telling Semaphore how to deploy means storing your username and password as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/) are encrypted and decrypted only when needed to keep your data secure.
 
@@ -218,7 +218,7 @@ Create a new secret with two variables: `HEROKU_EMAIL` and `HEROKU_API_KEY` with
 
 ![](./figures/04-heroku-secret.png)
 
-## Staging pipelines
+## 3.7.3 Staging pipelines
 
 Everything is ready to set up the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as this promotion condition:
 
@@ -258,7 +258,7 @@ APP_NAME=monorepo-users-staging
 
 Scroll down to the **secrets** part and check the `heroku` secret.
 
-### Test job
+### 3.7.4 Test job
 
 Having a production-like environment is an invaluable opportunity for testing. We'll hack a quick test to check that the User service is healthy.
 
@@ -280,7 +280,7 @@ The only thing left is to set the correct APP_NAME in the environment.
 
 ![](./figures/04-tests1.png)
 
-## Deploy to Production Pipelines
+## 3.8 Deploy to Production Pipelines
 
 If testing on staging passed, chances are that it's pretty safe to continue with production. We only need one more pipeline, and we'll be done with the Users service.
 
@@ -305,7 +305,7 @@ Give it a whirl. Run the workflow; you may need to manually start the staging an
 
 ![](./figures/04-done2.png)
 
-### Rinse and repeat
+### 3.9 Rinse and repeat
 
 Since we kept all commands reusable with variables, it's easy to reproduce the staging and deployment pipelines for the rest of the services in the monorepo. You only need to adjust `APP_NAME`.
 
@@ -330,7 +330,7 @@ change_in('/service/ui') AND result = 'passed' AND branch = 'master'
 
 ```
 
-## Ready to go?
+## 3.10 Ready to go?
 
 The CI/CD process is 100% configured. The only thing left to do is save it and run it to ensure everything works as expected.
 

@@ -1,10 +1,10 @@
 \newpage
 
-# Continuous integration for monorepos
+# 2 Continuous integration for monorepos
 
-*Monorepos are highly-active code repositories spanning many projects. These can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.
+*Monorepos are highly-active code repositories spanning many projects. These can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.*
 
-## Monorepo workflows should be easy to set up
+## 2.1 Monorepo workflows should be easy to set up
 
 A [monorepo](https://semaphoreci.com/blog/what-is-monorepo) is a repository holding many projects, each maintained by a separate developer or team. Most times, these code repositories, while independent, will share a common [CI/CD workflow](https://semaphoreci.com/cicd).
 
@@ -18,7 +18,7 @@ Semaphore [recently introduced](https://semaphoreci.com/product/whats-new-2021) 
 
 ![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png)
 
-## How to set up monorepo workflows
+## 2.2 How to set up monorepo workflows
 
 In this section, we’ll set up a monorepo pipeline. We’ll use the [semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo) project as a starting point, but you can adapt these steps to any CI/CD workflow on Semaphore.
 
@@ -123,7 +123,7 @@ Now, can you guess what happens if we change a file inside the `/services/ui` fo
 
 Yeah, despite only one of the projects has changed, all the blocks are running. This is… not optimal. For a big monorepo with hundreds of projects, you can imagine **that’s a lot of wasted CPU cycles**. The good news is that this is a perfect fit for trying out change-based execution.
 
-## Change-based execution with change\_in
+## 2.2 Change-based execution
 
 The `change_in` function calculates if recent commits have changed code in a given file or folder. We must call this function at the block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
 
@@ -177,7 +177,7 @@ change_in('/web/', { exclude: '/web/**/*.md' })
 
 To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/).
 
-## Speeding up pipelines with change\_in
+## 2.3 Speeding up pipelines with change\_in
 
 Let’s see how `change_in` can help us speed up the pipeline.
 
@@ -211,7 +211,7 @@ If we make a change outside any of the monitored folders, then all the blocks ar
 
 ![Skipping all blocks](./figures/03-skip-all.png)
 
-## Calculating commit ranges
+## 2.4 Calculating commit ranges
 
 To understand what blocks will run, we must recognize how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
 
@@ -227,7 +227,7 @@ Pull requests behave similarly. The commit range is defined from the first commi
 
 ![For pull requests, commit ranges go from target branch to head of the branch](./figures/03-git-pr.png)
 
-## Change-based automatic promotions
+## 2.5 Change-based automatic promotions
 
 We can also use `change_in` on [autopromotions](https://docs.semaphoreci.com/guided-tour/deploying-with-promotions/), which let us automatically start additional pipelines on certain conditions.
 
@@ -251,7 +251,7 @@ Once done, run the workflow to save the changes. From now on, when you make a ch
 
 ![Pipeline auto promoted](./figures/03-promotion-done.png)
 
-## Tips for using `change_in` effectively
+## 2.6 Tips for using `change_in` effectively
 
 Scaling up large monorepos with `change_in` is easier if you follow these tips for organizing your code and pipelines:
 
@@ -262,11 +262,6 @@ Scaling up large monorepos with `change_in` is easier if you follow these tips f
 -   Use `exclude` and wildcards to ignore files that are not relevant, such as documentation or READMEs.
 -   Use `change_in` in auto-promotions to selectively trigger continuous delivery or deployment pipelines.
 
-## Monorepo workflows got a lot faster
+## 2.7 Monorepo workflows got a lot faster
 
 We’ve learned how to best take advantage of Semaphore’s features to run CI/CD pipelines on monorepos. With the `change_in` function, you may design faster pipelines that don’t waste time or money re-building already-tested code.
-
-Read more about monorepo CI/CD workflows:
-- [What is monorepo?](https://semaphoreci.com/blog/what-is-monorepo)
-- [Monorepo workflows](https://docs.semaphoreci.com/essentials/building-monorepo-projects/)
-- [Change_in reference page](https://docs.semaphoreci.com/reference/conditions-reference/#change_in)

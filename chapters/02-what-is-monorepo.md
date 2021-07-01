@@ -1,10 +1,10 @@
 \newpage
 
-# What is a monorepo? (and Should You Use Them?)
+# 1 What is a monorepo? (and Should You Use Them?)
 
 *Monorepos can be a great force for fostering rapid development workflows. In this post, we’ll examine if they are the right fit for you and your company.*
 
-## What is a monorepo?
+## 1.1 What is a monorepo?
 
 A *monorepo* is a version-controlled code repository that holds many individual projects. While these projects may be related, they are often logically independent and run by different teams.
 
@@ -12,7 +12,7 @@ Some companies host all their code in a single repository, shared among everyone
 
 Monorepos are sometimes called *monolithic repositories*, but they should not be confused with *monolithic architecture*, which is a software development practice for writing centralized applications using a single codebase. An example of this is a Ruby on Rails monolith handling websites, API endpoints, and background jobs.
 
-## Monorepos vs. multirepos
+## 1.2 Monorepos vs. multirepos
 
 The opposite of the monorepo is *multirepo*, where each project is held on a completely separate, version-controlled software repository. Multirepos come naturally — it’s what we do when starting a new project. After all, who doesn’t like starting fresh?
 
@@ -32,7 +32,7 @@ Of course, this is just to get started. The hard work comes when we get into ref
 
 Multirepos are not a synonym for *microservices*; one does not need the other. In fact, we’ll later discuss about companies using monorepos and microservices at the same time. A monorepo can host any number of microservices as long as you carefully set up your Continuous Integration and Delivery (CI/CD) [pipeline](https://semaphoreci.com/blog/cicd-pipeline) for deployment.
 
-## Loving monorepos
+## 1.3 Loving monorepos
 
 At first glance, the choice between monorepos and multirepos may not seem like a big deal, but it’s a decision that will deeply influence your company’s development workflow.
 
@@ -47,7 +47,7 @@ Monorepos have the following benefits:
 -   **Implicit CI**: [continuous integration](https://semaphoreci.com/continuous-integration) is guaranteed as all the code is already integrated into one place.
 -   **Unified CI/CD process**: you can use the same [CI/CD](https://semaphoreci.com/cicd) deployment process for every project in the repo.
 
-## Hating monorepos
+## 1.4 Hating monorepos
 
 As monorepos grow, we reach design limits in version control tools, build systems, and continuous integration pipelines. These problems can make a company go the multirepo route:
 
@@ -60,7 +60,7 @@ As monorepos grow, we reach design limits in version control tools, build system
 
 You may have noticed that most of these problems are technical. In the following sections we’ll learn how companies that stuck to monorepos have solved most of them by investing in tooling, adding integrations, and writing custom solutions.
 
-## It’s not (only) about technology
+## 1.5 It’s not (only) about technology
 
 Choosing a repository strategy is not only a technical matter but also about how people communicate. As [Conway’s Law](https://www.thoughtworks.com/insights/articles/demystifying-conways-law) states, communication is essential for building great products:
 
@@ -70,7 +70,7 @@ While multirepos allow each team to manage their projects independently, they al
 
 A monorepo, on the other hand, works as a central hub, a market square where every developer, engineer, tester, and business analyst meet and talk. Monorepos encourage conversations, helping us bring silos down.
 
-## Monorepo culture
+## 1.6 Monorepo culture
 
 Monorepos have been around for a long time. For three decades, FreeBSD has [used CVS and later subversion monorepos](https://docs.freebsd.org/en_US.ISO8859-1/articles/committers-guide/article.html) for development and package distribution.
 
@@ -84,7 +84,7 @@ Many open-source projects have been using monorepos successfully. For instance:
 
 Yet, the real question is if commercial software can benefit from monorepo layouts. Given the pluses and the minuses, let’s hear the experience of a few companies that have tried them.
 
-**Segment, goodbye multirepos**
+### 1.6.1 Segment, goodbye multirepos
 
 Alex Noonan tells a tale about saying [goodbye to multirepos](https://segment.com/blog/goodbye-microservices/). Segment.com, the company where she works, offers an event collection and forwarding service. Each of its customers needs to consume data in a special format. Thus, the engineering team initially decided to use a mix of microservices and multirepos.
 
@@ -100,7 +100,7 @@ Many years later, when a panel [asked about her experience with microservices](h
 
 > “It didn’t turn out to be as much of an advantage as we thought it was going to be. Our primary motivation for breaking it out was that failing tests were impacting different things. [..] Breaking them out into separate repos only made that worse because now you go in and touch something that hasn't been touched in six months. Those tests are completely broken because you aren't forced to spend time fixing that. One of the only cases where I've seen stuff successfully broken out into separate repos and not services is when we have a chunk of code that is shared among multiple services, and we want to make it a shared library. Other than that, I think we've found even when we've moved to microservices, we still prefer stuff in a mono repo.”
 
-**Airbnb and the monorail**
+### 1.6.2 Airbnb's monorail
 
 Jens Vanderhaeghe, infrastructure engineer at Airbnb, also [tells how microservices and monorepos helped them scale out globally](https://www.youtube.com/watch?v=sakGeE4xVZs).
 
@@ -115,7 +115,7 @@ When asked about the high points of a monorepo layout, Jens says:
 
 > “We didn’t want to deal with version dependencies between all of these microservices. \[With monorepo\] you can make a change across two microservices with a single commit [..] We can build all of our tooling around a single repository. The biggest selling point is that you can make changes on multiple microservices at once. We run a script, and we detect which apps in the monorepo are impacted, and these get deployed. Our main benefit is source control.”
 
-**Uber, there and back again**
+### 1.6.3 Uber, there and back again
 
 Aimee Lucido, from Uber, describes the process of going [from monorepo to multirepo and back again](https://www.youtube.com/watch?v=lV8-1S28ycM).
 
@@ -139,7 +139,7 @@ It was at this point that Uber engineers regrouped and decided to give monorepo 
 
 > “When you get to a big company size, you can invest your resources to make your big company feel like a small company, to make the cons into pros.”
 
-**Pinterest, full-speed to monorepo**
+### 1.6.4 Pinterest, full-speed to monorepo
 
 Let’s conclude by examining a company that’s in the middle of a three-year-long migration: Pinterest. Their effort is two-pronged. First, move more than 1300 repositories into only four monorepos. Second, consolidate hundreds of dependencies into a monolithic web application.
 
@@ -151,7 +151,7 @@ Pinterest found that [trunk-based development](https://trunkbaseddevelopment.com
 
 For Pinterest, a monorepo layout provided a consistent development workflow. Automation, simplification, and standardization of release practices allowed them to cut down on boilerplate and let developers focus on writing code.
 
-## Investing in tooling
+## 1.7 Investing in tooling
 
 If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos — building and testing need to be rethought. Instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that have changed since the last commit.
 
@@ -192,11 +192,9 @@ Based on the collection of monorepo stories, we can define a minimum set of best
 -   Use CODEOWERS when you need to restrict access to certain projects.
 -   Use a cloud CI/CD platform like [Semaphore](https://semaphoreci.com) to test and deploy your applications at any scale.
 
-## Should you use monorepos?
+## 1.8 Should you use monorepos?
 
 It depends. There are no straight answers that fit every use case. Some companies may choose monorepo for a while and then decide they need to switch to multirepos or vice-versa, while others may choose a mix. When in doubt, consider that moving from monorepo to multirepo is usually easier than the inverse.
 
 But never lose sight that, in the end, it’s not about technology but about work culture and communication. So, decide based on the way you want to work.
-
-Read next: [Learn how to run monorepos at scale in Semaphore CI/CD](https://semaphoreci.com/product/whats-new-2021).
 
