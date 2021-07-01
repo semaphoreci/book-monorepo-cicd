@@ -2,19 +2,17 @@
 
 # 2 Continuous integration for monorepos
 
-*Monorepos are highly-active code repositories spanning many projects. These can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.*
+*Monorepos are highly-active code repositories. They can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.*
 
 ## 2.1 Monorepo workflows should be easy to set up
 
-A [monorepo](https://semaphoreci.com/blog/what-is-monorepo) is a repository holding many projects, each maintained by a separate developer or team. Most times, these code repositories, while independent, will share a common [CI/CD workflow](https://semaphoreci.com/cicd).
-
-Monorepos workflows present their own set of challenges. By default, a CI/CD [pipeline](https://semaphoreci.com/blog/cicd-pipeline) will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in [continuous integration](https://semaphoreci.com/continuous-integration).
+Monorepos  [CI/CD workflow](https://semaphoreci.com/cicd) present their own set of challenges. By default, a CI/CD [pipeline](https://semaphoreci.com/blog/cicd-pipeline) will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in [continuous integration](https://semaphoreci.com/continuous-integration).
 
 ![Regular CI pipelines always run the whole pipeline](./figures/03-build1.png)
 
 Running every job in the pipeline is perfectly logical on single-project repositories. But monorepos see a lot more activity than usual. Even the smallest change will re-run the entire pipeline — **it is time-consuming and needlessly expensive**.  It just doesn’t make sense.
 
-Semaphore [recently introduced](https://semaphoreci.com/product/whats-new-2021) the `change_in` function. Thus adding the capability for change-based execution. With change criteria, you can skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
+Semaphore [is the only CI/CD platform](https://semaphoreci.com/product/whats-new-2021) with native monorepo support. Its change-based execution features lets you skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
 
 ![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png)
 
@@ -35,11 +33,11 @@ Go ahead and fork the [repository](https://github.com/semaphoreci-demos/semaphor
 
 All these parts are meant to work together, but each one may be maintained by a separate team and written in a different language.
 
-Next, log in with your Semaphore account and click on **Create New** on the upper left corner:
+Next, log in with your Semaphore account and click on **create new** on the upper left corner.
 
 ![Creating a new project](./figures/03-create-new.png)
 
-Now, choose the repository you forked.
+Now, choose the repository you forked. Alternatively, f you prefer to jump directly to the finished setup, find the monorepo example and click on **fork & run**. 
 
 ![Selecting a repository](./figures/03-choose-repository.png)
 
@@ -72,7 +70,7 @@ go build -v .
 
 ![Build job for billing app](./figures/03-go-build1.png)
 
-Now click on **Run the workflow**. Type “master” in Branch and click on **Start**. Choosing the right branch matters because it affects how commits are calculated. We’ll talk about that in a bit.
+Now click on **run the workflow**. Type “master” in Branch and click on **start**. Choosing the right branch matters because it affects how commits are calculated. We’ll talk about that in a bit.
 
 ![Run the workflow](./figures/03-run-master.png)
 
@@ -125,9 +123,9 @@ Yeah, despite only one of the projects has changed, all the blocks are running. 
 
 ## 2.2 Change-based execution
 
-The `change_in` function calculates if recent commits have changed code in a given file or folder. We must call this function at the block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
+The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in) function calculates if recent commits have changed code in a given file or folder. We must call this function at the block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
 
-We can call the function from any block by opening the **Skip/Run Conditions** section and enabling the option: “Run this block when conditions are met.”
+We can call the function from any block by opening the **skip/run conditions** section and enabling the option: “run this block when conditions are met.”
 
 ![Where to define run conditions](./figures/03-run-skip.png)
 
@@ -181,7 +179,7 @@ To see the rest of the options, check the [conditions YAML reference](https://do
 
 Let’s see how `change_in` can help us speed up the pipeline.
 
-Open the workflow editor again. Pick one of the blocks and open the **Skip/Run conditions** section. Add some change criteria:
+Open the workflow editor again. Pick one of the blocks and open the **skip/run conditions** section. Add some change criteria:
 
 ``` text
 change_in('/services/billing')
@@ -201,7 +199,7 @@ change_in('/services/users')
 
 Now run the pipeline again. The first thing you’ll notice is that there's a new initialization step. Here, Semaphore is calculating the differences to decide what blocks should run. You can check the log to see what is happening behind the scenes.
 
-Once the workflow is ready, Semaphore will start running all jobs one more time (this happens because we didn’t set `pipeline_file: 'ignore' `). The interesting bit comes later, when we change a file in one of the applications. This is what happens:
+Once the workflow is ready, Semaphore will start running all jobs one more time (this happens because we didn’t set `pipeline_file: 'ignore' `). The interesting bit comes later, when we change a file in one of the applications. This is what we get:
 
 ![Running all blocks](./figures/03-skip-but-billing.png)
 
@@ -213,7 +211,7 @@ If we make a change outside any of the monitored folders, then all the blocks ar
 
 ## 2.4 Calculating commit ranges
 
-To understand what blocks will run, we must recognize how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
+To understand what blocks will run each time, we must examine how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
 
 For the main branch, Semaphore compares the changes in all the commits for the push, then skips the `change_in` blocks that do not have at least one match.
 
@@ -229,7 +227,7 @@ Pull requests behave similarly. The commit range is defined from the first commi
 
 ## 2.5 Change-based automatic promotions
 
-We can also use `change_in` on [autopromotions](https://docs.semaphoreci.com/guided-tour/deploying-with-promotions/), which let us automatically start additional pipelines on certain conditions.
+We can also use `change_in` on [auto promotions](https://docs.semaphoreci.com/guided-tour/deploying-with-promotions/), which let us automatically start additional pipelines on certain conditions.
 
 To create a new pipeline, open the workflow editor once more and click on **Add First Promotion**:
 
