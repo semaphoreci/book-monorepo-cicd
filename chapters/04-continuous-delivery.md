@@ -6,9 +6,9 @@ The previous chapter left us with a working CI pipeline and a preliminary deploy
 
 ## 3.1 Why Heroku
 
-There are hundreds of services out there that can host our services. I aspire to cover all the nitty-gritty details needed to send out the applications in the monorepo into the world. But, at the same time, I want this book to end at some point.
+There are hundreds of services out there that can host our services. I’d like to be able to cover them all, with the nitty-gritty details. But, at the same time, I want this book to end at some point.
 
-Having a uniform deployment process will help us keep things straight. On that account, [Heroku (<https://heroku.com>)](https://heroku.com) is almost a perfect fit for our demo project. It supports all the languages used so far: Go, Ruby, and Elixir—we can pretty much copy-and-paste the same deployment commands everywhere. And, best of all, we don't need a paid account or a credit card to try it out.
+Having a uniform deployment process will help us keep things straight. On that account, [Heroku (<https://heroku.com>)](https://heroku.com) is almost a perfect fit for our needs. It supports all the languages used so far: Go, Ruby, and Elixir. Consequently, we can pretty much copy-and-paste the same deployment commands everywhere. And, best of all, we don't need a paid account or a credit card.
 
 ## 3.2 Prerequisites
 
@@ -22,9 +22,9 @@ When you have finished installing the CLI, type `heroku login` and follow the au
 
 ## 3.3 Deployment strategy
 
-We begin with a look at deploying the monorepo services as separate applications on Heroku. Later on, we'll see how to incorporate a staging step to run tests on a live environment before deployment occurs.
+We begin with a look at deploying the monorepo services as separate applications on Heroku. Later on, as we gain confidence, we’ll incorporate a staging step to run tests on a live environment.
 
-In other words, we're going to create three apps, one for each service.
+In short, we're going to create three apps, one for each service.
 
 | Service | App Name         | Service URL                    |
 |---------|------------------|--------------------------------|
@@ -32,15 +32,15 @@ In other words, we're going to create three apps, one for each service.
 | billing | monorepo-billing | monorepo-billing.herokuapp.com |
 | ui      | monorepo-ui      | monorepo-ui.herokuapp.com      |
 
-Since Heroku only allows one global name per application, you may have to experiment a bit until you find three free ones to use. As long as you keep the URLs and services sorted out, any name should work.
+Since Heroku only allows one global name per application, you may have to experiment a bit until you find three free ones to use. As long as you keep the URLs and services sorted out, any name  works.
 
-The order in which we deploy the applications the first time matters. The UI service depends on Billing and Users, as you can see below. Consequently, we need to leave the UI for last.
+The order in which we deploy the applications for the first time matters. The UI service must go last because it depends on Billing and Users, as you can see below.
 
 ![](./figures/04-service-dependency.png)
 
 ## 3.4 Preparing the services for deployment
 
-We can pretty much push the code as-is using Git. We only need to add a `Procfile` for each service, which tells Heroku how to start it.
+We need to add a `Procfile` for each service, which tells what command starts the application.
 
 Create the file `services/users/Procfile` with the following line to start the web service.
 
@@ -84,7 +84,7 @@ You can create an empty application on Heroku with the CLI or via the [dashboard
 $ heroku apps:create monorepo-users
 ```
 
-Deployment starts with a Git push. A neat trick is to create a disposable repository, thus ensure we don't mess with the monorepo Git history.
+We can pretty much Git-push the code as-is to Heroku, and it will take care of rest. A neat trick is to create a disposable repository, thus ensuring we don't mess with the main monorepo Git history.
 
 ``` bash
 $ cd services/users
@@ -97,12 +97,16 @@ $ git push heroku master
 
 The Users service should be online. Visiting the URL should return an empty JSON array.
 
-$ curl <https://monorepo-users.herokuapp.com/users> \[\]
+``` bash
+$ curl <https://monorepo-users.herokuapp.com/users>
+[]
+```
 
 After you confirm the deployment is complete, you can delete the temporary Git repository.
 
 ``` bash
-$ rm -rf .git
+# make sure you’re at /services/users
+$ rm -r .git
 ```
 
 ## 3.6 Deploying all services
@@ -117,6 +121,7 @@ $ heroku git:remote -a monorepo-billing
 $ git add .
 $ git commit -m "first deployment"
 $ git push heroku master
+$ rm -r .git
 ```
 
 The UI service needs a little more work to set up, as Heroku cannot detect Elixir projects by itself.
@@ -128,8 +133,10 @@ $ heroku create --buildpack hashnuke/elixir monorepo-ui
 The UI also needs to know the URLs of the other services. So we set environment variables to point to the correct endpoints (update the values as required).
 
 ``` bash
-$ heroku config:set --app=monorepo-ui BILLING_ENDPOINT=https://monorepo-billing.herokuapp.com/
-$ heroku config:set --app=monorepo-ui USERS_ENDPOINT=https://monorepo-users.herokuapp.com/
+$ heroku config:set --app=monorepo-ui \
+         BILLING_ENDPOINT=https://monorepo-billing.herokuapp.com/
+$ heroku config:set --app=monorepo-ui \
+         USERS_ENDPOINT=https://monorepo-users.herokuapp.com/
 ```
 
 Finally, from the root of the repository, run:
@@ -141,16 +148,22 @@ $ heroku git:remote -a monorepo-ui
 $ git add .
 $ git commit -m "first deployment"
 $ git push heroku master  (cuidado con master vs main)
-$ rm -rf .git
+$ rm -r .git
 ```
 
 Good! The three services should now be online:
 
-$ heroku list `=` tom@example.com Apps monorepo-billing monorepo-ui monorepo-users
+``` bash
+$ heroku list
+== tom@example.com Apps
+monorepo-billing
+monorepo-ui
+monorepo-users
+```
 
 ## 3.7 Continuous Deployment
 
-With the services online, the trick now is to automate things, so we don't need to worry about deploying new versions.
+With the services online, the plan now is to automate things, so we don't need to worry about deploying new versions by hand on each update.
 
 ### 3.7.1 Staging environment
 
@@ -166,19 +179,17 @@ Each service will have a separate temporary staging app on Heroku:
 
 Deployment can be manual or automatic:
 
--   **Manual**: staging and production deployments must be started by pressing a button on the Semaphore workflow. Presumably, after doing some exploratory testing.
+-   **Manual**: staging and production deployments must be started by pressing a button on the Semaphore workflow. Presumably, after doing some exploratory or manual testing.
 -   **Automatic**: Semaphore will start the staging and production deployments on specific conditions.
 
 Spending the time to think about when to trigger a deployment is key to avoid surprises. You can use a mix of the following conditions in Semaphore:
 
--   **branch**: triggered when the commit was applied to a specific branch or branch matching a regex expression.
--   **tag**: for commits that were pushed as a tag. You can filter tags using regex.
+-   **branch**: detects when commits are pushed into a matching branch.
+-   **tag**: runs when a tagged release is detected.
 -   **pull request**: when the workflow was triggered by a pull request.
 -   **change detection**: when Semaphore detects that some files have changed in given folders.
 
 You can mix and match the criteria to fit your needs. For example:
-
-<div id="promotion-strategy">
 
 | Service | change-detection              | branches | tags        |
 |---------|-------------------------------|----------|-------------|
@@ -186,24 +197,20 @@ You can mix and match the criteria to fit your needs. For example:
 | billing | change_in('/service/billing') | any      | must be set |
 | ui      | change_in('/service/ui')      | master   | any         |
 
-</div>
-
-For **users** we'll just deploy all changes where tests have passed. In **billing**, on the other hand, we'll only deploy tagged changes. Lastly, in **ui**, we'll deploy changes once merged to the master branch.
+For Users we'll just deploy all changes as long as tests have passed. In Billing, on the other hand, we'll only deploy tagged releases. Lastly, in UI, we'll deploy changes once merged to the master branch.
 
 ### 3.7.2 Secrets and variables
 
-Telling Semaphore how to deploy means storing your username and password as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/) are encrypted and decrypted only when needed to keep your data secure.
+Telling Semaphore how to deploy means storing your username and password as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/) are encrypted variables and files which are decrypted only when needed, in order to keep your data secure.
 
-At the beginning of this chapter, after installing the Heroku CLI, you authenticated with the platform. A similar process must happen now in Semaphore. It must gain access to your account in order to deploy on your behalf.
+At the beginning of this chapter, after installing the Heroku CLI, you authenticated with the platform from your machine. A similar process must happen now in Semaphore. It must gain access to the account in order to deploy on your behalf.
 
 First, get the active Heroku username and token with:
 
 ``` bash
 $ heroku auth:whoami
 tom@example.com
-```
 
-``` bash
 $ heroku auth:token
 392a5736-16e5-38d6-bea4-636c7e473d1d
 ```
@@ -212,23 +219,25 @@ Next, open the settings menu on Semaphore.
 
 ![The settings menu](./figures/04-settings.png)
 
-And go to **secrets**. Secrets are encrypted environment variables and files used to store sensitive data.
-
 Create a new secret with two variables: `HEROKU_EMAIL` and `HEROKU_API_KEY` with the email and token.
 
 ![](./figures/04-heroku-secret.png)
 
+We’ll learn how to import the secret on the job in a minute.
+
 ## 3.7.3 Staging pipelines
 
-Everything is ready to set up the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as this promotion condition:
+Everything is ready to set up the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as:
 
 ``` text
 change_in('/services/users') AND result = 'passed'
 ```
 
+Type the condition on the **when?** field.
+
 ![](./figures/04-promote1.png)
 
-We'll use the first block in the staging pipeline to create a brand new staging application and deploy its service. The combined commands for this are:
+We'll use the first block in the staging pipeline to create a brand new staging application. The combined commands are:
 
 ``` bash
 heroku apps:create "$APP_NAME"
@@ -246,7 +255,14 @@ git push heroku master --force
 
 ![](./figures/04-stage1.png)
 
-We'll use environment variables to keep the job commands reusable. For example, by appending `-staging` to the name.
+Let’s break down the commands:
+1. Create an empty application.
+2. Clone the repository in the CI environment.
+3. Initialize a Git repository, configure the username and email.
+4. Initialize a helper function that returns the Heroku API key to Git.
+5. Push the files with Git.
+
+We'll use environment variables to keep the job commands reusable.
 
 Open the **environment** section in the block and set the APP_NAME.
 
@@ -256,7 +272,7 @@ APP_NAME=monorepo-users-staging
 
 ![](./figures/04-env1.png)
 
-Scroll down to the **secrets** part and check the `heroku` secret.
+Scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroky API key.
 
 ### 3.7.4 Test job
 
@@ -276,7 +292,7 @@ Regardless of tests succeeding or not, we should tidy up and delete the staging 
 heroku apps:delete "$APP_NAME" --confirm "$APP_NAME"
 ```
 
-The only thing left is to set the correct APP_NAME in the environment.
+The only thing left is to set the correct `APP_NAME` in the environment.
 
 ![](./figures/04-tests1.png)
 
@@ -301,7 +317,7 @@ git push heroku master --force
 
 ![](./figures/04-deploy1.png)
 
-Give it a whirl. Run the workflow; you may need to manually start the staging and deployment pipelines.
+Give it a whirl and run the workflow. You may need to manually start the staging and deployment pipelines.
 
 ![](./figures/04-done2.png)
 
