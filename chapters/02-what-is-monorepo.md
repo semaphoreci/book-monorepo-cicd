@@ -2,7 +2,7 @@
 
 # 1 What is a monorepo? (and Should You Use Them?)
 
-*Monorepos can be a great force for fostering rapid development workflows. But, are they are the right fit for you, your team, or your company?.*
+*Monorepos can be a great force for fostering rapid development workflows. But, are they are the right fit for you, your team, your company?*
 
 ## 1.1 What is a monorepo?
 
@@ -26,7 +26,7 @@ $ git add -A
 $ git commit -m "My first monorepo"
 ```
 
-![Multirepo to Monorepo](./figures/02-multi-to-mono.jpg)
+![Multirepo to Monorepo](./figures/02-multi-to-mono.png)
 
 Of course, this is just to get started. The hard work comes later, when we get into refactoring and consolidation. To enjoy the full benefits of a monorepo, all shareable code should be moved outside of each project, and into a common location.
 

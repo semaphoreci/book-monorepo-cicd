@@ -39,8 +39,6 @@ Next, log in with your Semaphore account and click on **create new** on the uppe
 
 Now, choose the repository you forked. Alternatively, f you prefer to jump directly to the finished setup, find the monorepo example and click on **fork & run**. 
 
-![Selecting a repository](./figures/03-choose-repository.png)
-
 You can add people to the project at this point. When you’re done, click **Continue** and select “I want to configure this project from scratch.”
 
 ![Create a new pipeline](./figures/03-scratch.png)
@@ -79,8 +77,6 @@ Semaphore should start building and testing the application.
 ![First run](./figures/03-first-run.png)
 
 Let’s add a second application in the pipeline. Open editor by clicking on **Edit Workflow** on the upper right corner.
-
-![Edit workflow](./figures/03-edit-workflow1.png)
 
 Add a new block. Then, add the commands to install and test a Ruby application:
 
