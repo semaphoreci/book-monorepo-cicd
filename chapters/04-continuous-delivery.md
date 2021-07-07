@@ -2,17 +2,17 @@
 
 # 3 Monorepo Continuous Deployment
 
-The previous chapter left us with a working CI pipeline and a preliminary deployment step. Having covered the basics, we can now focus on setting up proper continuous deployment (CD).
+The previous chapter left us with a working CI pipeline and a preliminary deployment step. Having covered the basics, we can now raise the bar and focus on setting up proper, real life continuous deployment (CD) pipelines.
 
 ## 3.1 Why Heroku
 
-There are hundreds of services out there that can host our services. I’d like to be able to cover them all, with the nitty-gritty details. But, at the same time, I want this book to end at some point.
+There are hundreds of services out there that can host our services. I’d like to be able to cover them all, with their nitty-gritty details. But, at the same time, I want this book to end at some point.
 
-Having a uniform deployment process will help us keep things straight. On that account, [Heroku (<https://heroku.com>)](https://heroku.com) is almost a perfect fit for our needs. It supports all the languages used so far: Go, Ruby, and Elixir. Consequently, we can pretty much copy-and-paste the same deployment commands everywhere. And, best of all, we don't need a paid account or a credit card.
+Having a uniform deployment process will help us keep things straight in our heads. On that account, [Heroku (<https://heroku.com>)](https://heroku.com) is almost a perfect fit for our needs: it supports all our languages — we can pretty much copy-and-paste the same commands across the board. And, best of all, we don't need a paid account or a credit card.
 
 ## 3.2 Prerequisites
 
-You can continue from the point left in the previous chapter. Nevertheless, if you want to start from a fresh copy, create a new project on Semaphore and, in the <u>Try a quick experiment</u> section, choose the monorepo example. This will fork and clone the demo project in your GitHub account.
+You can continue from the point we left in the previous chapter. Nevertheless, if you want to start from a fresh copy, you may create a new project in Semaphore and choose the monorepo fork-and-run demo.
 
 To follow along, you will need a Heroku account and its [management command-line interface (CLI)](https://devcenter.heroku.com/articles/heroku-cli). Follow the installation instructions for Windows, Linux, or Mac here:
 
@@ -20,11 +20,13 @@ To follow along, you will need a Heroku account and its [management command-line
 
 When you have finished installing the CLI, type `heroku login` and follow the authentication process.
 
-## 3.3 Deployment strategy
+## 3.3 Initial deployment
 
-We begin with a look at deploying the monorepo services as separate applications on Heroku. Later on, as we gain confidence, we’ll incorporate a staging step to run tests on a live environment.
+We begin with a look at deploying the monorepo services as separate applications on Heroku. Later on, as we gain confidence, we’ll incorporate a staging step to run pre-production tests.
 
-In short, we're going to create three apps, one for each service.
+### 3.3.1 Application names and URLs
+
+In short, we're going to create three apps, one for each service:
 
 | Service | App Name              | Service URL                         |
 | ------- | --------------------- | ----------------------------------- |
@@ -32,13 +34,13 @@ In short, we're going to create three apps, one for each service.
 | billing | monorepo-billing-prod | monorepo-billing-prod.herokuapp.com |
 | ui      | monorepo-ui-prod      | monorepo-ui-prod.herokuapp.com      |
 
-Since Heroku only allows one global name per application, you may have to experiment a bit until you find three free ones to use. As long as you keep the URLs and services sorted out, any name  works.
+Since Heroku only allows **one global name per application**, you may have to experiment a bit until you find three free ones to use. As long as you keep the URLs and services sorted out, you should be fine.
 
 The order in which we deploy the applications for the first time matters. The UI service must go last because it depends on Billing and Users, as you can see below.
 
 ![](./figures/04-service-dependency.png)
 
-## 3.4 Preparing the services for deployment
+### 3.3.2 Preparing the services for deployment
 
 We need to add a `Procfile` for each service, which tells what command starts the application.
 
@@ -76,7 +78,7 @@ $ git commit -m "Prepare for Heroku"
 $ git push origin master
 ```
 
-## 3.5 Deploying the first service
+### 3.3.3 Deploying the first service
 
 You can create an empty application on Heroku with the CLI or via the [dashboard](https://dashboard.heroku.com).
 
@@ -109,7 +111,7 @@ After you confirm the deployment is complete, you can delete the temporary Git r
 $ rm -r .git
 ```
 
-## 3.6 Deploying all services
+### 3.3.4 Deploying the other services
 
 Time to deploy Billing and UI. From the root of the repository run:
 
@@ -161,20 +163,22 @@ monorepo-ui-prod
 monorepo-users-prod
 ```
 
-## 3.7 Continuous Deployment
+## 3.4 Continuous Deployment
 
 With the services online, the plan now is to automate things, so we don't need to worry about deploying new versions by hand on each update.
 
-In this section, we'll use *parametrized promotions*. These let us reuse pipeline code for several purposes. We're going to create two new pipelines:
+In order to reduce code duplication and standardize the deployment, we'll use *parametrized promotions*. These work like the promotions we've seen in the previous chapter, with the added benefit that we can set pipeline-wide environment variables based on different conditions.
 
-- Staging
-- Production
+We will need two new pipelines:
 
-### 3.7.1 Staging environment
+- **Staging**: runs the application in a production-like environment and run online tests.
+- **Production**: if tests succeed, deploys into the production URL.
 
-We want a sturdy CI/CD process. Testing the services in CI is no guarantee of zero errors in production, though. We gain an extra degree of confidence by using a staging environment.
+### 3.4.1 Staging application names and URLs
 
-Since creating an app is so cheap, each service will have a separate staging on Heroku:
+We want a sturdy CI/CD process. Testing the services in CI is no guarantee of zero errors in production, though. An extra degree on confidence is gained by using a staging environment.
+
+Since creating an app doesn't cost anything, let's create three new staging apps:
 
 | Service | Staging App Name         |
 | ------- | ------------------------ |
@@ -182,14 +186,29 @@ Since creating an app is so cheap, each service will have a separate staging on 
 | billing | monorepo-billing-staging |
 | ui      | monorepo-ui-staging      |
 
-Before moving on, **create the three new staging apps**. Use the same commands as in section 3.5, but replacing `-staging` with `-prod`.
+Before moving on, **create the three new staging apps**. Use the same commands as in section 3.5 replacing `-staging` with `-prod`.
 
-### 3.7.2 Deployment methods for staging
+When done, you should have six applications in total:
 
-Deployment can be manual or automatic:
+``` bash
+$ heroku list
+=== tom@tomfern.com Apps
+monorepo-billing-prod
+monorepo-billing-staging
+monorepo-ui-prod
+monorepo-ui-staging
+monorepo-users-prod
+monorepo-users-staging
+```
 
--   **Manual**: staging and production deployments must be started by pressing a button on the Semaphore workflow. Presumably, after doing some exploratory or manual testing.
--   **Automatic**: Semaphore will start the staging and production deployments on specific conditions.
+
+
+### 3.4.2 Deployment methods
+
+Deployment can be manual or automatic. Semaphore supports both types.
+
+-   With a **manual** deployment, you must press a button and select the service to deploy from a list.
+-   **Automatic** deployments start when specific conditions are detected, such as when a commit is pushed into a certain branch. The service to deploy is determined automatically.
 
 Spending the time to think about when to trigger a deployment is key to avoid surprises. You can use a mix of the following conditions in Semaphore:
 
@@ -198,7 +217,7 @@ Spending the time to think about when to trigger a deployment is key to avoid su
 -   **pull request**: when the workflow was triggered by a pull request.
 -   **change detection**: when Semaphore detects that some files have changed in given folders.
 
-You can mix and match the criteria to fit your needs. For example:
+You can mix and match the criteria to fit your needs. Here's an idea:
 
 | Service | change-detection              | branches | tags        |
 |---------|-------------------------------|----------|-------------|
@@ -206,9 +225,9 @@ You can mix and match the criteria to fit your needs. For example:
 | billing | change_in('/service/billing') | any      | must be set |
 | ui      | change_in('/service/ui')      | master   | any         |
 
-For Users we'll just deploy all changes as long as tests have passed. In Billing, on the other hand, we'll only deploy tagged releases. Lastly, in UI, we'll deploy changes once merged to the master branch.
+All changes in Users will be deployed as long as tests pass. In Billing, on the other hand, we'll only deploy tagged releases. Lastly, in UI, we'll deploy changes once merged to the master branch.
 
-### 3.7.2 Secrets and variables
+### 3.4.3 Secrets and variables
 
 Telling Semaphore how to deploy means storing your username and password as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/) are encrypted variables and files which are decrypted only when needed, in order to keep your data secure.
 
@@ -234,9 +253,9 @@ Create a new secret with two variables: `HEROKU_EMAIL` and `HEROKU_API_KEY` with
 
 We’ll learn how to import the secret on the job in a minute.
 
-## 3.7.3 Staging pipelines
+### 3.4.4 Parametrized promotions
 
-Everything is ready to set up the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as:
+Everything is ready begin working in the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as:
 
 ``` text
 change_in('/services/users') AND result = 'passed'
@@ -248,24 +267,26 @@ Type the condition on the **when?** field.
 
 
 
-In the same pane, and below automatic promotions, there's a section for setting parameters. We'll use environment variables to keep the pipelines reusable. Click **+add environment variable** and type the following conditions:
+In the same pane, immediately below you'll find the parameters section. Click **+add environment variable** and type the following conditions:
 
-- Name: `SVC`. This is the name of the environment variable that will exist though the new pipeline.
-- Description: `Service to stage`. A user-friendly explanation of the variable meaning.
-- Valid options: These are the possible values the variable can take. `users`,`billing`,`ui` (one per line)
-- Default value: `users`. The default value when the pipeline is promoted automatically.
+- **Name** of the variable: `SVC`
+- **Description**: `Service to stage`
+- **Valid options:** `users`,`billing`,`ui` (one per line)
+- **Default value**: `users`
 
 ![](./figures/04-pp1.png)
 
-What we're doing here is creating an environment variable. Its allowed values are the names of our three services. When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
+What we're doing here is creating an environment variable, called `SVC`, which can take the values of any of our three services. When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
+
+### 3.4.5 Staging pipeline
 
 Next, we'll create the staging pipeline. Click on the newly created pipeline and scroll down to **YAML file path**. Replace the default value with: `.semaphore/stage.yml`
 
-Click on the new pipeline and it's name to: `Stage ${{ parameters.SVC }} to Heroku`. The `SVC` variable will be expanded when the pipeline starts.
+Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }} to Heroku`. The `SVC` variable will be expanded dynamically the pipeline starts.
 
 ![](./figures/04-pp2.png)
 
-We'll use the first block in the staging pipeline to deploy the staging application. Thanks to parametrization, `SVC` will store the application name. As for the `ENV`, we'll define it at the block level and in this case, it will be "staging". The combined commands are:
+We'll use the first block in the staging pipeline to deploy the staging application. Thanks to parametrization, `SVC` holds the application name. As for the `ENV`, we'll define it here, at the block level, as "staging". The combined commands are:
 
 ``` bash
 checkout
@@ -289,21 +310,15 @@ Let’s break down the commands:
 4. Initialize a helper function that returns the Heroku API key to Git.
 5. Push the files with Git.
 
-Two more things to go. First, open the **environment** section in the block and set the `ENV = staging`
-
-``` bash
-ENV=staging
-```
-
-Finally, scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroku API key.
+Two more things to go. One, open the **environment** section in the block and set the `ENV = staging`. And two, scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroku API key.
 
 ![](./figures/04-env1.png)
 
 
 
-### 3.7.4 Test job
+### 3.4.6 The test job
 
-Having a production-like environment is an invaluable opportunity for testing. We'll hack a quick test to check that the User service is healthy.
+Having a production-like environment is an invaluable opportunity for testing. We'll hack a quick test to check that the service is healthy.
 
 Create a new block. In the job, we'll run some curl commands to create a user and check it exists afterward.
 
@@ -311,31 +326,35 @@ Create a new block. In the job, we'll run some curl commands to create a user an
 curl "https://monorepo-${SVC}-${ENV}.herokuapp.com"
 ```
 
-The only thing left is to set the correct `ENV` in the environment.
+The only thing left is to set the correct `ENV` in the environment, like you did in the previous block.
 
 ![](./figures/04-tests1.png)
 
-## 3.8 Deploy to Production Pipelines
+## 3.5 Production Pipeline
 
 If testing on staging passed, chances are that it's pretty safe to continue with production. We only need one more pipeline, and we'll be done with the Users service.
 
-**Create a promotion branching off the staging pipeline**, using the same auto-promotion and parameters as before. Ensure that `users` is the default value of the parametrized pipeline. 
+The run down of the steps is:
 
-Change the path of the new YAML pipeline to `.semaphore/deploy.yml`
+1. Create a promotion branching off the staging pipeline, using the same auto-promotion and parameters as before. 
 
-On the new pipeline job, type these deployment commands, define the environment variable (this time with the production application name), and activate the secret.
+   ![](./figures/04-deploypp1.png)
 
-The pipeline will have one job for deployment. We'll use the same exact commands as we did on the first job in the staging pipeline. 
+2. Ensure that `users` is the default value of the parametrized pipeline. 
 
-Enable the `heroku` secret and set the variable `ENV = prod`.
+3. Rename the new pipeline as to: `.semaphore/deploy.yml`
 
-![](./figures/04-deploypp1.png)
+4. Copy the deployment commands from the staging pipeline. They're fully parametrized, so there's no need to change them.
 
-Give it a whirl and **run the workflow**. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
+5. Activate the `heroku` secret.
+
+6. Set `ENV = prod`
+
+Click on **run the workflow** to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
 ![](./figures/04-done2.png)
 
-### 3.9 Complete the setup
+### 3.5.1 Connecting all pipelines with promotions
 
 Since we kept all pipelines reusable with variables and parameters, it's easy to reproduce the staging and deployment pipelines for the rest of the services in the monorepo.
 
@@ -343,7 +362,7 @@ To recap, we need two more automatic promotions.
 
 ![](./figures/04-promotions-all.png)
 
-### 3.9.1 Stage parameters for Billing and UI
+### 3.5.2 Stage parameters for Billing and UI
 
 As per the plans we devised, auto-promotion criteria for Billing is:
 
@@ -359,9 +378,13 @@ change_in('/service/ui') AND result = 'passed' AND branch = 'master'
 
 The new promotions will have the same parameters, the variable name will be `ENV` and the valid options still `users`, `billing`, and `ui`. The **only** thing that changes is the default value: it will be `billing` in one and `ui` in the other.
 
-Once you create the new promotions, Semaphore will create new empty pipelines. But we want to reuse the staging pipeline we used for Users. So, click on the new pipeline and change the **YAML file path** to `.semaphore/staging.yml`. Do this for Billing and UI, so every service is deployed via the same pipeline.
+Once you create the new promotions, Semaphore will create new empty pipelines. But we want to reuse the same staging pipeline. So, click on the new pipeline and change the **YAML file path** to `.semaphore/staging.yml`. 
 
-### 3.9.2 Production pipelines for Billing and UI
+![](./figures/04-all-staging.png)
+
+Do this for Billing and UI so every service is staged via the same pipeline.
+
+### 3.5.3 Production pipelines for Billing and UI
 
 The deploy to production pipeline can also be reused for the rest of the services. So, repeat the procedure: add two additional promotions branching of the stage pipeline and set the YAML pipeline file to `.semaphore/deploy.yml`.
 
@@ -369,7 +392,7 @@ At the end of the setup you will have a total of three pipelines (CI, staging, a
 
 ![](./figures/04-pipelines-all.png)
 
-## 3.10 Ready to go?
+## 3.6 Ready to go?
 
 The CI/CD process is 100% configured. The only thing left to do is save it and run it to ensure everything works as expected.
 
