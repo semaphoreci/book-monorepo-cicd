@@ -26,11 +26,11 @@ We begin with a look at deploying the monorepo services as separate applications
 
 In short, we're going to create three apps, one for each service.
 
-| Service | App Name         | Service URL                    |
-|---------|------------------|--------------------------------|
-| users   | monorepo-users   | monorepo-users.herokuapp.com   |
-| billing | monorepo-billing | monorepo-billing.herokuapp.com |
-| ui      | monorepo-ui      | monorepo-ui.herokuapp.com      |
+| Service | App Name              | Service URL                         |
+| ------- | --------------------- | ----------------------------------- |
+| users   | monorepo-users-prod   | monorepo-users-prod.herokuapp.com   |
+| billing | monorepo-billing-prod | monorepo-billing-prod.herokuapp.com |
+| ui      | monorepo-ui-prod      | monorepo-ui-prod.herokuapp.com      |
 
 Since Heroku only allows one global name per application, you may have to experiment a bit until you find three free ones to use. As long as you keep the URLs and services sorted out, any name  works.
 
@@ -81,7 +81,7 @@ $ git push origin master
 You can create an empty application on Heroku with the CLI or via the [dashboard](https://dashboard.heroku.com).
 
 ``` bash
-$ heroku apps:create monorepo-users
+$ heroku apps:create monorepo-users-prod
 ```
 
 We can pretty much Git-push the code as-is to Heroku, and it will take care of rest. A neat trick is to create a disposable repository, thus ensuring we don't mess with the main monorepo Git history.
@@ -89,7 +89,7 @@ We can pretty much Git-push the code as-is to Heroku, and it will take care of r
 ``` bash
 $ cd services/users
 $ git init -b master
-$ heroku git:remote -a monorepo-users
+$ heroku git:remote -a monorepo-users-prod
 $ git add .
 $ git commit -m "first deployment"
 $ git push heroku master
@@ -98,7 +98,7 @@ $ git push heroku master
 The Users service should be online. Visiting the URL should return an empty JSON array.
 
 ``` bash
-$ curl <https://monorepo-users.herokuapp.com/users>
+$ curl "https://monorepo-users.herokuapp.com/users"
 []
 ```
 
@@ -115,9 +115,9 @@ Time to deploy Billing and UI. From the root of the repository run:
 
 ``` bash
 $ cd services/billing
-$ heroku apps:create monorepo-billing
+$ heroku apps:create monorepo-billing-prod
 $ git init -b master
-$ heroku git:remote -a monorepo-billing
+$ heroku git:remote -a monorepo-billing-prod
 $ git add .
 $ git commit -m "first deployment"
 $ git push heroku master
@@ -133,10 +133,10 @@ $ heroku create --buildpack hashnuke/elixir monorepo-ui
 The UI also needs to know the URLs of the other services. So we set environment variables to point to the correct endpoints (update the values as required).
 
 ``` bash
+$ heroku config:set --app=monorepo-ui-prod \
+         BILLING_ENDPOINT=https://monorepo-billing-prod.herokuapp.com/
 $ heroku config:set --app=monorepo-ui \
-         BILLING_ENDPOINT=https://monorepo-billing.herokuapp.com/
-$ heroku config:set --app=monorepo-ui \
-         USERS_ENDPOINT=https://monorepo-users.herokuapp.com/
+         USERS_ENDPOINT=https://monorepo-users-prod.herokuapp.com/
 ```
 
 Finally, from the root of the repository, run:
@@ -144,10 +144,10 @@ Finally, from the root of the repository, run:
 ``` bash
 $ cd services/ui
 $ git init -b master
-$ heroku git:remote -a monorepo-ui
+$ heroku git:remote -a monorepo-ui-prod
 $ git add .
 $ git commit -m "first deployment"
-$ git push heroku master  (cuidado con master vs main)
+$ git push heroku master
 $ rm -r .git
 ```
 
@@ -156,26 +156,35 @@ Good! The three services should now be online:
 ``` bash
 $ heroku list
 == tom@example.com Apps
-monorepo-billing
-monorepo-ui
-monorepo-users
+monorepo-billing-prod
+monorepo-ui-prod
+monorepo-users-prod
 ```
 
 ## 3.7 Continuous Deployment
 
 With the services online, the plan now is to automate things, so we don't need to worry about deploying new versions by hand on each update.
 
+In this section, we'll use *parametrized promotions*. These let us reuse pipeline code for several purposes. We're going to create two new pipelines:
+
+- Staging
+- Production
+
 ### 3.7.1 Staging environment
 
 We want a sturdy CI/CD process. Testing the services in CI is no guarantee of zero errors in production, though. We gain an extra degree of confidence by using a staging environment.
 
-Each service will have a separate temporary staging app on Heroku:
+Since creating an app is so cheap, each service will have a separate staging on Heroku:
 
-| Service | Staging Name             |
-|---------|--------------------------|
+| Service | Staging App Name         |
+| ------- | ------------------------ |
 | users   | monorepo-users-staging   |
 | billing | monorepo-billing-staging |
 | ui      | monorepo-ui-staging      |
+
+Before moving on, **create the three new staging apps**. Use the same commands as in section 3.5, but replacing `-staging` with `-prod`.
+
+### 3.7.2 Deployment methods for staging
 
 Deployment can be manual or automatic:
 
@@ -237,23 +246,41 @@ Type the condition on the **when?** field.
 
 ![](./figures/04-promote1.png)
 
-We'll use the first block in the staging pipeline to create a brand new staging application. The combined commands are:
+
+
+In the same pane, and below automatic promotions, there's a section for setting parameters. We'll use environment variables to keep the pipelines reusable. Click **+add environment variable** and type the following conditions:
+
+- Name: `SVC`. This is the name of the environment variable that will exist though the new pipeline.
+- Description: `Service to stage`. A user-friendly explanation of the variable meaning.
+- Valid options: These are the possible values the variable can take. `users`,`billing`,`ui` (one per line)
+- Default value: `users`. The default value when the pipeline is promoted automatically.
+
+![](./figures/04-pp1.png)
+
+What we're doing here is creating an environment variable. Its allowed values are the names of our three services. When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
+
+Next, we'll create the staging pipeline. Click on the newly created pipeline and scroll down to **YAML file path**. Replace the default value with: `.semaphore/stage.yml`
+
+Click on the new pipeline and it's name to: `Stage ${{ parameters.SVC }} to Heroku`. The `SVC` variable will be expanded when the pipeline starts.
+
+![](./figures/04-pp2.png)
+
+We'll use the first block in the staging pipeline to deploy the staging application. Thanks to parametrization, `SVC` will store the application name. As for the `ENV`, we'll define it at the block level and in this case, it will be "staging". The combined commands are:
 
 ``` bash
-heroku apps:create "$APP_NAME"
 checkout
-cd services/users
+cd "services/$SVC"
 git init
 git config user.email "$HEROKU_EMAIL"
 git config user.name "$HEROKU_EMAIL"
-git config credential.helper '!f() { printf "%s\n" "username='$HEROKU_EMAIL'" "password='$HEROKU_API_KEY'"; };f'
-heroku git:remote -a "$APP_NAME"
+git config credential.helper '!f() { printf "%s\n" "username=''$HEROKU_EMAIL''" "password=''$HEROKU_API_KEY''"; };f'
+heroku git:remote -a "monorepo-${SVC}-${ENV}"
 git add .
-git commit -m "deploy $APP_NAME to Heroku"
+git commit -m "deploy monorepo-${SVC}-${ENV} to Heroku"
 git push heroku master --force
 ```
 
-![](./figures/04-stage1.png)
+![](./figures/04-stage1.png) 
 
 Let’s break down the commands:
 1. Create an empty application.
@@ -262,17 +289,17 @@ Let’s break down the commands:
 4. Initialize a helper function that returns the Heroku API key to Git.
 5. Push the files with Git.
 
-We'll use environment variables to keep the job commands reusable.
-
-Open the **environment** section in the block and set the APP_NAME.
+Two more things to go. First, open the **environment** section in the block and set the `ENV = staging`
 
 ``` bash
-APP_NAME=monorepo-users-staging
+ENV=staging
 ```
+
+Finally, scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroku API key.
 
 ![](./figures/04-env1.png)
 
-Scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroky API key.
+
 
 ### 3.7.4 Test job
 
@@ -281,18 +308,10 @@ Having a production-like environment is an invaluable opportunity for testing. W
 Create a new block. In the job, we'll run some curl commands to create a user and check it exists afterward.
 
 ``` bash
-curl --location --request POST "${APP_NAME}.herokuapp.com/users" --header 'Content-Type: application/json' --data-raw '{ "name": "Rodrigo Amarante" }'
-sleep 1
-[[ $(curl --location --request GET "${APP_NAME}.herokuapp.com/users" --header 'Accept: application/json') == '[{"id":0,"name":"Rodrigo Amarante"}]' ]]
+curl "https://monorepo-${SVC}-${ENV}.herokuapp.com"
 ```
 
-Regardless of tests succeeding or not, we should tidy up and delete the staging environment. To do that, open the **epilogue**, and type the following command:
-
-``` bash
-heroku apps:delete "$APP_NAME" --confirm "$APP_NAME"
-```
-
-The only thing left is to set the correct `APP_NAME` in the environment.
+The only thing left is to set the correct `ENV` in the environment.
 
 ![](./figures/04-tests1.png)
 
@@ -300,38 +319,31 @@ The only thing left is to set the correct `APP_NAME` in the environment.
 
 If testing on staging passed, chances are that it's pretty safe to continue with production. We only need one more pipeline, and we'll be done with the Users service.
 
-Create a promotion branching off the staging pipeline. You may use the same auto-promotion conditions. On the new pipeline job, type these deployment commands, define the environment variable (this time with the production application name), and activate the secret.
+**Create a promotion branching off the staging pipeline**, using the same auto-promotion and parameters as before. Ensure that `users` is the default value of the parametrized pipeline. 
 
-``` bash
-checkout
-cd services/users
-git init
-git config user.email "$HEROKU_EMAIL"
-git config user.name "$HEROKU_EMAIL"
-git config credential.helper '!f() { printf "%s\n" "username='$HEROKU_EMAIL'" "password='$HEROKU_API_KEY'"; };f'
-heroku git:remote -a "$APP_NAME"
-git add .
-git commit -m "deploy $APP_NAME to Heroku"
-git push heroku master --force
-```
+Change the path of the new YAML pipeline to `.semaphore/deploy.yml`
 
-![](./figures/04-deploy1.png)
+On the new pipeline job, type these deployment commands, define the environment variable (this time with the production application name), and activate the secret.
 
-Give it a whirl and run the workflow. You may need to manually start the staging and deployment pipelines.
+The pipeline will have one job for deployment. We'll use the same exact commands as we did on the first job in the staging pipeline. 
+
+Enable the `heroku` secret and set the variable `ENV = prod`.
+
+![](./figures/04-deploypp1.png)
+
+Give it a whirl and **run the workflow**. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
 ![](./figures/04-done2.png)
 
-### 3.9 Rinse and repeat
+### 3.9 Complete the setup
 
-Since we kept all commands reusable with variables, it's easy to reproduce the staging and deployment pipelines for the rest of the services in the monorepo. You only need to adjust `APP_NAME`.
+Since we kept all pipelines reusable with variables and parameters, it's easy to reproduce the staging and deployment pipelines for the rest of the services in the monorepo.
 
-To recap, we need two more staging pipelines.
+To recap, we need two more automatic promotions.
 
 ![](./figures/04-promotions-all.png)
 
-And two extra production deployment pipelines, which brings us to a total of seven pipelines.
-
-![](./figures/04-pipelines-all.png)
+### 3.9.1 Stage parameters for Billing and UI
 
 As per the plans we devised, auto-promotion criteria for Billing is:
 
@@ -343,8 +355,19 @@ And for the UI:
 
 ``` text
 change_in('/service/ui') AND result = 'passed' AND branch = 'master'
-
 ```
+
+The new promotions will have the same parameters, the variable name will be `ENV` and the valid options still `users`, `billing`, and `ui`. The **only** thing that changes is the default value: it will be `billing` in one and `ui` in the other.
+
+Once you create the new promotions, Semaphore will create new empty pipelines. But we want to reuse the staging pipeline we used for Users. So, click on the new pipeline and change the **YAML file path** to `.semaphore/staging.yml`. Do this for Billing and UI, so every service is deployed via the same pipeline.
+
+### 3.9.2 Production pipelines for Billing and UI
+
+The deploy to production pipeline can also be reused for the rest of the services. So, repeat the procedure: add two additional promotions branching of the stage pipeline and set the YAML pipeline file to `.semaphore/deploy.yml`.
+
+At the end of the setup you will have a total of three pipelines (CI, staging, and production deploy), and six promotions.
+
+![](./figures/04-pipelines-all.png)
 
 ## 3.10 Ready to go?
 
