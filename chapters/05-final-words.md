@@ -2,7 +2,7 @@
 
 # 4 Final Words
 
-TODO: write section
+Nice work! The book may be finished, but there’s a lot more to learn and do. Now go and build something awesome!.
 
 ## 4.1 Share This Book With The World
 
