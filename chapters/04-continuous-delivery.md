@@ -38,7 +38,7 @@ Since Heroku only allows **one global name per application**, you may have to ex
 
 The order in which we deploy the applications for the first time matters. The UI service must go last because it depends on Billing and Users, as you can see below.
 
-![](./figures/04-service-dependency.png){ width=95% }
+![](./figures/04-service-dependency.png){ width=90% }
 
 ### 3.3.2 Preparing the services for deployment
 
@@ -249,7 +249,7 @@ Next, open the settings menu on Semaphore.
 
 Create a new secret with two variables: `HEROKU_EMAIL` and `HEROKU_API_KEY` with the email and token.
 
-![](./figures/04-heroku-secret.png){ width=95% }
+![](./figures/04-heroku-secret.png){ width=80% }
 
 We’ll learn how to import the secret on the job in a minute.
 
@@ -274,7 +274,7 @@ In the same pane, immediately below you'll find the parameters section. Click **
 - **Valid options:** `users`,`billing`,`ui` (one per line)
 - **Default value**: `users`
 
-![](./figures/04-pp1.png){ width=95% }
+![](./figures/04-pp1.png){ width=40% }
 
 What we're doing here is creating an environment variable, called `SVC`, which can take the values of any of our three services. When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
 
@@ -312,8 +312,7 @@ Let’s break down the commands:
 
 Two more things to go. One, open the **environment** section in the block and set the `ENV = staging`. And two, scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroku API key.
 
-![](./figures/04-env1.png){ width=95% }
-
+![](./figures/04-env1.png){ width=40% }
 
 
 ### 3.4.6 The test job
