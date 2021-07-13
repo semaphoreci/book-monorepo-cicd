@@ -8,13 +8,13 @@
 
 Monorepos  [CI/CD workflow](https://semaphoreci.com/cicd) present their own set of challenges. By default, a CI/CD [pipeline](https://semaphoreci.com/blog/cicd-pipeline) will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in [continuous integration](https://semaphoreci.com/continuous-integration).
 
-![Regular CI pipelines always run the whole pipeline](./figures/03-build1.png)
+![Regular CI pipelines always run the whole pipeline](./figures/03-build1.png){ width=95% }
 
 Running every job in the pipeline is perfectly fine on single-project repositories. But monorepos see a lot more activity. Even the smallest change will re-run the entire pipeline — **it is time-consuming and needlessly expensive**.  It just doesn’t make sense.
 
 Semaphore [is the only CI/CD platform](https://semaphoreci.com/product/whats-new-2021) with native monorepo support. Its change-based execution feature lets you skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
 
-![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png)
+![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png){ width=95% }
 
 ## 2.2 How to set up monorepo workflows
 
@@ -35,17 +35,17 @@ All these parts are meant to work together, but each one may be maintained by a 
 
 Next, log in with your Semaphore account and click on **create new** on the upper left corner.
 
-![Creating a new project](./figures/03-create-new.png)
+![Creating a new project](./figures/03-create-new.png){ width=95% }
 
-Now, choose the repository you forked. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click on **fork & run**. 
+Now, choose the repository you forked. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click on **fork & run**.
 
 You can add people to the project at this point. When you’re done, click **Continue** and select “I want to configure this project from scratch.”
 
-![Create a new pipeline](./figures/03-scratch.png)
+![Create a new pipeline](./figures/03-scratch.png){ width=95% }
 
 We’ll start with the billing application. Find the Go starter workflow and click on customize:
 
-![Select the Go starter workflow](./figures/03-go-starter.png)
+![Select the Go starter workflow](./figures/03-go-starter.png){ width=95% }
 
 You have to modify the job a bit before it works:
 
@@ -66,15 +66,15 @@ go test ./...
 go build -v .
 ```
 
-![Build job for billing app](./figures/03-go-build1.png)
+![Build job for billing app](./figures/03-go-build1.png){ width=95% }
 
 Now click on **run the workflow**. Type “master” in Branch and click on **start**. Choosing the right branch matters because it affects how commits are calculated. We’ll talk about that in a bit.
 
-![Run the workflow](./figures/03-run-master.png)
+![Run the workflow](./figures/03-run-master.png){ width=95% }
 
 Semaphore should start building and testing the application.
 
-![First run](./figures/03-first-run.png)
+![First run](./figures/03-first-run.png){ width=95% }
 
 Let’s add a second application in the pipeline. Open editor by clicking on **Edit Workflow** on the upper right corner.
 
@@ -92,7 +92,7 @@ bundle exec ruby test.rb
 
 And **uncheck** all the checkboxes under Dependencies.
 
-![No dependencies in the User block](./figures/03-no-dep-user.png)
+![No dependencies in the User block](./figures/03-no-dep-user.png){ width=95% }
 
 Add a third block to test the UI service. The following installs and tests the app. Remember to **uncheck** all block dependencies.
 
@@ -109,11 +109,11 @@ cache store
 mix test
 ```
 
-![No dependencies in the UI block](./figures/03-no-dep-ui.png)
+![No dependencies in the UI block](./figures/03-no-dep-ui.png){ width=95% }
 
 Now, what happens if we change a file inside the `/services/ui` folder?
 
-![All blocks running](./figures/03-all-blocks1.png)
+![All blocks running](./figures/03-all-blocks1.png){ width=95% }
 
 Yeah, despite only one of the projects has changed, all the blocks are running. This is… not optimal. For a big monorepo with hundreds of projects, **that’s a lot of wasted CPU cycles**. The good news is that this is a perfect fit for trying out change-based execution.
 
@@ -123,7 +123,7 @@ The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#cha
 
 We can call the function from any block by opening the **skip/run conditions** section and enabling the option: “run this block when conditions are met.”
 
-![Where to define run conditions](./figures/03-run-skip.png)
+![Where to define run conditions](./figures/03-run-skip.png){ width=95% }
 
 The basic usage of the function is:
 
@@ -197,13 +197,13 @@ Next, run the pipeline again. The first thing you’ll notice is that there's a 
 
 Once the workflow is ready, Semaphore will start running all jobs one more time (this happens because we didn’t set `pipeline_file: 'ignore' `). The interesting bit comes later, when we change a file in one of the applications, this is what we get:
 
-![Running all blocks](./figures/03-skip-but-billing.png)
+![Running all blocks](./figures/03-skip-but-billing.png){ width=95% }
 
 Can you guess which application I changed? Yes, that’s right: it was the billing app. As a result, thanks to `change_in`, the rest of the blocks have been skipped because neither did meet the change conditions.
 
 If we make a change outside any of the monitored folders, then all the blocks are skipped and the pipeline completes in just a few seconds.
 
-![Skipping all blocks](./figures/03-skip-all.png)
+![Skipping all blocks](./figures/03-skip-all.png){ width=95% }
 
 ## 2.4 Calculating commit ranges
 
@@ -211,15 +211,15 @@ To understand what blocks will run each time, we must examine how `change_in` ca
 
 For the main branch, Semaphore compares the changes in all the commits for the push, then skips the `change_in` blocks that do not have at least one match.
 
-![Commit ranges per push on master/main](./figures/03-git-master.png)
+![Commit ranges per push on master/main](./figures/03-git-master.png){ width=95% }
 
 Semaphore takes a broader criteria for branches. The commit range goes from the point of the first commit that branched off the mainline to the branch’s head. This explains why Semaphore may choose to re-run blocks even on commits that seemingly don’t match the change criteria.
 
-![For branches, commit ranges go from the main branch to the branch’s head](./figures/03-git-branch.png)
+![For branches, commit ranges go from the main branch to the branch’s head](./figures/03-git-branch.png){ width=95% }
 
 Pull requests behave similarly. The commit range is defined from the first commit that branched off the branch targeted for merging to the head of the branch.
 
-![For pull requests, commit ranges go from target branch to head of the branch](./figures/03-git-pr.png)
+![For pull requests, commit ranges go from target branch to head of the branch](./figures/03-git-pr.png){ width=95% }
 
 ## 2.5 Change-based automatic promotions
 
@@ -227,11 +227,11 @@ We can also use `change_in` on [auto promotions](https://docs.semaphoreci.com/gu
 
 To create a new pipeline, open the workflow editor once more and click on **Add First Promotion**:
 
-![Adding a promotion](./figures/03-add-promotion.png)
+![Adding a promotion](./figures/03-add-promotion.png){ width=95% }
 
 Check **Enable automatic promotion**. You should see an example snippet you can use as a starting point.
 
-![Example change\_in condition](./figures/03-autopromotion-example.png)
+![Example change\_in condition](./figures/03-autopromotion-example.png){ width=95% }
 
 You can combine `change_in` and `branch = 'master' AND result = 'passed'` to start the pipeline when all jobs pass on the default branch.
 
@@ -239,11 +239,11 @@ You can combine `change_in` and `branch = 'master' AND result = 'passed'` to sta
 change_in('/services/billing/') and branch = 'master' AND result = 'passed'
 ```
 
-![Auto promotion conditions](./figures/03-promotion-condition.png)
+![Auto promotion conditions](./figures/03-promotion-condition.png){ width=95% }
 
 Once done, run the workflow to save the changes. From now on, when you make a change to the billing app, the new pipeline will start automatically if all tests pass on `master`.
 
-![Pipeline auto promoted](./figures/03-promotion-done.png)
+![Pipeline auto promoted](./figures/03-promotion-done.png){ width=95% }
 
 ## 2.6 Tips for using `change_in` effectively
 

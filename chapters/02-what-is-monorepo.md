@@ -26,7 +26,7 @@ $ git add -A
 $ git commit -m "My first monorepo"
 ```
 
-![Multirepo to Monorepo](./figures/02-multi-to-mono.png)
+![Multirepo to Monorepo](./figures/02-multi-to-mono.png){ width=95% }
 
 Of course, this is just to get started. The hard work comes later, when we get into refactoring and consolidation. To enjoy the full benefits of a monorepo, all shareable code should be moved outside of each project, and into a common location.
 
@@ -155,7 +155,7 @@ For Pinterest, a monorepo layout provided a consistent development workflow. Aut
 
 If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos. Building and testing need to be rethought: instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that change.
 
-![Monorepo build systems](./figures/02-build.png)
+![Monorepo build systems](./figures/02-build.png){ width=95% }
 
 Most of us don’t have Airbnb's resources. What can we do? Fortunately, many of the bigger companies have open-sourced their build systems:
 
