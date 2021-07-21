@@ -4,28 +4,58 @@
 
 *Monorepos are highly-active code repositories. They can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.*
 
-## 2.1 Monorepo workflows should be easy to set up
+## 2.1 The challenge in CI/CD with monorepos
 
 Monorepos  [CI/CD workflow](https://semaphoreci.com/cicd) present their own set of challenges. By default, a CI/CD [pipeline](https://semaphoreci.com/blog/cicd-pipeline) will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in [continuous integration](https://semaphoreci.com/continuous-integration).
 
-![Regular CI pipelines always run the whole pipeline](./figures/03-build1.png){ width=90% }
+A classic CI pipeline will run every job in sequence every time a new commit is pushed into the repository.
 
-Running every job in the pipeline is perfectly fine on single-project repositories. But monorepos see a lot more activity. Even the smallest change will re-run the entire pipeline — **it is time-consuming and needlessly expensive**.  It just doesn’t make sense.
+![Regular CI pipelines always run the whole pipeline](./figures/03-build1-basic.png){ width=90% }
 
-Semaphore [is the only CI/CD platform](https://semaphoreci.com/product/whats-new-2021) with native monorepo support. Its change-based execution feature lets you skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
+Running every job in the pipeline is perfectly fine on single-project repositories. But monorepos see a lot more activity. Even the smallest change will re-run the entire pipeline — **it is time-consuming and needlessly expensive**. It just doesn’t make sense.
+
+Semaphore [is the only CI/CD platform](https://semaphoreci.com/product/whats-new-2021) with native monorepo support. Its change-based, parallel execution feature lets you skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
 
 ![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png){ width=90% }
 
-## 2.2 How to set up monorepo workflows
+## 2.2 Hello world monorepo with Semaphore
+
+**We should probably add that we assume familiarity with basics of Semaphore, for that check the guided tour etc.**
+
+
+
+**Wdyt about inserting a new section like "Hello world monorepo build with Semaphore" where you would show a pipeline which doesn't include any  language specifics (like in new guided tour)? This way you could start  focused on explaining change-based execution and with a few examples of  change_in I think most people will get it how it's done on Semaphore.  Trying to optimize for quick reading. Then the next section would be a  complete walkthrough based on the demo project.**
+
+****
+
+
+
+### 2.1.2 Change-based execution
+
+### 2.1.2 Speeding up pipelines
+
+### 2.1.3 How Semaphore determines what changed
+
+### 2.1.4 Tips for using change_in
+
+
+
+
+
+## 2.2 A more interesting monorepo project (NEW SECTION???)
 
 In this section, we’ll set up a monorepo pipeline. We’ll use the [semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo) project as a starting point, but you can adapt these steps to any CI/CD workflow on Semaphore.
 
 To follow this guide, you’ll need:
 
 -   A GitHub account.
--   A [Semaphore](https://semaphoreci.com) account. Click on **Sign up with GitHub** to create a free trial account.
+-   A [Semaphore](https://semaphoreci.com) account. Click on **Sign up with GitHub** to a free trial or open source account.
 
-Go ahead and fork the [repository](https://github.com/semaphoreci-demos/semaphore-demo-monorepo) on GitHub. It contains three projects, each one in a separate folder:
+Go ahead and fork the repository:
+
+_[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo)_
+
+The repo contains three projects, each one in a separate folder:
 
 -   `/service/billing`: written in Go, calculates user payments.
 -   `/service/user`: a Ruby-based user registration service. Exposes a HTTP REST endpoint.
@@ -115,7 +145,7 @@ Now, what happens if we change a file inside the `/services/ui` folder?
 
 ![All blocks running](./figures/03-all-blocks1.png){ width=40% }
 
-Yeah, despite only one of the projects has changed, all the blocks are running. This is… not optimal. For a big monorepo with hundreds of projects, **that’s a lot of wasted CPU cycles**. The good news is that this is a perfect fit for trying out change-based execution.
+Yeah, despite only one of the projects has changed, all the blocks are running. This is… not optimal. For a big monorepo with hundreds of projects, that’s a lot of wasted hours, with added boredom and axiety for software developers. The good news is that this is a perfect fit for trying out change-based execution.
 
 ## 2.2 Change-based execution
 
@@ -127,7 +157,7 @@ We can call the function from any block by opening the **skip/run conditions** s
 
 The basic usage of the function is:
 
-``` json
+``` text
 change_in('/web/')
 ```
 
@@ -135,37 +165,37 @@ This will run the block if any files inside the `web` folder change. Absolute pa
 
 We can also target a specific file:
 
-``` json
+``` text
 change_in('../package-lock.json')
 ```
 
 Wildcards are supported too:
 
-``` json
+``` text
 change_in('/**/package.json')
 ```
 
 Also, you're not limited to monitoring one path, you may define lists of files or folders. This block, for instance, will run when the `/web/` folder **or** the `/manifests/kubernetes.yml` file changes (both simultaneously changing work too):
 
-``` json
+``` text
 change_in(['/web/', '/manifests/kubernetes.yml'])
 ```
 
 The function can take a second optional argument to further configue its behavior. For instance, if your repository default branch is `main` instead of `master` ([GitHub’s new default](https://github.com/github/renaming)), you’ll need to add `default_branch: 'main'`:
 
-``` json
+``` text
 change_in('/web/', { default_branch: 'main' })
 ```
 
 Semaphore will re-run all jobs when we update the pipeline. We can disable this behavior with `pipeline_file: 'ignore'`:
 
-``` json
+``` text
 change_in('/web/', { pipeline_file: 'ignore' })
 ```
 
 Another useful option is `exclude`, which lets us ignore files or folders. This option also supports wildcards. For example, to ignore all Markdown files:
 
-``` json
+``` text
 change_in('/web/', { exclude: '/web/**/*.md' })
 ```
 
@@ -205,7 +235,7 @@ If we make a change outside any of the monitored folders, then all the blocks ar
 
 ![Skipping all blocks](./figures/03-skip-all.png){ width=40% }
 
-## 2.4 Calculating commit ranges
+## 2.4 2.4 How Semaphore determines what has changed
 
 To understand what blocks will run each time, we must examine how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
 
@@ -259,3 +289,5 @@ Scaling up large monorepos with `change_in` is easier if you follow these tips f
 ## 2.7 Monorepo workflows got a lot faster
 
 We’ve learned how to best take advantage of Semaphore’s features to run CI/CD pipelines on monorepos. With the `change_in` function, you may design faster pipelines that don’t waste time or money re-building already-tested code.
+
+**Section 2.7 seems like a closer copied from the blog post, replace it  with something that wraps up the current chapter and leads the reader to the next one on CD.**
