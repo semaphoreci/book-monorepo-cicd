@@ -25,23 +25,21 @@ Share this book:
 
 ## Preface
 
-The term *monorepo*, as such, began appearing around 2014. Wikipedia had its first dedicated page in 2018. Yet, monorepos have been around a lot longer than that. One of the oldest, still active repositories is [BRL-CAD](https://sourceforge.net/p/brlcad/code/HEAD/tree/), an open-source CAD software developed by the Ballistic Research Laboratory in the US Army, which dates back to 1983 and has all the markings of a small-scale monorepo. The term monorepo may be young, but the concept is definitely not.
+A monorepo is a new name for an old idea: place a bunch of software projects in the same repository. This approach has many benefits: increase visibility and easy code sharing, greater consistency and common coding practices.
 
-The take is that we didn’t use to need a special world for these kinds of repos. Developers applied their best judgment to decide where code should go. Inevitably with time, software development evolves and gets more complex. Today we can see that two paradigms have crystallized: the monorepo and the multirepo.
+Companies like Google, Facebook, Twitter, and Airbnb have been using monorepos for many years. Today, we see a growing number of smaller teams choosing to work this way, adopting monorepos as their way of coding. The jury is still out, but the tide seems to be turning. 
 
-At first, helped in part by the popularity of microservices and a divide-and-conquer mindset, it seemed that multi-repos would win out. Monorepos, however, always kept a loyal following that praised their benefits.
+Why the change now? As monorepos grow in size,  number of limiting factors come into play. Greatest of them all is scaling. Most companies don't have the resources to solve the technical challenges around monorepos. Companies like Google, Facebook, Twitter open-sourced their innovative build systems, tooling matured, and new solutions were developed. Monorepos are getting a lot of traction. Luckily, tooling is evolving, a lot of monorepo-first companies have open-sourced they monorepo solutions. The barriers to adopting monorepo are falling down. 
 
-The jury is still out, but the tide seems to be turning. Companies like Google, Facebook, Twitter open-sourced their innovative build systems, tooling matured, and new solutions were developed. In 2020 the [term monorepo peaked](https://trends.google.com/trends/explore?date=all&q=monorepo,multirepo,multi-repo,mono-repo), showing that monorepos are getting a lot of traction.
+At Semaphore, we have been using monorepos internally for a long time. We know how cool they can be and how painful they can get to set up. Because we want every engineering team to enjoy a great experience, [we’ve released monorepo features](https://semaphoreci.com/blog/monorepo-support-available). Bringing Semaphore to be the first CI/CD platform with such support.
 
-At Semaphore, we have been using monorepos internally for a long time. We know how cool they can be and how painful they can get to set up.
+Semaphore steps up the monorepo game with:
 
-> Monorepos offer many benefits for engineering teams, but until now, setting one up was needlessly traumatic. Since we use a monorepo ourselves, we understood the pain of setting up a functional CI/CD pipeline.  It goes without saying that we were very motivated to make the experience of configuring such a project on Semaphore a seamless process.
->
->       Damjan Becirovic, Software Engineer at Semaphore
-
-Because we want every engineering team to enjoy a great experience, [we’ve released monorepo features](https://semaphoreci.com/blog/monorepo-support-available). Bringing Semaphore to be the first CI/CD platform with such support.
-
-We’re not done. The UI improvements, the enhanced stability and scalability, and the `change_in` function are only the beginning. We’re still working on new features to bring the monorepo experience to the 21st century. This book is part of this effort. We want to help pave the way into a future where everyone can work with a monorepo at scale.
+- **Initialization step** – Runs at the start of each monorepo pipeline and compiles the workflow, ensuring that  misconfigurations are detected before any job starts.
+- **UI indicator** – A new UI element shows the initialization log, making troubleshooting fast and easy. 
+- **Exclude parameter** – A new option in  `*change_in*` adds the ability to define which folders or files to skip. 
+- **Glob pattern support** – `change_in` conditions have been further extended to allow the use of wildcards.
+- **Improved stability** – All compilation errors coming from edge cases were eliminated, making these features more reliable. 
 
 \newpage
 
@@ -78,5 +76,4 @@ Find us on LinkedIn: <https://www.linkedin.com/company/rendered-text>
 ## Acknowledgments
 
 I want to thank Marko Anastasov for the opportunity to write this book. In addition, all the Semaphore team for their incredible work. Without their help, this book could never have existed.
-
 
