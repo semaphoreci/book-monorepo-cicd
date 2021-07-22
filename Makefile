@@ -4,8 +4,9 @@ TITLE = title.txt
 CHAPTERS = chapters/01-introduction.md \
 		   chapters/02-what-is-monorepo.md \
 		   chapters/03-continuous-integration.md \
-		   chapters/04-continuous-delivery.md \
-		   chapters/05-final-words.md
+		   chapters/04-continuous-integration-microservices.md \
+		   chapters/05-continuous-delivery.md \
+		   chapters/06-final-words.md
 
 # CHAPTERS_EBOOK = chapters/01-introduction-ebook.md chapters/02-using-docker.md \
 # 	chapters/03-kubernetes-deployment.md chapters/04-cicd-best-practices.md \

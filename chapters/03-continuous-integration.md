@@ -22,138 +22,66 @@ Semaphore [is the only CI/CD platform](https://semaphoreci.com/product/whats-new
 
 **We should probably add that we assume familiarity with basics of Semaphore, for that check the guided tour etc.**
 
+If you've never used Semaphore or a CI/CD platform before, it may be a good idea to head first check out our **getting started guide**, where we cover basic concepts and examples to create a pipeline. You'll find the guide at this address:
 
+_[https://docs.semaphoreci.com/guided-tour/getting-started/](https://docs.semaphoreci.com/guided-tour/getting-started/)_
 
-**Wdyt about inserting a new section like "Hello world monorepo build with Semaphore" where you would show a pipeline which doesn't include any  language specifics (like in new guided tour)? This way you could start  focused on explaining change-based execution and with a few examples of  change_in I think most people will get it how it's done on Semaphore.  Trying to optimize for quick reading. Then the next section would be a  complete walkthrough based on the demo project.**
-
-****
-
-
-
-### 2.1.2 Change-based execution
-
-### 2.1.2 Speeding up pipelines
-
-### 2.1.3 How Semaphore determines what changed
-
-### 2.1.4 Tips for using change_in
-
-
-
-
-
-## 2.2 A more interesting monorepo project (NEW SECTION???)
-
-In this section, we’ll set up a monorepo pipeline. We’ll use the [semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo) project as a starting point, but you can adapt these steps to any CI/CD workflow on Semaphore.
+Shall we create "Hello, World" equivalent project for monorepos? Doing so will let us warm up to how monorepos work on Semaphore.
 
 To follow this guide, you’ll need:
 
 -   A GitHub account.
 -   A [Semaphore](https://semaphoreci.com) account. Click on **Sign up with GitHub** to a free trial or open source account.
 
-Go ahead and fork the repository:
+To get started, create an new repository on GitHub and clone it to your machine. We'll assume the repository name is called *"hello-semaphore"*.
 
-_[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo)_
+Create a couple of folders in the repository in order to try out change-based detection. Lets call them `service1` and `service2`:
 
-The repo contains three projects, each one in a separate folder:
-
--   `/service/billing`: written in Go, calculates user payments.
--   `/service/user`: a Ruby-based user registration service. Exposes a HTTP REST endpoint.
--   `/service/ui`: which is a web UI component. Written in Elixir.
-
-All these parts are meant to work together, but each one may be maintained by a separate team and written in a different language.
+``` bash
+$ mkdir service1 service2
+$ touch service1/README.md service2/README.md
+$ git add .
+$ git commit -m "create dummy services"
+$ git push
+```
 
 Next, log in with your Semaphore account and click on **create new** on the upper left corner.
 
 ![Creating a new project](./figures/03-create-new.png){ width=95% }
 
-Now, choose the repository you forked. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click on **fork & run**.
+After choosing the `hello-semaphore`, wait a few seconds for Semaphore to initialize the project. 
 
-You can add people to the project at this point. When you’re done, click **Continue** and select “I want to configure this project from scratch.”
+![](./figures/03-choose-repo.png)
 
-![Create a new pipeline](./figures/03-scratch.png){ width=70% }
+The next screen lets you add people to the project, click  **Continue to workflow setup** to proceed.
 
-We’ll start with the billing application. Find the Go starter workflow and click on customize:
+Finally, you'll reach the template selection screen, select **Single job**, then click **Looks good, start**. This will start a new workflow immediately.
 
-![Select the Go starter workflow](./figures/03-go-starter.png){ width=95% }
+![](./figures/03-single-job.png)
 
-You have to modify the job a bit before it works:
+Now click on **Edit Workflow** to edit the pipeline.
 
-1.  The billing app uses Go version 1.14. So, change the first line to `sem-version go 1.14`.
-2.  The code is located in the `services/billing` folder, add `cd services/billing` after `checkout`.
+![](./figures/03-edit-workflow.png)
 
-The full job should look like this:
+In this screen you can modify and create new blocks in the pipeline. Rename the block to "Build service1" and add the following command: `echo "building service1"`.
 
-``` bash
-sem-version go 1.14
-export GO111MODULE=on
-export GOPATH=~/go
-export PATH=/home/semaphore/go/bin:$PATH
-checkout
-cd services/billing
-go get ./...
-go test ./...
-go build -v .
-```
+![](./figures/03-service1.png)
 
-![Build job for billing app](./figures/03-go-build1.png){ width=95% }
+Click on **Add Block**, the new block is called "Build service2". Uncheck the Build service1 in dependencies. This causes both block to run in parallel. For the command, type `echo "building service2"`.
 
-Now click on **run the workflow**. Type “master” in Branch and click on **start**. Choosing the right branch matters because it affects how commits are calculated. We’ll talk about that in a bit.
+![](./figures/03-service2.png)
 
-![Run the workflow](./figures/03-run-master.png){ width=70% }
+Click on **Run this workflow**, change the branch to the default branch your repository uses (usually, it's called `main`) and click on **Start**.
 
-Semaphore should start building and testing the application.
+![](./figures/03-run1.png)
 
-![First run](./figures/03-first-run.png){ width=95% }
+Both blocks should run in parallel. 
 
-Let’s add a second application in the pipeline. Open editor by clicking on **Edit Workflow** on the upper right corner.
+![](./figures/03-run1-done.png)
 
-Add a new block. Then, add the commands to install and test a Ruby application:
+## 2.1.2 Change-based execution
 
-``` bash
-sem-version ruby 2.5
-checkout
-cd services/users
-cache restore
-bundle install
-cache store
-bundle exec ruby test.rb
-```
-
-And **uncheck** all the checkboxes under Dependencies.
-
-![No dependencies in the User block](./figures/03-no-dep-user.png){ width=95% }
-
-Add a third block to test the UI service. The following installs and tests the app. Remember to **uncheck** all block dependencies.
-
-``` bash
-checkout
-cd services/ui
-sem-version elixir 1.9
-cache restore
-mix local.hex --force
-mix local.rebar --force
-mix deps.get
-mix deps.compile
-cache store
-mix test
-```
-
-![No dependencies in the UI block](./figures/03-no-dep-ui.png){ width=95% }
-
-Now, what happens if we change a file inside the `/services/ui` folder?
-
-![All blocks running](./figures/03-all-blocks1.png){ width=40% }
-
-Yeah, despite only one of the projects has changed, all the blocks are running. This is… not optimal. For a big monorepo with hundreds of projects, that’s a lot of wasted hours, with added boredom and axiety for software developers. The good news is that this is a perfect fit for trying out change-based execution.
-
-## 2.2 Change-based execution
-
-The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in) function calculates if recent commits have changed code in a given file or folder. We must call this function at block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
-
-We can call the function from any block by opening the **skip/run conditions** section and enabling the option: “run this block when conditions are met.”
-
-![Where to define run conditions](./figures/03-run-skip.png){ width=95% }
+Let's pause for a moment to learn about `change_in`. The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in) function calculates if recent commits have changed code in a given file or folder. We must call this function at block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
 
 The basic usage of the function is:
 
@@ -201,41 +129,37 @@ change_in('/web/', { exclude: '/web/**/*.md' })
 
 To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/).
 
-## 2.3 Speeding up pipelines with change\_in
+## 2.1.2 Speeding up pipelines with change_in
 
-Let’s see how `change_in` can help us speed up the pipeline.
+There is no change detection yet. We'll remedy that now. Click on **Edit Workflow** to re-open the editor.
 
-Open the workflow editor again. Pick one of the blocks and open the **skip/run conditions** section. Add some change criteria:
+On the first block, scroll down until you reach the section **Run/skip conditions** and enable the option: “run this block when conditions are met.”
 
-``` text
-change_in('/services/billing')
+Type the following condition: `change_in('/service1/', { default_branch: 'main'} )`. If your repository's default branch is `master` you can skip the `default_branch` option altogheter.
+
+![](./figures/03-change1.png)
+
+Go to the second block and type this condition: `change_in('/service2/', { default_branch: 'main'} )`.
+
+![](./figures/03-change2.png)
+
+Click on **Run the workflow** > **Start** to save the pipeline.
+
+Let's try out change detection. Pull the changes into your machine and modify one of the files. 
+
+``` bash
+$ git pull
+$ echo "modify service1" >> service1/README.md
+$ git add service1
+$ git commit -m "modify service1"
+$ git push
 ```
 
-Repeat the procedure for the rest of the blocks.
+Push the changes to see which blocks run in the pipeline.
 
-``` text
-change_in('/services/ui')
-```
+![](./figures/03-run2-done.png)
 
-And:
-
-``` text
-change_in('/services/users')
-```
-
-Next, run the pipeline again. The first thing you’ll notice is that there's a new initialization step. Here, Semaphore is calculating the differences to decide what blocks should run. You can check the log to see what is happening behind the scenes.
-
-Once the workflow is ready, Semaphore will start running all jobs one more time (this happens because we didn’t set `pipeline_file: 'ignore' `). The interesting bit comes later, when we change a file in one of the applications, this is what we get:
-
-![Running all blocks](./figures/03-skip-but-billing.png){ width=40% }
-
-Can you guess which application I changed? Yes, that’s right: it was the billing app. As a result, thanks to `change_in`, the rest of the blocks have been skipped because neither did meet the change conditions.
-
-If we make a change outside any of the monitored folders, then all the blocks are skipped and the pipeline completes in just a few seconds.
-
-![Skipping all blocks](./figures/03-skip-all.png){ width=40% }
-
-## 2.4 2.4 How Semaphore determines what has changed
+### 2.1.3 How Semaphore determines what changed
 
 To understand what blocks will run each time, we must examine how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
 
@@ -251,31 +175,7 @@ Pull requests behave similarly. The commit range is defined from the first commi
 
 ![For pull requests, commit ranges go from target branch to head of the branch](./figures/03-git-pr.png){ width=95% }
 
-## 2.5 Change-based automatic promotions
-
-We can also use `change_in` on [auto promotions](https://docs.semaphoreci.com/guided-tour/deploying-with-promotions/), which let us automatically start additional pipelines on certain conditions.
-
-To create a new pipeline, open the workflow editor once more and click on **Add First Promotion**:
-
-![Adding a promotion](./figures/03-add-promotion.png){ width=95% }
-
-Check **Enable automatic promotion**. You should see an example snippet you can use as a starting point.
-
-![Example change\_in condition](./figures/03-autopromotion-example.png){ width=90% }
-
-You can combine `change_in` and `branch = 'master' AND result = 'passed'` to start the pipeline when all jobs pass on the default branch.
-
-``` json
-change_in('/services/billing/') and branch = 'master' AND result = 'passed'
-```
-
-![Auto promotion conditions](./figures/03-promotion-condition.png){ width=90% }
-
-Once done, run the workflow to save the changes. From now on, when you make a change to the billing app, the new pipeline will start automatically if all tests pass on `master`.
-
-![Pipeline auto promoted](./figures/03-promotion-done.png){ width=95% }
-
-## 2.6 Tips for using `change_in` effectively
+### 2.1.4 Tips for using change_in
 
 Scaling up large monorepos with `change_in` is easier if you follow these tips for organizing your code and pipelines:
 
@@ -286,8 +186,3 @@ Scaling up large monorepos with `change_in` is easier if you follow these tips f
 -   Use `exclude` and wildcards to ignore files that are not relevant, such as documentation or READMEs.
 -   Use `change_in` in auto-promotions to selectively trigger continuous delivery or deployment pipelines.
 
-## 2.7 Monorepo workflows got a lot faster
-
-We’ve learned how to best take advantage of Semaphore’s features to run CI/CD pipelines on monorepos. With the `change_in` function, you may design faster pipelines that don’t waste time or money re-building already-tested code.
-
-**Section 2.7 seems like a closer copied from the blog post, replace it  with something that wraps up the current chapter and leads the reader to the next one on CD.**
