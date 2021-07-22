@@ -2,11 +2,6 @@
 
 In this section, we’ll set up a monorepo pipeline. We’ll use the [semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo) project as a starting point, but you can adapt these steps to any CI/CD workflow on Semaphore.
 
-To follow this guide, you’ll need:
-
--   A GitHub account.
--   A [Semaphore](https://semaphoreci.com) account. Click on **Sign up with GitHub** to a free trial or open source account.
-
 Go ahead and fork the repository:
 
 _[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo)_
@@ -102,64 +97,6 @@ Now, what happens if we change a file inside the `/services/ui` folder?
 ![All blocks running](./figures/04-all-blocks1.png){ width=40% }
 
 Yeah, despite only one of the projects has changed, all the blocks are running. This is… not optimal. For a big monorepo with hundreds of projects, that’s a lot of wasted hours, with added boredom and axiety for software developers. The good news is that this is a perfect fit for trying out change-based execution.
-
-## 2.2 Change-based execution
-
-The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in) function calculates if recent commits have changed code in a given file or folder. We must call this function at block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
-
-We can call the function from any block by opening the **skip/run conditions** section and enabling the option: “run this block when conditions are met.”
-
-![Where to define run conditions](./figures/04-run-skip.png){ width=95% }
-
-The basic usage of the function is:
-
-``` text
-change_in('/web/')
-```
-
-This will run the block if any files inside the `web` folder change. Absolute paths start with `/` and reference the root of the repository. Relative paths don’t start with a slash, they are relative to the pipeline file, which is located inside `/.semaphore`.
-
-We can also target a specific file:
-
-``` text
-change_in('../package-lock.json')
-```
-
-Wildcards are supported too:
-
-``` text
-change_in('/**/package.json')
-```
-
-Also, you're not limited to monitoring one path, you may define lists of files or folders. This block, for instance, will run when the `/web/` folder **or** the `/manifests/kubernetes.yml` file changes (both simultaneously changing work too):
-
-``` text
-change_in(['/web/', '/manifests/kubernetes.yml'])
-```
-
-The function can take a second optional argument to further configue its behavior. For instance, if your repository default branch is `main` instead of `master` ([GitHub’s new default](https://github.com/github/renaming)), you’ll need to add `default_branch: 'main'`:
-
-``` text
-change_in('/web/', { default_branch: 'main' })
-```
-
-Semaphore will re-run all jobs when we update the pipeline. We can disable this behavior with `pipeline_file: 'ignore'`:
-
-``` text
-change_in('/web/', { pipeline_file: 'ignore' })
-```
-
-Another useful option is `exclude`, which lets us ignore files or folders. This option also supports wildcards. For example, to ignore all Markdown files:
-
-``` text
-change_in('/web/', { exclude: '/web/**/*.md' })
-```
-
-To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/).
-
-
-
-
 
 ## 2.3 Speeding up pipelines with change\_in
 
