@@ -1,4 +1,4 @@
-# 4. Change-based automatic promotions
+# 4. Change-based delivery
 
 ### 4.1 Hello world delivery
 
