@@ -2,7 +2,7 @@
 
 # 5 Continuous Deployment for microservices
 
-The previous chapter left us with a working CI pipeline and a preliminary deployment step. Having covered the basics, we can now raise the bar and focus on setting up proper, real life continuous deployment (CD) pipelines.
+Chapter three left us with a working CI pipeline. Having covered the basics, we can now raise the bar and focus on setting up proper, real life continuous deployment (CD) pipelines.
 
 ## 5.1 Why Heroku
 
@@ -202,18 +202,6 @@ monorepo-users-staging
 ```
 
 ### 5.4.2 Deployment methods
-
-Deployment can be manual or automatic. Semaphore supports both types.
-
--   With a **manual** deployment, you must press a button and select the service to deploy from a list.
--   **Automatic** deployments start when specific conditions are detected, such as when a commit is pushed into a certain branch. The service to deploy is determined automatically.
-
-Spending the time to think about when to trigger a deployment is key to avoid surprises. You can use a mix of the following conditions in Semaphore:
-
--   **branch**: detects when commits are pushed into a matching branch.
--   **tag**: runs when a tagged release is detected.
--   **pull request**: when the workflow was triggered by a pull request.
--   **change detection**: when Semaphore detects that some files have changed in given folders.
 
 You can mix and match the criteria to fit your needs. Here's an idea:
 
