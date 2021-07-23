@@ -12,11 +12,11 @@ Having a uniform deployment process will help us keep things straight in our hea
 
 ## 5.2 Prerequisites
 
-You can continue from the point we left in the previous chapter. Nevertheless, if you want to start from a fresh copy, you may create a new project in Semaphore and choose the monorepo fork-and-run demo.
+You can continue from the point we left in the chapter three. Nevertheless, if you want to start from a fresh copy, you may create a new project in Semaphore and choose the monorepo fork-and-run demo.
 
 To follow along, you will need a Heroku account and its [management command-line interface (CLI)](https://devcenter.heroku.com/articles/heroku-cli). Follow the installation instructions for Windows, Linux, or Mac here:
 
-[<https://devcenter.heroku.com/articles/heroku-cli>](https://devcenter.heroku.com/articles/heroku-cli)
+_[https://devcenter.heroku.com/articles/heroku-cli>](https://devcenter.heroku.com/articles/heroku-cli)_
 
 When you have finished installing the CLI, type `heroku login` and follow the authentication process.
 
@@ -206,16 +206,14 @@ monorepo-users-staging
 You can mix and match the criteria to fit your needs. Here's an idea:
 
 | Service | change-detection              | branches | tags        |
-|---------|-------------------------------|----------|-------------|
+| ------- | ----------------------------- | -------- | ----------- |
 | users   | change_in('/service/users')   | any      | any         |
 | billing | change_in('/service/billing') | any      | must be set |
-| ui      | change_in('/service/ui')      | master   | any         |
+| ui      | change_in('/service/ui')      | Master   | any         |
 
 All changes in Users will be deployed as long as tests pass. In Billing, on the other hand, we'll only deploy tagged releases. Lastly, in UI, we'll deploy changes once merged to the master branch.
 
 ### 5.4.3 Secrets and variables
-
-Telling Semaphore how to deploy means storing your username and password as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/) are encrypted variables and files which are decrypted only when needed, in order to keep your data secure.
 
 At the beginning of this chapter, after installing the Heroku CLI, you authenticated with the platform from your machine. A similar process must happen now in Semaphore. It must gain access to the account in order to deploy on your behalf.
 
@@ -229,17 +227,11 @@ $ heroku auth:token
 392a5736-16e5-38d6-bea4-636c7e473d1d
 ```
 
-Next, open the settings menu on Semaphore.
-
-![The settings menu](./figures/06-settings.png){ width=95% }
-
 Create a new secret with two variables: `HEROKU_EMAIL` and `HEROKU_API_KEY` with the email and token.
 
 ![](./figures/06-heroku-secret.png){ width=80% }
 
-We’ll learn how to import the secret on the job in a minute.
-
-### 5.4.4 Parametrized promotions
+### 5.4.4 Promotion parameters
 
 Everything is ready begin working in the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as:
 
