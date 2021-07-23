@@ -38,7 +38,7 @@ Since Heroku only allows **one global name per application**, you may have to ex
 
 The order in which we deploy the applications for the first time matters. The UI service must go last because it depends on Billing and Users, as you can see below.
 
-![](./figures/04-service-dependency.png){ width=90% }
+![](./figures/05-service-dependency.png){ width=90% }
 
 ### 3.3.2 Preparing the services for deployment
 
@@ -245,11 +245,11 @@ $ heroku auth:token
 
 Next, open the settings menu on Semaphore.
 
-![The settings menu](./figures/04-settings.png){ width=95% }
+![The settings menu](./figures/05-settings.png){ width=95% }
 
 Create a new secret with two variables: `HEROKU_EMAIL` and `HEROKU_API_KEY` with the email and token.
 
-![](./figures/04-heroku-secret.png){ width=80% }
+![](./figures/05-heroku-secret.png){ width=80% }
 
 We’ll learn how to import the secret on the job in a minute.
 
@@ -263,7 +263,7 @@ change_in('/services/users') AND result = 'passed'
 
 Type the condition on the **when?** field.
 
-![](./figures/04-promote1.png){ width=95% }
+![](./figures/05-promote1.png){ width=95% }
 
 
 
@@ -274,7 +274,7 @@ In the same pane, immediately below you'll find the parameters section. Click **
 - **Valid options:** `users`,`billing`,`ui` (one per line)
 - **Default value**: `users`
 
-![](./figures/04-pp1.png){ width=40% }
+![](./figures/05-pp1.png){ width=40% }
 
 What we're doing here is creating an environment variable, called `SVC`, which can take the values of any of our three services. When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
 
@@ -284,7 +284,7 @@ Next, we'll create the staging pipeline. Click on the newly created pipeline and
 
 Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }} to Heroku`. The `SVC` variable will be expanded dynamically the pipeline starts.
 
-![](./figures/04-pp2.png){ width=95% }
+![](./figures/05-pp2.png){ width=95% }
 
 We'll use the first block in the staging pipeline to deploy the staging application. Thanks to parametrization, `SVC` holds the application name. As for the `ENV`, we'll define it here, at the block level, as "staging". The combined commands are:
 
@@ -301,7 +301,7 @@ git commit -m "deploy monorepo-${SVC}-${ENV} to Heroku"
 git push heroku master --force
 ```
 
-![](./figures/04-stage1.png){ width=95% }
+![](./figures/05-stage1.png){ width=95% }
 
 Let’s break down the commands:
 1. Create an empty application.
@@ -312,7 +312,7 @@ Let’s break down the commands:
 
 Two more things to go. One, open the **environment** section in the block and set the `ENV = staging`. And two, scroll down to the **secrets** part and check the `heroku` secret. Now the job has access to the Heroku API key.
 
-![](./figures/04-env1.png){ width=40% }
+![](./figures/05-env1.png){ width=40% }
 
 
 ### 3.4.6 The test job
@@ -327,7 +327,7 @@ curl "https://monorepo-${SVC}-${ENV}.herokuapp.com"
 
 The only thing left is to set the correct `ENV` in the environment, like you did in the previous block.
 
-![](./figures/04-tests1.png){ width=95% }
+![](./figures/05-tests1.png){ width=95% }
 
 ## 3.5 Production Pipeline
 
@@ -337,7 +337,7 @@ The run down of the steps is:
 
 1. Create a promotion branching off the staging pipeline, using the same auto-promotion and parameters as before.
 
-   ![](./figures/04-deploypp1.png){ width=95% }
+   ![](./figures/05-deploypp1.png){ width=95% }
 
 2. Ensure that `users` is the default value of the parametrized pipeline.
 
@@ -351,7 +351,7 @@ The run down of the steps is:
 
 Click on **run the workflow** to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
-![](./figures/04-done2.png){ width=95% }
+![](./figures/05-done2.png){ width=95% }
 
 ### 3.5.1 Connecting all pipelines with promotions
 
@@ -359,7 +359,7 @@ Since we kept all pipelines reusable with variables and parameters, it's easy to
 
 To recap, we need two more automatic promotions.
 
-![](./figures/04-promotions-all.png){ width=95% }
+![](./figures/05-promotions-all.png){ width=95% }
 
 ### 3.5.2 Stage parameters for Billing and UI
 
@@ -379,7 +379,7 @@ The new promotions will have the same parameters, the variable name will be `ENV
 
 Once you create the new promotions, Semaphore will create new empty pipelines. But we want to reuse the same staging pipeline. So, click on the new pipeline and change the **YAML file path** to `.semaphore/staging.yml`.
 
-![](./figures/04-all-staging.png){ width=95% }
+![](./figures/05-all-staging.png){ width=95% }
 
 Do this for Billing and UI so every service is staged via the same pipeline.
 
@@ -389,7 +389,7 @@ The deploy to production pipeline can also be reused for the rest of the service
 
 At the end of the setup you will have a total of three pipelines (CI, staging, and production deploy), and six promotions.
 
-![](./figures/04-pipelines-all.png){ width=95% }
+![](./figures/05-pipelines-all.png){ width=95% }
 
 ## 3.6 Ready to go?
 
@@ -397,6 +397,6 @@ The CI/CD process is 100% configured. The only thing left to do is save it and r
 
 The resulting workflow is too big to see all at once on one page. Still, you can see the seven-pipeline overview in the project's dashboard.
 
-![](./figures/04-final.png){ width=95% }
+![](./figures/05-final.png){ width=95% }
 
 The deployment is complete as soon as everything is green. Good job and happy building!
