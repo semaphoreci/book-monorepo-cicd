@@ -79,7 +79,7 @@ Both blocks should run in parallel.
 
 ![](./figures/03-run1-done.png)
 
-## 2.1.2 Change-based execution
+## 2.3 Change-based execution
 
 Let's pause for a moment to learn about `change_in`. The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in) function calculates if recent commits have changed code in a given file or folder. We must call this function at block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
 
@@ -129,7 +129,7 @@ change_in('/web/', { exclude: '/web/**/*.md' })
 
 To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/).
 
-## 2.1.2 Speeding up pipelines with change_in
+## 2.4 Speeding up pipelines with change_in
 
 There is no change detection yet. We'll remedy that now. Click on **Edit Workflow** to re-open the editor.
 
@@ -159,7 +159,7 @@ Push the changes to see which blocks run in the pipeline.
 
 ![](./figures/03-run2-done.png)
 
-### 2.1.3 How Semaphore determines what changed
+## 2.5 How Semaphore determines what changed
 
 To understand what blocks will run each time, we must examine how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
 
@@ -175,7 +175,7 @@ Pull requests behave similarly. The commit range is defined from the first commi
 
 ![For pull requests, commit ranges go from target branch to head of the branch](./figures/03-git-pr.png){ width=95% }
 
-### 2.1.4 Tips for using change_in
+## 2.6 Tips for using change_in
 
 Scaling up large monorepos with `change_in` is easier if you follow these tips for organizing your code and pipelines:
 

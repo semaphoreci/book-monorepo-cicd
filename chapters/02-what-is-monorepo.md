@@ -113,7 +113,7 @@ Monorepos seem to be getting more attention, particularly in JavaScript, as show
 -   [Monorepo builder](https://github.com/Symplify/MonorepoBuilder): installs and updates packages across PHP monorepos.
 -   [NPM](https://docs.npmjs.com): since version 7, has [support for workspace](https://docs.npmjs.com/cli/v7/using-npm/workspaces) support.
 
-### 1.7.1 Scaling Up Repositories
+## 1.8 Scaling Up Repositories
 
 Source control is another pain point for monorepos. These tools help you scale up repositories:
 
@@ -122,7 +122,7 @@ Source control is another pain point for monorepos. These tools help you scale u
 -   [Mercurial](https://www.mercurial-scm.org/): an alternative to Git, Mercurial is a distributed version control tool that focuses on speed. Facebook uses Mercurial and has contributed many [speed-enhancing patches](https://engineering.fb.com/2014/01/07/core-data/scaling-mercurial-at-facebook/) over the years.
 -   [GitHub CODEOWNERS](https://help.github.com/articles/about-codeowners/): lets you define which team owns subdirectories in the repository. Code owners are automatically requested to review when someone opens a pull request or pushes into a protected branch. This feature is supported by GitHub and GitLab.
 
-### 1.7.2 Best Practices for Monorepo Management
+## 1.9 Best Practices for Monorepo Management
 
 Based on the collection of monorepo stories, we can define a minimum set of best practices:
 
