@@ -14,5 +14,5 @@ blocks:
             - sed -i -e "s/\$MONTHYEAR/$(date +'%b %Y')/g" chapters/01-introduction.md
             - sed -i -e "s/\$REVISION/$(git rev-parse --short HEAD)/g" chapters/01-introduction.md
             - make pdf
-            - ./deps/cpdf cover/cover.pdf build/pdf/CICD_for_Monorepos.pdf -o CICD_for_Monorepos.pdf
+            - ./deps/cpdf cover/cover.pdf build/pdf/CICD_for_Monorepos.pdf -o build/pdf/CICD_for_Monorepos.pdf
             - artifact push workflow build/pdf/CICD_for_Monorepos.pdf
