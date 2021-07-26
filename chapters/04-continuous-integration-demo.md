@@ -1,6 +1,6 @@
 \newpage
 
-# 3. Change detection demo
+# 3. CI Monorepo Demo
 
 Real world applications tend to be much more complex that the example we've seen in the previous chapter. Thus, we have prepared a monorepo demo as a starting point that you can use to practice on a level that's near what developers may encounter in their day to day.
 
