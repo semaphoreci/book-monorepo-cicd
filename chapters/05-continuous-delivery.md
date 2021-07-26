@@ -17,7 +17,7 @@ Secrets can be accessed through the **Settings** option in the organization menu
 
 ![The settings menu](./figures/05-settings.png){ width=95% }
 
-The **Secrets** menu lets you create new or edit existing secrets.
+The **Secrets** menu lets you create and edit secrets.
 
 ![](./figures/05-secret-menu.png)
 
@@ -41,8 +41,6 @@ Either by releasing a package or deploying it directly to the public, we can use
 
 Promotions can be created in the Workflow Editor with the **Add Promotion** button.
 
-TODO: use demo instead
-
 ![](./figures/05-add-promotion.png)
 
 Pressing the button will create a new pipeline. There's nothing especial about it, you can create blocks and jobs as usual.
@@ -64,9 +62,7 @@ Conditions are specified by mixing one or more of the following:
 -   **pull request**: when the workflow was triggered by a pull request.
 -   **change detection**: if Semaphore detects that some files have changed in one or more given folders or files.
 
-Once done, run the workflow to save the changes. From now on, when you make a change to the Billing app, the new pipeline will start automatically if all tests pass on `master`.
-
-TODO: use demo
+The default conditions will make the new pipeline start when all test pass on the `master` branch.
 
 ![](./figures/05-auto-promotion-done.png)
 
@@ -74,27 +70,27 @@ TODO: use demo
 
 Parametrized promotions let us reuse a pipeline for similar tasks. For instance, you can create a deployment pipeline and share it among multiple applications in the monorepo. This way you have a unified process that simplifies delivery and cuts down on boilerplate.
 
-A parametrized promotion works in tandem with environment variables. We define one or more variables and set default values based on conditions. 
+A parametrized promotion works in tandem with environment variables. We define one or more variables and set default values based on conditions.
 
-PIC (TODO NEED UI)
+To create a parameter, scroll down on the promotion pane and click on **+ Add Environment Variable**.
 
-In addition, when starting the promotion manually, we can set the value from a list or type it manually.
+![](./figures/05-new-parameter.png)
 
-PIC
+The default value will be used only on auto-promotions. When started manually, we can set the value from the list.
 
-Parameters define global per-pipeline environment variables that we can access in all the job in it. We can even access their value in the pipeline name with:
+![](./figures/05-parameter-manual.png)
 
-``` text
-${{ parameters.VARIABLE_NAME }}
-```
+When defining parameters bear in mind that:
 
-We can even use parameters for secrets.
+- Leaving the list of possible values empty allows any value to be typed in.
+- Required parameters must have a default value defined. Non-mandatory parameters can be empty.
+- You can define multiple parameters in the same promotions.
 
-PIC
+Parameters define global per-pipeline environment variables that we can access in all the job in it. Accessing the parameter is no different than accessing any other environment variable.
 
-. With a **manual** promotions, you must press a button and select the service to deploy from a list.
+![](./figures/05-accessing-parameter.png)
 
-## 4.5 Staged deployments
+## 4.5 Staging the demo
 
 Let's see how to apply what we learned to the deploying the demo. 
 
@@ -107,31 +103,19 @@ We will need two new pipelines:
 
 ### 4.5.1 Staging the Users service
 
-Everything is ready begin working in the staging pipeline. Begin by creating a new promotion and making it automatic. As said, the User service deploys on every change. This crystalizes as:
+Everything is ready begin working in the staging pipeline. Begin by creating a new promotion and making it automatic.
 
-You should see an example snippet you can use as a starting point.
-
-``` text
-branch = 'main' AND results = 'passed'
-```
-
-Change detection is not limited to blocks. We can also use `change_in` on [auto promotions](https://docs.semaphoreci.com/guided-tour/deploying-with-promotions/), which let us automatically start additional pipelines on certain conditions.
-
-You can combine `change_in` to start the pipeline when all jobs pass on the default branch.
+We'll deploy the User service on every change commited to the `master` branch. The auto-promotion condition will then be:
 
 ``` text
-change_in('/service1/') and branch = 'main' AND result = 'passed'
-```
-
-``` text
-change_in('/services/users') AND result = 'passed'
+change_in('/services/users') AND results = 'passed' AND branch = 'main' 
 ```
 
 Type the condition on the **when?** field
 
 ![](./figures/06-promote1.png){ width=95% }
 
-In the same pane, immediately below you'll find the parameters section. Click **+add environment variable** and type the following conditions:
+In the same pane, immediately below you'll find the parameters section. Click **+Add Environment Variable** and type the following conditions:
 
 - **Name** of the variable: `SVC`
 - **Description**: `Service to stage`
@@ -144,13 +128,23 @@ What we're doing here is creating an environment variable, called `SVC`, which c
 
 Next, we'll create the staging pipeline. Click on the newly created pipeline and scroll down to **YAML file path**. Replace the default value with: `.semaphore/stage.yml`
 
-Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }}`. The `SVC` variable will be expanded dynamically the pipeline starts.
+Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }}`. The special syntax makes the `SVC` variable to be expanded dynamically the pipeline starts.
 
 ![](./figures/06-pp2.png){ width=95% }
 
-We'll use the first block in the staging pipeline to deploy the staging application. Thanks to parametrization, `SVC` holds the application name. As for the `ENV`, we'll define it here, at the block level, as "staging". The combined commands are:
+We'll use the first block in the staging pipeline to deploy the staging application. Thanks to parametrization, `SVC` holds the application name. 
 
-TODO
+Type the deployment commands for this service. Add whatever commands you need to release the new version into a staging environment:
+
+``` bash
+echo "Deploying service $SVC into STAGING"
+```
+
+![](./figures/05-stage1.png)
+
+If you need inspiration for the commands, we've written a lot about this in the Semaphore blog:
+
+TODO: list of interesting deployment tutorials
 
 Ensure you’ve enabled any relevant secrets and set environment variables as required by your deployment target.
 
@@ -158,15 +152,32 @@ Ensure you’ve enabled any relevant secrets and set environment variables as re
 
 Having a production-like environment is an invaluable opportunity for testing. We'll hack a quick test to check that the service is healthy.
 
-Create a new block. In the job, we'll run some curl commands to create a user and check it exists afterward.
+Create a new block. In the job, we'll can use something like curl to check that the service is online:
 
-TODO
+``` bash
+echo "Testing service $SVC"
+curl "https://${SVC}.example.com"
+```
 
-As per the plans we devised, auto-promotion criteria for Billing is:
+![](./figures/05-smoke1.png)
+
+### 4.5.3 Staging the rest of the services
+
+Our staging pipeline is universal, thanks to the parameters. If we want to auto-promote the rest of the services, Billing and UI, we must create two more promotions.
+
+Create a new promotion next to the Stage Users. Let's say that the criteria for Billing is to follow Git-tagged releases. In the When field type:
 
 ``` text
 change_in('/service/billing') AND result = 'passed' and tag=~ '.*'
 ```
+
+![](./figures/05-billing-when.png)
+
+The parameter will be almost exactly the same as Users, the only difference is that the default value will be `billing` instead of `users`.
+
+![](./figures/05-billing-svc.png)
+
+Click on the newly-created pipeline and open the **YAML path** section. Replace the path of the file with
 
 And for the UI:
 
@@ -176,21 +187,22 @@ change_in('/service/ui') AND result = 'passed' AND branch = 'master'
 
 The new promotions will have the same parameters, the variable name will be `ENV` and the valid options still `users`, `billing`, and `ui`. The **only** thing that changes is the default value: it will be `billing` in one and `ui` in the other.
 
-Once you create the new promotions, Semaphore will create new empty pipelines. But we want to reuse the same staging pipeline. So, click on the new pipeline and change the **YAML file path** to `.semaphore/staging.yml`.
+Once you create the new promotions, Semaphore will create new empty pipelines. But we want to reuse the same staging pipeline. So, click on the new pipeline and change the **YAML file path** to `.semaphore/staging.yml`. The new pipeline will be replaced with the staging pipeline we created earlier.
 
-![](./figures/06-all-staging.png){ width=95% }
+Repeat the same procedure with the UI Service:
 
-Do this for Billing and UI so every service is staged via the same pipeline.
+1. Create new promotion.
+2. Type an auto-promotion condition.
+3. Create a SVC parameter with a default value of `ui`.
+4. Change the YAML path to `.semaphore/stage.yml`.
 
-### 4.5.3 Staging all the other services
+![](./figures/05-all-staging.png){ width=95% }
 
 ## 4.6 The production pipeline
 
 If testing on staging passed, chances are that it's pretty safe to continue with production. We only need one more pipeline, and we'll be done with the Users service.
 
 ### 4.6.1 Promoting Users to Production
-
-TODO
 
 The run down of the steps is:
 
@@ -202,17 +214,14 @@ The run down of the steps is:
 
 3. Rename the new pipeline as to: `.semaphore/deploy.yml`
 
-4. Copy the deployment commands from the staging pipeline. They're fully parametrized, so there's no need to change them.
+4. Type the deployment commands. The service to deploy is stored on the `SVC` variable.
 
-5. Activate the `heroku` secret.
+5. Activate any required secrets and set environment variables as needed.
 
-6. Set `ENV = prod`
 
-Click on **run the workflow** to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
+Click on **Run the Workflow** to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
 ![](./figures/06-done2.png){ width=95% }
-
-Click on **run the workflow** to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
 ### 4.6.2 Deploying Billing and UI
 
@@ -228,7 +237,7 @@ The CI/CD process is 100% configured. The only thing left to do is save it and r
 
 The resulting workflow is too big to see all at once on one page. Still, you can see the seven-pipeline overview in the project's dashboard.
 
-TODO: take heroku out
+TODO: update screenshot
 
 ![](./figures/06-final.png){ width=95% }
 
