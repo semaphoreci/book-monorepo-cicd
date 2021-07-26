@@ -22,11 +22,11 @@ _[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.c
 
 To begin, create a new project in Semaphore and select the demo. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click on **fork & run**.
 
-The demo ships with a ready-to-use pipeline, but we'll learn more by manually setting it up, thus, when prompted, click on "I want configure this project from scratch.”
+The demo ships with a ready-to-use pipeline, but we'll learn a lot more by manually setting it up. Hence, when prompted, click on "I want configure this project from scratch.”
 
 ![Create a new pipeline](./figures/04-scratch.png){ width=70% }
 
-We’ll start with the Billing application. Find the Go starter workflow and click on customize:
+We’ll start with the Billing application. Find the **Go starter workflow** and click on **customize**:
 
 ![Select the Go starter workflow](./figures/04-go-starter.png){ width=95% }
 
@@ -34,7 +34,7 @@ We’ll start with the Billing application. Find the Go starter workflow and cli
 
 You have to modify the job a bit before it works:
 
-1.  The app works best with Go version 1.14. So, add this line to the beginning of the job `sem-version go 1.14`.
+1.  The app has been tested on Go version 1.14+. So, add this line to the beginning of the job `sem-version go 1.14`.
 2.  The code is located in the `services/billing` folder, add `cd services/billing` after `checkout`.
 
 The full job should look like this:
@@ -73,7 +73,7 @@ bundle exec ruby test.rb
 
 And **uncheck** all the checkboxes under Dependencies.
 
- TODO PIC
+![](./figures/05-uncheck-billing.png)
 
 ### 3.2.3 UI service
 
@@ -122,13 +122,26 @@ change_in('/services/users')
 
 With change_in in place, Semaphore will only work on those microservices that were recently changed.
 
-![Running all blocks](./figures/04-skip-but-billing.png){ width=40% }
-
 Can you guess which application I changed? Yes, that’s right: it was the Billing app. As a result, thanks to `change_in`, the rest of the blocks have been skipped because neither did meet the change conditions.
+
+![Running all blocks](./figures/04-skip-but-billing.png){ width=40% }
 
 If we make a change outside any of the monitored folders, then all the blocks are skipped and the pipeline completes in just a few seconds.
 
 ![Skipping all blocks](./figures/04-skip-all.png){ width=40% }
 
+## 2.6 Tips for using change_in
 
+Tying up a block with a piece of the code results in a smarter pipeline that builds and tests only what has recently changed.
+
+Scaling up large monorepos with `change_in` is easier if you follow these tips for organizing your code and pipelines:
+
+-   Define a unified folder organization, so you can use clean change conditions.
+-   Design your blocks around project folders.
+-   When needed, add multiple files and folders to `change_in`. Use this to rebuild all the connected project components within a monorepo.
+-   Keep branches small, and merge them frequently to cut build times.
+-   Use `exclude` and wildcards to ignore files that are not relevant, such as documentation or READMEs.
+-   Use `change_in` in auto-promotions to selectively trigger continuous delivery or deployment pipelines.
+
+In the next section we'll learn how to apply this principle to continuous delivery. We'll also learn a few more key concepts that will play a key role in automatic deployments later on.
 

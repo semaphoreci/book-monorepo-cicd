@@ -129,7 +129,7 @@ change_in('/web/', { exclude: '/web/**/*.md' })
 
 To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/).
 
-## 2.4 Speeding up pipelines with change_in
+## 2.4 Using change_in to speed up pipelines
 
 There is no change detection yet. We'll remedy that now. Click on **Edit Workflow** to re-open the editor.
 
@@ -176,15 +176,4 @@ Semaphore takes a broader criteria for branches. The commit range goes from the 
 Pull requests behave similarly. The commit range is defined from the first commit that branched off the branch targeted for merging to the head of the branch.
 
 ![For pull requests, commit ranges go from target branch to head of the branch](./figures/03-git-pr.png){ width=95% }
-
-## 2.6 Tips for using change_in
-
-Scaling up large monorepos with `change_in` is easier if you follow these tips for organizing your code and pipelines:
-
--   Define a unified folder organization, so you can use clean change conditions.
--   Design your blocks around project folders.
--   When needed, add multiple files and folders to `change_in`. Use this to rebuild all the connected project components within a monorepo.
--   Keep branches small, and merge them frequently to cut build times.
--   Use `exclude` and wildcards to ignore files that are not relevant, such as documentation or READMEs.
--   Use `change_in` in auto-promotions to selectively trigger continuous delivery or deployment pipelines.
 
