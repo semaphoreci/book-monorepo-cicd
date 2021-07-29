@@ -2,11 +2,11 @@
 
 # 4 Final Words
 
-Nice work! The book may be finished, but there’s a lot more to learn and do. Now go and build something awesome!.
+Nice work! The book may be finished, but there’s a lot more to learn and do yet in the world of monorepos. So, go and build something awesome!
 
 ## 4.1 Share This Book With The World
 
-Please share this book with your colleagues, friends and anyone who you think might benefit from it.
+Please share this book with your colleagues, friends, and anyone who you think might benefit from it.
 
 Share the book on Twitter:
 
@@ -22,7 +22,7 @@ LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://bit.ly/3bJ
 We would absolutely love to hear your feedback. What did you get out of reading this book? How easy/hard was it to follow? Is there something that you'd like to see in a new edition?
 
 This book is open source and available at
-<https://github.com/semaphoreci/book-monorepo-cicd>.
+_<https://github.com/semaphoreci/book-monorepo-cicd>_.
 
 - Send comments and feedback, ask questions, and report problems by
 [opening a new issue](https://github.com/semaphoreci/book-monorepo-cicd/issues).
