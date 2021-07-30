@@ -2,7 +2,7 @@
 
 # 2 Continuous integration for monorepos
 
-*Monorepos are highly-active code repositories. They can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.*
+Monorepos are highly-active code repositories. They can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.
 
 ## 2.1 The challenge in CI/CD with monorepos
 
