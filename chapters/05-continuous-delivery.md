@@ -32,7 +32,7 @@ To use the secret in a job, you need to enable it at the block level. Enabling t
 
 ![](./figures/05-import-secret.png)
 
-As you can see in the output of the log, you can access the secret value like any other environment variable. 
+As you can see in the output of the log, you can access the secret value like any other environment variable.
 
 ![](./figures/05-echo-secret.png)
 
@@ -105,7 +105,7 @@ Parameters define global, per-pipeline environment variables that jobs in it can
 
 ## 4.5 Staging the demo
 
-Let's see how to apply what we learned to the deploying the demo. 
+Let's see how to apply what we learned to the deploying the demo.
 
 We want a sturdy CI/CD process. Testing the services in CI is no guarantee of zero errors in production. An considerable extra degree on confidence is gained by using a staging environment. Consequently, we will need two new pipelines:
 
@@ -117,7 +117,7 @@ We want a sturdy CI/CD process. Testing the services in CI is no guarantee of ze
 Begin by creating a new promotion and making it automatic. We'll deploy the User service on every change commited to the `master` branch. The auto-promotion condition will then be:
 
 ``` text
-change_in('/services/users') AND results = 'passed' AND branch = 'master' 
+change_in('/services/users') AND results = 'passed' AND branch = 'master'
 ```
 
 Type the condition on the **when?** field
@@ -154,7 +154,7 @@ If you need inspiration for the commands, we've written a lot about this in the 
 
 ### 4.5.2 Smoke testing Users
 
-Having a production-like environment is an invaluable opportunity for testing. 
+Having a production-like environment is an invaluable opportunity for testing.
 
 Create a new block and add any commands required to check that the service is healthy.
 
@@ -230,8 +230,6 @@ At the end of the setup you will have a total of three pipelines (CI, staging, a
 The CI/CD process is 100% configured. The only thing left to do is save it and run it to ensure everything works as expected.
 
 The resulting workflow is too big to see all at once on one page. Still, you can see the overview in the project's dashboard.
-
-TODO: update screenshot
 
 ![](./figures/06-final.png){ width=95% }
 
