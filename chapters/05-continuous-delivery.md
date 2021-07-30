@@ -22,19 +22,19 @@ Secrets can be accessed through the **Settings** option in the organization menu
 
 The **Secrets** menu lets manage all the secrets within the organization.
 
-![](./figures/05-secret-menu.png)
+![](./figures/05-secret-menu.png){ width=95% }
 
 A secret is, in short, one or more variables or files, which are encrypted once you press **Save Secret**.
 
-![](./figures/05-new-secret.png)
+![](./figures/05-new-secret.png){ width=60% }
 
 To use the secret in a job, you need to enable it at the block level. Enabling the secret will make Semaphore decrypt it, import the value as environment variables or copy attached files into all the jobs in the block.
 
-![](./figures/05-import-secret.png)
+![](./figures/05-import-secret.png){ width=60% }
 
 As you can see in the output of the log, you can access the secret value like any other environment variable.
 
-![](./figures/05-echo-secret.png)
+![](./figures/05-echo-secret.png){ width=95% }
 
 ### 4.1 Deploying with promotions
 
@@ -45,22 +45,22 @@ Promotions[^promotions] connect pipelines together. While there are no fixed rul
 
 Promotions are created via the **Add Promotion** button in the workflow editor. This will create a new pipeline.
 
-![](./figures/05-add-promotion.png)
+![](./figures/05-add-promotion.png){ width=80% }
 
-There's nothing especial about this pipeline, you can create blocks and jobs as usual.
+There's nothing special about this pipeline, you can create blocks and jobs as usual.
 
-![](./figures/05-new-pipeline.png)
+![](./figures/05-new-pipeline.png){ width=80% }
 
 By default, promotions are not automatic, whichs means that you need to manually start them by clicking a button once the workflow has started.
 
-![](./figures/05-manual-promotion.png)
+![](./figures/05-manual-promotion.png){ width=95% }
 
 *Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the **Enable automatic promotion** box brings up a field to type the conditions[^conditions] that determine when the next pipeline starts.
 
 [^conditions]: Conditions reference
   https://docs.semaphoreci.com/reference/conditions-reference/
 
-![](./figures/05-auto-promotion.png)
+![](./figures/05-auto-promotion.png){ width=60% }
 
 Conditions are specified by mixing one or more of the following:
 
@@ -77,7 +77,7 @@ branch = 'master' AND result = 'passed'
 
 
 
-![](./figures/05-auto-promotion-done.png)
+![](./figures/05-auto-promotion-done.png){ width=95% }
 
 ### 4.4 Parametrized promotions
 
@@ -85,13 +85,13 @@ Parametrized promotions let us reuse a pipeline for many tasks. For instance, yo
 
 Parametrized promotions work in tandem with environment variables — we define one or more variables and set default values based on the same condition syntax we use in regular promotions.
 
-To create a parameter, scroll down on the promotion pane and click on **+ Add Environment Variable**.
+To create a parameter, scroll down on the promotion pane and click on **+Add Environment Variable**.
 
-![](./figures/05-new-parameter.png)
+![](./figures/05-new-parameter.png){ width=60% }
 
 When the promotion is started manually, we can choose a value from the list. On auto-promotions, the default value is used.
 
-![](./figures/05-parameter-manual.png)
+![](./figures/05-parameter-manual.png){ width=95% }
 
 There are three imporant things to keep in mind while defining a parameter:
 
@@ -101,7 +101,7 @@ There are three imporant things to keep in mind while defining a parameter:
 
 Parameters define global, per-pipeline environment variables that jobs in it can access directly.
 
-![](./figures/05-accessing-parameter.png)
+![](./figures/05-accessing-parameter.png){ width=95% }
 
 ## 4.5 Staging the demo
 
@@ -131,7 +131,7 @@ In the same pane, immediately below, you'll find the parameters section. Click *
 - **Valid options:** `users`,`billing`,`ui` (one per line)
 - **Default value**: `users`
 
-![](./figures/06-pp1.png){ width=40% }
+![](./figures/06-pp1.png){ width=60% }
 
 What we're doing here is creating an environment variable, called `SVC`, that takes one of the three services in the repository When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
 
@@ -141,7 +141,7 @@ Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }}`. T
 
 ![](./figures/06-pp2.png){ width=95% }
 
-We'll use the first block in the staging pipeline to deploy `SVC`. Type the deployment commands for this service. Add whatever secrets and environment variables you need to release the new version into the staging environment.![](./figures/05-stage1.png)
+We'll use the first block in the staging pipeline to deploy `SVC`. Type the deployment commands for this service. Add whatever secrets and environment variables you need to release the new version into the staging environment.![](./figures/05-stage1.png){ width = 95% }
 
 If you need inspiration for the commands, we've written a lot about this in the Semaphore blog:
 
@@ -163,7 +163,7 @@ echo "Testing service $SVC"
 curl "https://${SVC}.example.com"
 ```
 
-![](./figures/05-smoke1.png)
+![](./figures/05-smoke1.png){ width=95% }
 
 ### 4.5.3 Staging the rest of the services
 
@@ -175,11 +175,11 @@ Create a new promotion below to "Stage users". The criteria for releasing may be
 change_in('/service/billing') AND result = 'passed' and tag=~ '.*'
 ```
 
-![](./figures/05-billing-when.png)
+![](./figures/05-billing-when.png){ width=95% }
 
 The parameter for this promotion will be almost exactly the same as Users, the only difference is that the default value will be `billing` instead of `users`.
 
-![](./figures/05-billing-svc.png)
+![](./figures/05-billing-svc.png){ width=60%}
 
 Click on the newly-created pipeline and open the **YAML path** section. Replace the path of the file with `.semaphore/stage.yml`.
 
@@ -202,7 +202,7 @@ We'll keep things simple by creating a deployment pipeline with one job. The run
 
 1. Create a promotion branching off the staging pipeline, using the same auto-promotion and parameters as before.
 
-   ![](./figures/06-deploypp1.png){ width=95% }
+   ![](./figures/06-deploypp1.png){ width=70% }
 
 2. Ensure that `users` is the default value of the parametrized pipeline.
 
@@ -223,7 +223,7 @@ The deploy to production pipeline can also be reused for the rest of the service
 
 At the end of the setup you will have a total of three pipelines (CI, staging, and production deploy) connected by six promotions.
 
-![](./figures/06-pipelines-all.png){ width=95% }
+![](./figures/06-pipelines-all.png){ width =95% }
 
 ## 5.6 Ready to go
 

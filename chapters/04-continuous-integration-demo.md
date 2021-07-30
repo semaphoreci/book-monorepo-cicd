@@ -76,7 +76,7 @@ bundle exec ruby test.rb
 
 And **uncheck** all the checkboxes under Dependencies.
 
-![](./figures/05-uncheck-billing.png)
+![](./figures/05-uncheck-billing.png){ width=95% }
 
 ### 3.2.3 UI service
 

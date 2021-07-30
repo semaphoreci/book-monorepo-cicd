@@ -49,35 +49,35 @@ Next, log in with your Semaphore account and click on **create new** on the uppe
 
 ![Creating a new project](./figures/03-create-new.png){ width=95% }
 
-After choosing the `hello-semaphore`, wait a few seconds for Semaphore to initialize the project. 
+After choosing the `hello-semaphore`, wait a few seconds for Semaphore to initialize the project.
 
-![](./figures/03-choose-repo.png)
+![](./figures/03-choose-repo.png){ width=95% }
 
 The next screen lets you add people to the project, click  **Continue to workflow setup** to proceed.
 
 Finally, you'll reach the template selection screen, select **Single job**, then click **Looks good, start**. This will start a new workflow immediately.
 
-![](./figures/03-single-job.png)
+![](./figures/03-single-job.png){ width=95% }
 
 Now click on **Edit Workflow** to edit the pipeline.
 
-![](./figures/03-edit-workflow.png)
+![](./figures/03-edit-workflow.png){ width=95% }
 
 In this screen you can modify and create new blocks in the pipeline. Rename the block to "Build service1" and add the following command: `echo "building service1"`.
 
-![](./figures/03-service1.png)
+![](./figures/03-service1.png){ width=95% }
 
 Click on **Add Block**, the new block is called "Build service2". Uncheck the Build service1 in dependencies. This causes both block to run in parallel. For the command, type `echo "building service2"`.
 
-![](./figures/03-service2.png)
+![](./figures/03-service2.png){ width=95% }
 
 Click on **Run this workflow**, change the branch to the default branch your repository uses (usually, it's called `main`) and click on **Start**.
 
-![](./figures/03-run1.png)
+![](./figures/03-run1.png){ width=95% }
 
-Both blocks should run in parallel. 
+Both blocks should run in parallel.
 
-![](./figures/03-run1-done.png)
+![](./figures/03-run1-done.png){ width=95% }
 
 ## 2.3 Change-based execution
 
@@ -137,17 +137,17 @@ On the first block, scroll down until you reach the section **Run/skip condition
 
 Type the following condition: `change_in('/service1/', { default_branch: 'main'} )`. If your repository's default branch is `master` you can skip the `default_branch` option altogheter.
 
-![](./figures/03-change1.png)
+![](./figures/03-change1.png){ width=95% }
 
 Go to the second block and type this condition: `change_in('/service2/', { default_branch: 'main'} )`.
 
-![](./figures/03-change2.png)
+![](./figures/03-change2.png){ width=95% }
 
 Click on **Run the workflow** > **Start** to save the pipeline. Next, run the pipeline again. The first thing you’ll notice is that there's a new initialization step. Here, Semaphore is calculating the differences to decide what blocks should run. You can check the log to see what is happening behind the scenes.
 
 Once the workflow is ready, Semaphore will start running all jobs one more time (this happens because we didn’t set `pipeline_file: 'ignore' `). The interesting bit comes later, when we change a file in one of the applications, this is what we get:
 
-Let's try out change detection. Pull the changes into your machine and modify one of the files. 
+Let's try out change detection. Pull the changes into your machine and modify one of the files.
 
 ``` bash
 $ git pull
@@ -159,7 +159,7 @@ $ git push
 
 Push the changes to see which blocks run in the pipeline.
 
-![](./figures/03-run2-done.png)
+![](./figures/03-run2-done.png){ width=95% }
 
 ## 2.5 How Semaphore determines what changed
 
