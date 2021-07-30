@@ -145,7 +145,12 @@ We'll use the first block in the staging pipeline to deploy `SVC`. Type the depl
 
 If you need inspiration for the commands, we've written a lot about this in the Semaphore blog:
 
-TODO: list of interesting deployment tutorials
+- What Is Canary Deployment: _<https://semaphoreci.com/blog/what-is-canary-deployment>_
+- What Is Blue-Green Deployment?: _<https://semaphoreci.com/blog/blue-green-deployment>_
+- A Step-by-Step Guide to Continuous Deployment on Kubernetes: _<https://semaphoreci.com/blog/guide-continuous-deployment-kubernetes>_
+- JavaScript Monorepos with Lerna: _<https://semaphoreci.com/blog/javascript-monorepos-lerna>_
+- Android Continuous Integration and Deployment Tutorial: _<https://semaphoreci.com/blog/android-continuous-integration-deployment>_
+- Python Continuous Integration and Deployment From Scratch: _<https://semaphoreci.com/blog/python-continuous-integration-continuous-delivery>_
 
 ### 4.5.2 Smoke testing Users
 
