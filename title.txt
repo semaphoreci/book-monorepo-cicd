@@ -1,6 +1,6 @@
 ---
-title: CI/CD for Monoreops
-subtitle: Building, testing and deploying effectively code with monorepos
+title: CI/CD for Monorepos
+subtitle: Effectively building, testing, and deploying code with monorepos
 author: Semaphore
 language: en-US
 toc: true
