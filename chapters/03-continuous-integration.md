@@ -2,11 +2,11 @@
 
 # 2 Continuous integration for monorepos
 
-Monorepos are highly-active code repositories. They can test the limits of conventional continuous integration. Semaphore is the only CI/CD around with easy out-of-the-box support for monorepos.
+Monorepos are highly-active code repositories. The default behavior of continuous integration systems, which is to build, test, and deploy everything all the time, is suboptimal in the context of a monorepo. In this chapter you will learn how to use Semaphore's out-of-the-box support for monorepo CI/CD workflows.
 
 ## 2.1 The challenge in CI/CD with monorepos
 
-Monorepos  [CI/CD workflow](https://semaphoreci.com/cicd) present their own set of challenges. By default, a CI/CD [pipeline](https://semaphoreci.com/blog/cicd-pipeline) will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in [continuous integration](https://semaphoreci.com/continuous-integration).
+Monorepos  CI/CD workflow present their own set of challenges. By default, a CI/CD pipeline will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in continuous integration.
 
 A classic CI pipeline will run every job in sequence every time a new commit is pushed into the repository.
 
@@ -14,26 +14,24 @@ A classic CI pipeline will run every job in sequence every time a new commit is 
 
 Running every job in the pipeline is perfectly fine on single-project repositories. But monorepos see a lot more activity. Even the smallest change will re-run the entire pipeline — **it is time-consuming and needlessly expensive**. It just doesn’t make sense.
 
-Semaphore [is the only CI/CD platform](https://semaphoreci.com/product/whats-new-2021) with native monorepo support. Its change-based, parallel execution feature lets you skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
+Semaphore is a CI/CD platform with native monorepo support. Its change-based, parallel execution feature lets you skip jobs when the relevant code has not been updated. This will let you ignore parts of the pipeline you’re not interested in re-running.
 
 ![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png){ width=90% }
 
 ## 2.2 Hello world monorepo with Semaphore
 
-**We should probably add that we assume familiarity with basics of Semaphore, for that check the guided tour etc.**
-
-If you've never used Semaphore or a CI/CD platform before, it may be a good idea to head first check out our **getting started guide**, where we cover basic concepts and examples to create a pipeline. You'll find the guide at this address:
+If you're new to Semaphore, spend 10 minutes to follow the **getting started guide** to learn the basics of creating a pipeline. You'll find the guide at this address:
 
 _[https://docs.semaphoreci.com/guided-tour/getting-started/](https://docs.semaphoreci.com/guided-tour/getting-started/)_
 
-Shall we create "Hello, World" equivalent project for monorepos? Doing so will let us warm up to how monorepos work on Semaphore.
+Back? OK, let's walk you through creating a monorepo pipeline.
 
 To follow this guide, you’ll need:
 
 -   A GitHub account.
 -   A [Semaphore](https://semaphoreci.com) account. Click on **Sign up with GitHub** to a free trial or open source account.
 
-To get started, create an new repository on GitHub and clone it to your machine. We'll assume the repository name is called *"hello-semaphore"*.
+To get started, create a new repository on GitHub and clone it to your machine. We'll assume the repository name is called *"hello-semaphore"*.
 
 Create a couple of folders in the repository in order to try out change-based detection. Lets call them `service1` and `service2`:
 
@@ -131,7 +129,7 @@ To see the rest of the options, check the [conditions YAML reference](https://do
 
 ## 2.4 Using change_in to speed up pipelines
 
-There is no change detection yet. We'll remedy that now. Click on **Edit Workflow** to re-open the editor.
+In our CI pipeline there is no change detection yet. We'll remedy that now. Click on **Edit Workflow** to re-open the Workflow Builder.
 
 On the first block, scroll down until you reach the section **Run/skip conditions** and enable the option: “run this block when conditions are met.”
 

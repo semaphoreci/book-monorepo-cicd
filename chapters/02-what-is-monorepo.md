@@ -1,6 +1,6 @@
 \newpage
 
-# 1 What is a monorepo?
+# 1 Introduction to Monorepo
 
 Monorepos can be a great force for fostering rapid development workflows. But, are they are the right fit for you, your team, your company?
 
@@ -30,7 +30,7 @@ $ git commit -m "My first monorepo"
 
 Of course, this is just to get started. The hard work comes later, when we get into refactoring and consolidation. To enjoy the full benefits of a monorepo, all shareable code should be moved outside of each project into a common location.
 
-Multirepos are not a synonym for *microservices*. In fact, one does not need the other. Later, we'll discuss about companies using monorepos *with* microservices. A monorepo can host any number of microservices as long as you carefully set up your Continuous Integration and Delivery (CI/CD) [pipeline](https://semaphoreci.com/blog/cicd-pipeline)[^pipeline] for deployment.
+Multirepos are not a synonym for *microservices*. In fact, one does not need the other. Later, we'll discuss about companies using monorepos *with* microservices. A monorepo can host any number of microservices as long as you carefully set up your Continuous Integration and Delivery [(CI/CD) pipeline](https://semaphoreci.com/blog/cicd-pipeline)[^pipeline] for deployment.
 
 [^pipeline]: CI/CD Pipeline: A Gentle Introduction
   https://semaphoreci.com/blog/cicd-pipeline
@@ -47,14 +47,8 @@ Monorepos have the following benefits:
 -   **Consistency**: enforcing code quality standards and a unified style is straightforward when you have all your codebase in one place.
 -   **Shared timeline**: Breaking changes in APIs or shared libraries are immediately exposed, forcing different teams to communicate ahead and join forces. Monorepos keep everyone invested in keeping up with changes.
 -   **Atomic commits**: atomic commits make large-scale refactoring possible. A developer can update several packages or projects at once in a single commit.
--   **Implicit CI**: [continuous integration](https://semaphoreci.com/continuous-integration)[^ci] is guaranteed as all the code is already integrated into one place.
--   **Unified CI/CD process**: you can use the same [CI/CD](https://semaphoreci.com/cicd)[^cicd] deployment process for every project in the repo.
-
-[^ci]: Continuous Integration (CI) Explained
-  https://semaphoreci.com/continuous-integration
-
-[^cicd]: Continuous Integration & Delivery Explained
-  https://semaphoreci.com/cicd
+-   **Implicit CI**: continuous integration is guaranteed as all the code is already integrated into one place.
+-   **Unified CI/CD process**: you can use the same CI/CD deployment process for every project in the repo.
 
 ## 1.4 Technical challenges
 
@@ -67,7 +61,7 @@ As monorepos grow, we reach design limits in version control tools, buil, and co
 -   **Ownership**: maintaining ownership of files is more challenging. Systems like Git or Mercurial don’t feature built-in directory permissions.
 -   **Code reviews**: notifications can get very noisy. For instance, GitHub sends notifications about PRs to every developer in the repository.
 
-You may have noticed that these problems are mostly technical. Some of them may be mitigated by adopting the [trunk-based development model](https://trunkbaseddevelopment.com/), which encourages engineers to collaborate in a single branch, the trunk, and proposes limiting the lifespan of topic branches to the minimum. 
+You may have noticed that these problems are mostly technical. Some of them may be mitigated by adopting the *trunk-based development* model, which encourages engineers to collaborate in a single branch, the trunk, and proposes limiting the lifespan of topic branches to the minimum. 
 
 In the a short while, we’ll learn how companies that stuck to monorepos pushed the envelope by investing in tooling, adding integrations, and writing custom solutions.
 
