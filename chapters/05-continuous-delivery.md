@@ -36,7 +36,7 @@ As you can see in the output of the log, you can access the secret value like an
 
 ![](./figures/05-echo-secret.png){ width=95% }
 
-### 4.1 Deploying with promotions
+### 4.1 Deploying With Promotions
 
 Promotions[^promotions] connect pipelines together. While there are no fixed rules, they are usually placed in the natural pause that exists between CI and CD.
 
@@ -79,7 +79,7 @@ branch = 'master' AND result = 'passed'
 
 ![](./figures/05-auto-promotion-done.png){ width=95% }
 
-### 4.4 Parametrized promotions
+### 4.4 Parametrized Promotions
 
 Parametrized promotions let us reuse a pipeline for many tasks. For instance, you can create a deployment pipeline and share it among multiple applications in the monorepo, ensuring you have a unified release process for all the services.
 
@@ -103,7 +103,7 @@ Parameters define global, per-pipeline environment variables that jobs in it can
 
 ![](./figures/05-accessing-parameter.png){ width=95% }
 
-## 4.5 Staging the demo
+## 4.5 Staging the Demo
 
 Let's see how to apply what we learned to the deploying the demo.
 
@@ -152,7 +152,7 @@ If you need inspiration for the commands, we've written a lot about this in the 
 - Android Continuous Integration and Deployment Tutorial: _<https://semaphoreci.com/blog/android-continuous-integration-deployment>_
 - Python Continuous Integration and Deployment From Scratch: _<https://semaphoreci.com/blog/python-continuous-integration-continuous-delivery>_
 
-### 4.5.2 Smoke testing Users
+### 4.5.2 Smoke Testing
 
 Having a production-like environment is an invaluable opportunity for testing.
 
@@ -165,7 +165,7 @@ curl "https://${SVC}.example.com"
 
 ![](./figures/05-smoke1.png){ width=95% }
 
-### 4.5.3 Staging the rest of the services
+### 4.5.3 Staging the Rest of the Services
 
 Thanks to parametrization, our staging pipeline is universal. We can reuse it to stage the Billing and UI services.
 
@@ -192,11 +192,11 @@ Repeat the same procedure with the UI Service:
 
 ![](./figures/05-all-staging.png){ width=95% }
 
-## 4.6 The production pipeline
+## 4.6 The Production Pipeline
 
 If testing on staging passed, chances are that it's pretty safe to continue with production.
 
-### 4.6.1 Promoting Users to Production
+### 4.6.1 Promoting Users Service to Production
 
 We'll keep things simple by creating a deployment pipeline with one job. The rundown of the steps is:
 
@@ -217,7 +217,7 @@ Click on **Run the Workflow** to give it a whirl. You may need to manually start
 
 ![](./figures/06-done2.png){ width=95% }
 
-### 4.6.2 Deploying Billing and UI
+### 4.6.2 Deploying Billing and UI Services
 
 The deploy to production pipeline can also be reused for the rest of the services. So, repeat the procedure: add two additional promotions branching of the stage pipeline and set the **YAML pipeline** file to `.semaphore/deploy.yml`.
 
@@ -225,7 +225,7 @@ At the end of the setup you will have a total of three pipelines (CI, staging, a
 
 ![](./figures/06-pipelines-all.png){ width =95% }
 
-## 5.6 Ready to go
+## 5.6 Ready to Go
 
 The CI/CD process is 100% configured. The only thing left to do is save it and run it to ensure everything works as expected.
 

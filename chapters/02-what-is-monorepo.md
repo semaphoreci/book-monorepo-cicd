@@ -4,7 +4,7 @@
 
 Monorepos can be a great force for fostering rapid development workflows. But, are they are the right fit for you, your team, your company?
 
-## 1.1 What is a monorepo?
+## 1.1 What Is a Monorepo?
 
 Not everyone agrees on a single definition for *monorepo*. Some may only accept the term when it applies to companies hosting all their code on a single repository. Google is the most famous example of this; their monorepo is theorized to have the largest code repository ever, which has tens of hundreds of commits per day and exceeds 80 TBs in size. 
 
@@ -12,7 +12,7 @@ More relaxed definitions will say that *a monorepo is a version-controlled code 
 
 Monorepos are sometimes also called *monolithic repositories*, but they should not be confused with *monolithic architecture*, a software development practice for writing centralized applications using a single codebase. To give one example these kind of architectures, think of a Ruby on Rails application handling websites, API endpoints, and background jobs, all at once.
 
-## 1.2 Monorepos vs. multirepos
+## 1.2 Monorepos vs. Multirepos
 
 The opposite of the monorepo is *multirepo*, or simply *repos*, where each project is held on a completely separate, version-controlled software repository. Multirepos come naturally — it’s what we do when starting a new project. After all, who doesn’t like starting fresh?
 
@@ -35,7 +35,7 @@ Multirepos are not a synonym for *microservices*. In fact, one does not need the
 [^pipeline]: CI/CD Pipeline: A Gentle Introduction
   https://semaphoreci.com/blog/cicd-pipeline
 
-## 1.3 What monorepos bring to the table
+## 1.3 What Monorepos Bring to the Table
 
 At first glance, the choice between monorepos and multirepos might not seem like a big deal. On second look though, it’s a decision that deeply influences how you and your team interacts.
 
@@ -50,7 +50,7 @@ Monorepos have the following benefits:
 -   **Implicit CI**: continuous integration is guaranteed as all the code is already integrated into one place.
 -   **Unified CI/CD process**: you can use the same CI/CD deployment process for every project in the repo.
 
-## 1.4 Technical challenges
+## 1.4 Technical Challenges
 
 As monorepos grow, we reach design limits in version control tools, buil, and continuous integration systems. These problems can make a company go the multirepo route:
 
@@ -65,7 +65,7 @@ You may have noticed that these problems are mostly technical. Some of them may 
 
 In the a short while, we’ll learn how companies that stuck to monorepos pushed the envelope by investing in tooling, adding integrations, and writing custom solutions.
 
-## 1.5 It’s not (only) about technology
+## 1.5 It’s Not (Only) About Technology
 
 Choosing a repository strategy is not only a technical matter but also about how people communicate. As [Conway’s Law](https://www.thoughtworks.com/insights/articles/demystifying-conways-law) states, communication is essential for building great products:
 
@@ -75,7 +75,7 @@ While multirepos allow each team to manage their projects independently, they al
 
 A monorepo, on the other hand, works as a central hub, a market square where every developer, engineer, tester, and business analyst meet and talk. Monorepos encourage conversations while helping us bring silos down.
 
-## 1.6 Notable monorepo adopters
+## 1.6 Notable Monorepo Adopters
 
 Open-source projects, by their nature, have more freedom to experiment and feel a greater pressure to self-organize. For three decades, FreeBSD has [used CVS and later subversion monorepos](https://docs.freebsd.org/en_US.ISO8859-1/articles/committers-guide/article.html) for development and package distribution. Other notables are, [Laravel](https://laravel.com/), [Babel](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), Google's [Angular](https://angular.io/), Facebook's [React](https://github.com/facebook/react/tree/master/packages) and [Jest](https://jestjs.io/), and [Gatsby](https://www.gatsbyjs.com/).
 
@@ -86,7 +86,7 @@ Comercial companies have also posted about their journey towards monorepos. Besi
 - [Pinterest](https://www.youtube.com/watch?v=r5KHQnS6uP8): has an ongoing three-year-long migration. The plan is to move more than 1300 repositories into only four monorepos and then consolidate hundreds of dependencies into a monolithic web application. The objective is to get a more uniform build process and higher quality standard was highly variable. Automation, simplification, and standardization of release practices allowed them to cut down on boilerplate and let developers focus on writing code.
 - [Uber](https://eng.uber.com/go-monorepo-bazel/): https://eng.uber.com/go-monorepo-bazel/: their build system used to be a combination of the Golang toolchain and Make, a testament to the minds that created Make. As they moved their mobile development to the monorepo and the number of files reached the 70 thousand mark, Make no longer fulfilled their needs. They choose to adopt a Bazel, an offshoot of Google's build system, designed for scalability and featuring incremental builds, to which they ended contributing several patches and improvements.  Uber's Go monorepo is likely one of the largest Go repositories running on Bazel.
 
-## 1.7 Investing in tooling
+## 1.7 Investing in Tooling
 
 If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos. Building and testing need to be rethought: instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that change.
 

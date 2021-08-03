@@ -1,10 +1,10 @@
 \newpage
 
-# 2 Continuous integration for monorepos
+# 2 Continuous Integration for Monorepos
 
 Monorepos are highly-active code repositories. The default behavior of continuous integration systems, which is to build, test, and deploy everything all the time, is suboptimal in the context of a monorepo. In this chapter you will learn how to use Semaphore's out-of-the-box support for monorepo CI/CD workflows.
 
-## 2.1 The challenge in CI/CD with monorepos
+## 2.1 The Challenge in CI/CD With Monorepos
 
 Monorepos  CI/CD workflow present their own set of challenges. By default, a CI/CD pipeline will run from beginning to end on every commit. This is expected. After all, that’s the *continuous* in continuous integration.
 
@@ -18,7 +18,7 @@ Semaphore is a CI/CD platform with native monorepo support. Its change-based, pa
 
 ![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png){ width=90% }
 
-## 2.2 Hello world monorepo with Semaphore
+## 2.2 Hello World Monorepo With Semaphore
 
 If you're new to Semaphore, spend 10 minutes to follow the **getting started guide** to learn the basics of creating a pipeline. You'll find the guide at this address:
 
@@ -77,7 +77,7 @@ Both blocks should run in parallel.
 
 ![](./figures/03-run1-done.png){ width=95% }
 
-## 2.3 Change-based execution
+## 2.3 Change-Based Execution
 
 Let's pause for a moment to learn about `change_in`. The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in) function calculates if recent commits have changed code in a given file or folder. We must call this function at block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. `change_in` allows us to tie a specific block to parts of the repository.
 
@@ -127,7 +127,7 @@ change_in('/web/', { exclude: '/web/**/*.md' })
 
 To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/).
 
-## 2.4 Using change_in to speed up pipelines
+## 2.4 Using change_in to Speed up Pipelines
 
 In our CI pipeline there is no change detection yet. We'll remedy that now. Click on **Edit Workflow** to re-open the Workflow Builder.
 
@@ -159,7 +159,7 @@ Push the changes to see which blocks run in the pipeline.
 
 ![](./figures/03-run2-done.png){ width=95% }
 
-## 2.5 How Semaphore determines what changed
+## 2.5 How Semaphore Determines What Changed
 
 To understand what blocks will run each time, we must examine how `change_in` calculates the changed files in recent commits. The commit range varies depending on if you’re working on `main/master` or a topic branch.
 

@@ -6,7 +6,7 @@ How many projects must a repository accumulate before it can be called a monorep
 
 There's not pat answer. We have prepared a demo, and it's made of three projects. It works well to show how every piece we've seen thus far fits together. And it will act as a springboard that takes us into continuous delivery in the next chapter.
 
-## 3.1 Monorepo demo
+## 3.1 Monorepo Demo
 
 As said, the demo we're using from now on is divided in three microservices. The code is located in the `services` folder
 
@@ -21,7 +21,7 @@ Before moving on, go ahead fork the repository and clone it into your machine:
 
 _[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.com/semaphoreci-demos/semaphore-demo-monorepo)_
 
-## 3.2 Setting up the pipeline
+## 3.2 Setting up the Pipeline
 
 To begin, create a new project in Semaphore and select the demo. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click the **fork & run** button.
 
@@ -33,7 +33,7 @@ We’ll start with the Billing application. Find the **Go starter workflow** and
 
 ![Select the Go starter workflow](./figures/04-go-starter.png){ width=95% }
 
-### 3.2.1 Billing service
+### 3.2.1 Billing Service
 
 Next, modify the starter template job in two places:
 
@@ -58,7 +58,7 @@ The last three commands use Go's built-in toolset to download dependencies, test
 
 ![Build job for billing app](./figures/04-go-build1.png){ width=95% }
 
-### 3.2.2 Users service
+### 3.2.2 Users Service
 
 Let’s add a second application to the pipeline. Create a new block. Then, add the commands to install and test the Ruby app:
 
@@ -78,7 +78,7 @@ And **uncheck** all the checkboxes under Dependencies.
 
 ![](./figures/05-uncheck-billing.png){ width=95% }
 
-### 3.2.3 UI service
+### 3.2.3 UI Service
 
 Add a third block to test the UI service. The following installs and tests the app. Remember to **uncheck** all block dependencies.
 
@@ -97,7 +97,7 @@ mix test
 
 ![No dependencies in the UI block](./figures/04-no-dep-ui.png){ width=95% }
 
-## 3.3 Configuring change detection
+## 3.3 Configuring Change Detection
 
 You can try running the pipeline now, just to make sure everything is in order. Now, what happens if we change a file inside the `/services/ui` folder?
 
@@ -133,7 +133,7 @@ If we make a change outside any of the monitored folders, then all the blocks ar
 
 ![Skipping all blocks](./figures/04-skip-all.png){ width=40% }
 
-## 2.6 Tips for using change_in
+## 2.6 Tips for Using change_in
 
 Tying up a block with a piece of the code results in a smarter pipeline that builds and tests only what has recently changed.
 
