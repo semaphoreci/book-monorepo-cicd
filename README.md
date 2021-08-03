@@ -1,16 +1,8 @@
 # CI/CD for Monorepos Book
 
-## Table of contents
-
--  Introduction (TBD)
--  What is a monorepo
--  Continuous Integration for Monorepos
--  Continuous Delivery for Monorepos
--  Final words (TBD)
-
 ## Production
 
-[![Build Status](https://semaphore-demos.semaphoreci.com/badges/book-monorepo-cicd/branches/master.svg)](https://semaphore-demos.semaphoreci.com/projects/book-monorepo-cicd)
+[![Build Status](https://semaphore-oss.semaphoreci.com/badges/book-monorepo-cicd/branches/master.svg)](https://semaphore-oss.semaphoreci.com/projects/book-monorepo-cicd)
 
 Content is written in Markdown, final PDF made with [Pandoc][pandoc].
 
