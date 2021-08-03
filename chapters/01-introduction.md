@@ -7,7 +7,7 @@ Attribution-NonCommercial-NoDerivatives 4.0 International.
 To view a copy of this license, visit
 <https://creativecommons.org/licenses/by-nc-nd/4.0>
 
-This book is open source: 
+This book is open source:
 <https://github.com/semaphoreci/book-monorepo-cicd>
 
 Published on the Semaphore website:
@@ -52,7 +52,7 @@ Chapter 1, “What is a Monorepo,” introduces the basics and relates stories a
 
 Chapter 2, “Continuous Integration,” explains what you need to know about setting up a CI pipeline that builds and tests only the code that changes.
 
-Chapter 3, “Continuous Deployment,” describes how to expand the CI pipeline with continuous deployments. We’ll learn how to take a working example and deploy it on a real cloud service. At the end of the book, you’ll have a functional microservice application build, tested, and deployed from a monorepo.
+Chapter 3, “Continuous Deployment,” describes how to expand the CI pipeline with continuous deployments. We’ll learn how to implement a continuous deployment pipeline on top or a working project.
 
 ## How to Contact Us
 

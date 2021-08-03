@@ -6,7 +6,7 @@ Monorepos can be a great force for fostering rapid development workflows. But, a
 
 ## 1.1 What Is a Monorepo?
 
-Not everyone agrees on a single definition for *monorepo*. Some may only accept the term when it applies to companies hosting all their code on a single repository. Google is the most famous example of this; their monorepo is theorized to have the largest code repository ever, which has tens of hundreds of commits per day and exceeds 80 TBs in size. 
+Not everyone agrees on a single definition for *monorepo*. Some may only accept the term when it applies to companies hosting all their code on a single repository. Google is the most famous example of this; their monorepo is theorized to have the largest code repository ever, which has tens of hundreds of commits per day and exceeds 80 TBs in size.
 
 More relaxed definitions will say that *a monorepo is a version-controlled code repository holding a number of indepedently-deployable projects*. While these projects may be related, they are often separate, logically independent, and run by different teams. For instance, Airbnb has two monorepos: one for the frontend code and one for the backend's. In this way, a company or organization may have multiple monorepos.
 
@@ -61,15 +61,16 @@ As monorepos grow, we reach design limits in version control tools, buil, and co
 -   **Ownership**: maintaining ownership of files is more challenging. Systems like Git or Mercurial don’t feature built-in directory permissions.
 -   **Code reviews**: notifications can get very noisy. For instance, GitHub sends notifications about PRs to every developer in the repository.
 
-You may have noticed that these problems are mostly technical. Some of them may be mitigated by adopting the *trunk-based development* model, which encourages engineers to collaborate in a single branch, the trunk, and proposes limiting the lifespan of topic branches to the minimum. 
+You may have noticed that these problems are mostly technical. Some of them may be mitigated by adopting the *trunk-based development* model, which encourages engineers to collaborate in a single branch, the trunk, and proposes limiting the lifespan of topic branches to the minimum.
 
 In the a short while, we’ll learn how companies that stuck to monorepos pushed the envelope by investing in tooling, adding integrations, and writing custom solutions.
 
 ## 1.5 It’s Not (Only) About Technology
 
-Choosing a repository strategy is not only a technical matter but also about how people communicate. As [Conway’s Law](https://www.thoughtworks.com/insights/articles/demystifying-conways-law) states, communication is essential for building great products:
+Choosing a repository strategy is not only a technical matter but also about how people communicate. As stated by Conway’s Law, communication is essential for building great products:
 
-> Any organization that designs a system will produce a design whose structure is a copy of the organization’s communication structure. – Melvin E. Conway
+> Any organization that designs a system will produce a design whose structure is a copy of the organization’s communication structure.
+>   – Melvin E. Conway
 
 While multirepos allow each team to manage their projects independently, they also put up communications barriers. In that way, they can act as blinders, making developers focus only on the part they own, forgetting the overall picture.
 
@@ -81,14 +82,26 @@ Open-source projects, by their nature, have more freedom to experiment and feel 
 
 Comercial companies have also posted about their journey towards monorepos. Besides the big ones like Google, Facebook, or Twitter, we find some interesting cases such as:
 
-- [Segment.com](https://segment.com/blog/goodbye-microservices/): a company offering an event collection and forwarding service. Initially, they used one repository per customer. As the number of customers increased, they moved their 140 repositories into a single one. They migrated all the services and dependencies into one monorepo. While the transition was successful, it was very taxing as they had to reconcile shared libraries and test everything each time. Still, the end result was reduced complexity and increased maintainability.
-- [Airbnb](https://www.youtube.com/watch?v=sakGeE4xVZs): ran on Ruby-on-Rails. Their "monorail" accompanied their exponential growth, until it didn't. Eventually, it's was obvious that the rate of changes and number of commits was too much for a single repository. After some debate, they choose to split development in two monorepos: one for the frontend and one for the backend. Both comprise hundreds of services, the documentation, Terraform and Kubernetes resources for deployment, and all the maintenance tools.
-- [Pinterest](https://www.youtube.com/watch?v=r5KHQnS6uP8): has an ongoing three-year-long migration. The plan is to move more than 1300 repositories into only four monorepos and then consolidate hundreds of dependencies into a monolithic web application. The objective is to get a more uniform build process and higher quality standard was highly variable. Automation, simplification, and standardization of release practices allowed them to cut down on boilerplate and let developers focus on writing code.
-- [Uber](https://eng.uber.com/go-monorepo-bazel/): https://eng.uber.com/go-monorepo-bazel/: their build system used to be a combination of the Golang toolchain and Make, a testament to the minds that created Make. As they moved their mobile development to the monorepo and the number of files reached the 70 thousand mark, Make no longer fulfilled their needs. They choose to adopt a Bazel, an offshoot of Google's build system, designed for scalability and featuring incremental builds, to which they ended contributing several patches and improvements.  Uber's Go monorepo is likely one of the largest Go repositories running on Bazel.
+- [Segment.com](https://segment.com/blog/goodbye-microservices/)[^segment]: a company offering an event collection and forwarding service. Initially, they used one repository per customer. As the number of customers increased, they moved their 140 repositories into a single one. They migrated all the services and dependencies into one monorepo. While the transition was successful, it was very taxing as they had to reconcile shared libraries and test everything each time. Still, the end result was reduced complexity and increased maintainability.
+- [Airbnb](https://www.youtube.com/watch?v=sakGeE4xVZs)[^airbnb]: ran on Ruby-on-Rails. Their "monorail" accompanied their exponential growth, until it didn't. Eventually, it's was obvious that the rate of changes and number of commits was too much for a single repository. After some debate, they choose to split development in two monorepos: one for the frontend and one for the backend. Both comprise hundreds of services, the documentation, Terraform and Kubernetes resources for deployment, and all the maintenance tools.
+- [Pinterest](https://www.youtube.com/watch?v=r5KHQnS6uP8)[^pinterest]: has an ongoing three-year-long migration. The plan is to move more than 1300 repositories into only four monorepos and then consolidate hundreds of dependencies into a monolithic web application. The objective is to get a more uniform build process and higher quality standard was highly variable. Automation, simplification, and standardization of release practices allowed them to cut down on boilerplate and let developers focus on writing code.
+- [Uber](https://eng.uber.com/go-monorepo-bazel/)[^uber]: their build system used to be a combination of the Golang toolchain and Make, a testament to the minds that created Make. As they moved their mobile development to the monorepo and the number of files reached the 70 thousand mark, Make no longer fulfilled their needs. They choose to adopt a Bazel, an offshoot of Google's build system, designed for scalability and featuring incremental builds, to which they ended contributing several patches and improvements.  Uber's Go monorepo is likely one of the largest Go repositories running on Bazel.
+
+[^segment]: Goodbye Microservices
+  https://segment.com/blog/goodbye-microservices/
+
+[^airbnb]: From Monorail to Monorepo: Airbnb’s journey into Microservices
+  https://www.youtube.com/watch?v=sakGeE4xVZs
+
+[^pinterest]: Pinterest’s journey to a Bazel monorepo
+  https://www.youtube.com/watch?v=r5KHQnS6uP8
+
+[^uber]: Building Uber’s Go Monorepo with Bazel
+  https://eng.uber.com/go-monorepo-bazel/
 
 ## 1.7 Investing in Tooling
 
-If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos. Building and testing need to be rethought: instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that change. 
+If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos. Building and testing need to be rethought: instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that change.
 
 On a high level, a smart build system would need to:
 
@@ -111,7 +124,7 @@ Monorepos seem to be getting more attention, particularly in JavaScript, as show
 -   [Yarn Workspaces](https://classic.yarnpkg.com/en/docs/workspaces/): installs and updates dependencies for Node.js in multiple places with a single command.
 -   [ultra-runner](https://github.com/folke/ultra-runner): scripts for JavaScripts monorepo management. Plugs in with Yarn, pnpm, and Lerna. Supports parallel building.
 -   [Monorepo builder](https://github.com/Symplify/MonorepoBuilder): installs and updates packages across PHP monorepos.
--   [NPM](https://docs.npmjs.com): since version 7, has [support for workspace](https://docs.npmjs.com/cli/v7/using-npm/workspaces) support.
+-   [NPM](https://docs.npmjs.com): since version 7, has [support for workspace](https://docs.npmjs.com/cli/v7/using-npm/workspaces).
 
 ## 1.8 Scaling Up Repositories
 
@@ -129,10 +142,16 @@ Based on the collection of monorepo stories, we can define a minimum set of best
 -   Define a unified directory organization for easy discovery.
 -   Maintain branch hygiene. Keep branches small, consider adopting trunk-based development practices.
 -   Use pinned dependencies for every project. Upgrade dependencies all at once, force every project to keep up with the dependencies. Reserve exceptions for truly exceptional cases.
--   If you’re using Git, learn how to use [shallow clone](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/) and [filter-branch](https://git-scm.com/docs/git-filter-branch) to handle large-volume repositories.
+-   If you’re using Git, learn how to use [shallow clone](https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/)[^shallow-clone] and [filter-branch](https://git-scm.com/docs/git-filter-branch)[^filter-branch] to handle large-volume repositories.
 -   Pick a smart build system like Bazel or Buck to speed building and testing.
 -   Use CODEOWERS when you need to restrict access to certain projects.
 -   Use a cloud CI/CD platform like [Semaphore](https://semaphoreci.com) to test and deploy your applications at any scale.
+
+[^shallow-clone]: Get up to speed with partial clone and shallow clone
+  https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
+
+[^filter-branch]: Manpage - git-filter-branch
+  https://git-scm.com/docs/git-filter-branch
 
 
 

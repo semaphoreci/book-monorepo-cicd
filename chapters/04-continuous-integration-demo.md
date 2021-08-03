@@ -23,13 +23,13 @@ _[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.c
 
 ## 3.2 Setting up the Pipeline
 
-To begin, create a new project in Semaphore and select the demo. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click the **fork & run** button.
+To begin, create a new project in Semaphore and select the demo. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click the *Fork & Run* button.
 
 The repository ships with a ready-to-use pipeline, but we'll learn a lot more by manually setting it up from zero. Hence, when prompted, click on "I want configure this project from scratch.”
 
 ![Create a new pipeline](./figures/04-scratch.png){ width=70% }
 
-We’ll start with the Billing application. Find the **Go starter workflow** and click on **customize**:
+We’ll start with the Billing application. Find the *Go Workflow* and click on *Customize*:
 
 ![Select the Go starter workflow](./figures/04-go-starter.png){ width=95% }
 
@@ -105,7 +105,7 @@ You can try running the pipeline now, just to make sure everything is in order. 
 
 Yeah, despite only one of the projects has changed, all the blocks are running. For a big monorepo with hundreds of projects, that’s a lot restless hours of waiting accumulated every  week. We can do better.
 
-Open the workflow editor again. Pick one of the blocks and open the **skip/run conditions** section. Add some change criteria:
+Open the workflow editor again. Pick one of the blocks and open the *Skip/run Conditions* section. Add some change criteria:
 
 ``` text
 change_in('/services/billing')

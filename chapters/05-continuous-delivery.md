@@ -22,11 +22,11 @@ Secrets can be accessed through the **Settings** option in the organization menu
 
 ![The settings menu](./figures/05-settings.png){ width=95% }
 
-The **Secrets** menu lets manage all the secrets within the organization.
+The *Secrets* menu lets manage all the secrets within the organization.
 
 ![](./figures/05-secret-menu.png){ width=95% }
 
-A secret is, in short, one or more variables or files, which are encrypted once you press **Save Secret**.
+A secret is, in short, one or more variables or files, which are encrypted once you press *Save Secret*.
 
 ![](./figures/05-new-secret.png){ width=60% }
 
@@ -45,7 +45,7 @@ Promotions[^promotions] connect pipelines together. While there are no fixed rul
 [^promotions]: Deploying with promotions
   https://docs.semaphoreci.com/article/67-deploying-with-promotions
 
-Promotions are created via the **Add Promotion** button in the workflow editor. This will create a new pipeline.
+Promotions are created via the *Add Promotion* button in the workflow editor. This will create a new pipeline.
 
 ![](./figures/05-add-promotion.png){ width=80% }
 
@@ -57,7 +57,7 @@ By default, promotions are not automatic, whichs means that you need to manually
 
 ![](./figures/05-manual-promotion.png){ width=95% }
 
-*Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the **Enable automatic promotion** box brings up a field to type the conditions[^conditions] that determine when the next pipeline starts.
+*Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the conditions[^conditions] that determine when the next pipeline starts.
 
 [^conditions]: Conditions reference
   https://docs.semaphoreci.com/reference/conditions-reference/
@@ -87,7 +87,7 @@ Parametrized promotions let us reuse a pipeline for many tasks. For instance, yo
 
 Parametrized promotions work in tandem with environment variables — we define one or more variables and set default values based on the same condition syntax we use in regular promotions.
 
-To create a parameter, scroll down on the promotion pane and click on **+Add Environment Variable**.
+To create a parameter, scroll down on the promotion pane and click on *+Add Environment Variable*.
 
 ![](./figures/05-new-parameter.png){ width=60% }
 
@@ -126,10 +126,10 @@ Type the condition on the **when?** field
 
 ![](./figures/06-promote1.png){ width=95% }
 
-In the same pane, immediately below, you'll find the parameters section. Click **+Add Environment Variable** and type the following:
+In the same pane, immediately below, you'll find the parameters section. Click *+Add Environment Variable* and type the following:
 
 - **Name** of the variable: `SVC`
-- **Description**: `Service to stage`
+- **Description**: Service to stage
 - **Valid options:** `users`,`billing`,`ui` (one per line)
 - **Default value**: `users`
 
@@ -137,7 +137,7 @@ In the same pane, immediately below, you'll find the parameters section. Click *
 
 What we're doing here is creating an environment variable, called `SVC`, that takes one of the three services in the repository When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
 
-Next, we'll create the staging pipeline. Click on the newly created pipeline and scroll down to **YAML file path**. Replace the default value with `.semaphore/stage.yml`
+Next, we'll create the staging pipeline. Click on the newly created pipeline and scroll down to *YAML file path*. Replace the default value with `.semaphore/stage.yml`
 
 Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }}`. The special syntax makes the `SVC` variable to be expanded dynamically once the pipeline begins running.
 
@@ -171,7 +171,7 @@ curl "https://${SVC}.example.com"
 
 Thanks to parametrization, our staging pipeline is universal. We can reuse it to stage the Billing and UI services.
 
-Create a new promotion below to "Stage users". The criteria for releasing may be different for each service.  Let's say that we want to deploy Billing only on Git-tagged releases. Hence, the **When** should read:
+Create a new promotion below to "Stage users". The criteria for releasing may be different for each service.  Let's say that we want to deploy Billing only on Git-tagged releases. Hence, the *When* should read:
 
 ``` text
 change_in('/service/billing') AND result = 'passed' and tag=~ '.*'
@@ -183,7 +183,7 @@ The parameter for this promotion will be almost exactly the same as Users, the o
 
 ![](./figures/05-billing-svc.png){ width=60%}
 
-Click on the newly-created pipeline and open the **YAML path** section. Replace the path of the file with `.semaphore/stage.yml`.
+Click on the newly-created pipeline and open the *YAML path* section. Replace the path of the file with `.semaphore/stage.yml`.
 
 Repeat the same procedure with the UI Service:
 
@@ -215,17 +215,17 @@ We'll keep things simple by creating a deployment pipeline with one job. The run
 5. Activate any required secrets and set environment variables as needed.
 
 
-Click on **Run the Workflow** to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
+Click on *Run the Workflow* to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
 ![](./figures/06-done2.png){ width=95% }
 
 ### 4.6.2 Deploying Billing and UI Services
 
-The deploy to production pipeline can also be reused for the rest of the services. So, repeat the procedure: add two additional promotions branching of the stage pipeline and set the **YAML pipeline** file to `.semaphore/deploy.yml`.
+The deploy to production pipeline can also be reused for the rest of the services. So, repeat the procedure: add two additional promotions branching of the stage pipeline and set the *YAML pipeline* file to `.semaphore/deploy.yml`.
 
 At the end of the setup you will have a total of three pipelines (CI, staging, and production deploy) connected by six promotions.
 
-![](./figures/06-pipelines-all.png){ width =95% }
+![](./figures/06-pipelines-all.png){ width=95% }
 
 ## 5.6 Ready to Go
 
