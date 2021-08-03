@@ -75,7 +75,7 @@ Click on **Run this workflow**, change the branch to the default branch your rep
 
 Both blocks should run in parallel.
 
-![](./figures/03-run1-done.png){ width=95% }
+![](./figures/03-run1-done.png){ width=60% }
 
 ## 2.3 Change-Based Execution
 
@@ -157,7 +157,12 @@ $ git push
 
 Push the changes to see which blocks run in the pipeline.
 
-![](./figures/03-run2-done.png){ width=95% }
+![](./figures/03-run2-done.png){ width=60% }
+
+Two things have happened now that change-detection is enabled on the pipeline:
+
+- A new initialization log is shown in the pipeline. The log is the output of Semaphore's initialization job, which reveals what folders or files have been marked as changed.
+- Semaphore has detected that some parts of the monorepo have not changed and has skipped the related block. The improved pipeline can now selectively build the monorepo.
 
 ## 2.5 How Semaphore Determines What Changed
 

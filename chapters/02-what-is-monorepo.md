@@ -77,7 +77,7 @@ A monorepo, on the other hand, works as a central hub, a market square where eve
 
 ## 1.6 Notable Monorepo Adopters
 
-Open-source projects, by their nature, have more freedom to experiment and feel a greater pressure to self-organize. For three decades, FreeBSD has [used CVS and later subversion monorepos](https://docs.freebsd.org/en_US.ISO8859-1/articles/committers-guide/article.html) for development and package distribution. Other notables are, [Laravel](https://laravel.com/), [Babel](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), Google's [Angular](https://angular.io/), Facebook's [React](https://github.com/facebook/react/tree/master/packages) and [Jest](https://jestjs.io/), and [Gatsby](https://www.gatsbyjs.com/).
+Open-source projects, by their nature, have more freedom to experiment and feel a greater pressure to self-organize. For three decades, FreeBSD has [used CVS and later subversion monorepos](https://docs.freebsd.org/en_US.ISO8859-1/articles/committers-guide/article.html) for development and package distribution. Other notable projects with monorepo support or that are monorepos themselves are [Babel](https://github.com/babel/babel/blob/master/doc/design/monorepo.md), Google's [Angular](https://angular.io/guide/file-structure), Facebook's [React](https://github.com/facebook/react/tree/master/packages) and [Jest](https://jestjs.io/docs/next/configuration), and [Gatsby](https://github.com/gatsbyjs/gatsby/tree/master/packages).
 
 Comercial companies have also posted about their journey towards monorepos. Besides the big ones like Google, Facebook, or Twitter, we find some interesting cases such as:
 
@@ -88,9 +88,15 @@ Comercial companies have also posted about their journey towards monorepos. Besi
 
 ## 1.7 Investing in Tooling
 
-If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos. Building and testing need to be rethought: instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that change.
+If we have to take only one lesson from all these stories, it is that proper tooling is key for effective monorepos. Building and testing need to be rethought: instead of rebuilding the complete repo on each update, we can use smart build systems that understand the structure of the projects and work only in the parts that change. 
 
-![Monorepo build systems](./figures/02-build.png){ width=95% }
+On a high level, a smart build system would need to:
+
+1. Calculate what files changed in the commits since the last build.
+2. Find all the projects and their dependencies affected by the changes.
+3. Build the projects, ideally using some form of caching.
+4. Run tests based on affected code.
+5. Deploy the projects that have changed into staging or production.
 
 Most of us don’t have Airbnb's resources. What can we do? Fortunately, many of the bigger companies have open-sourced their build systems:
 
