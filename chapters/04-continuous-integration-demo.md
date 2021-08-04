@@ -1,14 +1,14 @@
 \newpage
 
-# 3. Continuous Integration Demo
+# 3 Continuous Integration Demo
 
-How many projects must a repository accumulate before it can be called a monorepo? More than one? Tens, hundreds? Do we need to hold back until dedicated tools to manage it are needed?
+In the previous chapter we learned the basics of creating monorepo pipelines using Semaphore. Our CI build was limited to conditionally running essentially empty jobs. We will now expand our knowledge by building a realistic pipeline that deals with dependency management and caching, compiling code, and running tests.
 
-There's not pat answer. We have prepared a demo, and it's made of three projects. It works well to show how everything we've seen thus far fits together. And it will act as a springboard that takes us into continuous delivery in the next chapter.
+To make it easy to follow along, we have prepared a demo made of three microservices. It works well to show how everything we've seen thus far fits together. And it will act as a springboard that takes us into continuous delivery in the next chapter.
 
 ## 3.1 Monorepo Demo
 
-As said, the demo we're using from now on is divided in three microservices. The code is located in the `services` folder
+The demo project we're using from now on contains three microservices. The code is located in the `services` folder:
 
 - `/services/user`: a Ruby-based user registration service. Exposes a HTTP REST endpoint.
 
@@ -23,9 +23,9 @@ _[https://github.com/semaphoreci-demos/semaphore-demo-monorepo](https://github.c
 
 ## 3.2 Setting up the Pipeline
 
-To begin, create a new project in Semaphore and select the demo. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click the *Fork & Run* button.
+To begin, create a new project in Semaphore and select the demo repository. Alternatively, if you prefer to jump directly to the final state, find the monorepo example and click the *Fork & Run* button.
 
-The repository ships with a ready-to-use pipeline, but we'll learn a lot more by manually setting it up from zero. Hence, when prompted, click on "I want configure this project from scratch.”
+The repository ships with a ready-to-use pipeline, but we'll learn a lot more by manually setting it up from scratch. Hence, when prompted, click on "I want configure this project from scratch.”
 
 ![Create a new pipeline](./figures/04-scratch.png){ width=70% }
 
@@ -127,13 +127,13 @@ With `change_in` in place, Semaphore will only work on those microservices that 
 
 ![Running all blocks](./figures/04-skip-but-billing.png){ width=40% }
 
-Can you guess which application I changed? Yes, that’s right: it was the Billing app. As a result, thanks to `change_in`, the rest of the blocks have been skipped because neither did meet the change conditions.
+Can you guess which application we changed? Yes, that’s right: it was the Billing app. As a result, thanks to `change_in`, the rest of the blocks have been skipped because neither did meet the change conditions.
 
 If we make a change outside any of the monitored folders, then all the blocks are skipped and the pipeline completes in just a few seconds.
 
 ![Skipping all blocks](./figures/04-skip-all.png){ width=40% }
 
-## 2.6 Tips for Using change_in
+## 3.4 Tips for Using change_in
 
 Tying up a block with a piece of the code results in a smarter pipeline that builds and tests only what has recently changed.
 
