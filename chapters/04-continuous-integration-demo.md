@@ -4,7 +4,7 @@
 
 How many projects must a repository accumulate before it can be called a monorepo? More than one? Tens, hundreds? Do we need to hold back until dedicated tools to manage it are needed?
 
-There's not pat answer. We have prepared a demo, and it's made of three projects. It works well to show how every piece we've seen thus far fits together. And it will act as a springboard that takes us into continuous delivery in the next chapter.
+There's not pat answer. We have prepared a demo, and it's made of three projects. It works well to show how everything we've seen thus far fits together. And it will act as a springboard that takes us into continuous delivery in the next chapter.
 
 ## 3.1 Monorepo Demo
 
@@ -103,7 +103,7 @@ You can try running the pipeline now, just to make sure everything is in order. 
 
 ![All blocks running](./figures/04-all-blocks1.png){ width=40% }
 
-Yeah, despite only one of the projects has changed, all the blocks are running. For a big monorepo with hundreds of projects, that’s a lot restless hours of waiting accumulated every  week. We can do better.
+Yeah, despite only one of the projects has changed, all the blocks are running. For a big monorepo with hundreds of projects, that’s a lot restless hours of waiting for the build to end. We can do better.
 
 Open the workflow editor again. Pick one of the blocks and open the *Skip/run Conditions* section. Add some change criteria:
 

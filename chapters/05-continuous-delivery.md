@@ -4,7 +4,7 @@
 
 Chapter three left us with a working CI pipeline. Now that we're through with the basics, we focus on the final stage of every CI/CD process: continuous deployment (CD), where we deploy the application services into production systems continually, without human intervention.
 
-The shift from CI to CD is subtle, but, in reality, it's a completely different ball game. While everything in the CI happens, as it were, within the bounds of Semaphore networks, a CD pipeline, be it by publishing a package, updating a service, or deploying software, will necessarily interact with the external world. Therefore, extra precautions must be taken to avoid suprises.
+The shift from CI to CD is subtle, but, in reality, it's a completely different ball game. While everything in the CI happens, as it were, within the bounds of Semaphore systems, a CD pipeline, be it by publishing a package, updating a service, or deploying software, will necessarily interact with the external world. Therefore, extra precautions must be taken to avoid suprises.
 
 Before we configure an automated deployment, we'll need to master two Semaphore concepts:
 
@@ -40,24 +40,24 @@ As you can see in the output of the log, you can access the secret value like an
 
 ### 4.1 Deploying With Promotions
 
-Promotions[^promotions] connect pipelines together. While there are no fixed rules, they are usually placed in the natural pause that exists between CI and CD.
+[Promotions](https://docs.semaphoreci.com/article/67-deploying-with-promotions)[^promotions] connect pipelines together. While there are no fixed rules, they are usually placed in the natural pause that exists between CI and CD.
 
 [^promotions]: Deploying with promotions
   https://docs.semaphoreci.com/article/67-deploying-with-promotions
 
 Promotions are created via the *Add Promotion* button in the workflow editor. This will create a new pipeline.
 
-![](./figures/05-add-promotion.png){ width=80% }
+![](./figures/05-add-promotion.png){ width=70% }
 
 There's nothing special about this pipeline, you can create blocks and jobs as usual.
 
-![](./figures/05-new-pipeline.png){ width=80% }
+![](./figures/05-new-pipeline.png){ width=70% }
 
 By default, promotions are not automatic, whichs means that you need to manually start them by clicking a button once the workflow has started.
 
-![](./figures/05-manual-promotion.png){ width=95% }
+![](./figures/05-manual-promotion.png){ width=70% }
 
-*Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the conditions[^conditions] that determine when the next pipeline starts.
+*Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the [conditions]( https://docs.semaphoreci.com/reference/conditions-reference/)[^conditions] that determine when the next pipeline starts.
 
 [^conditions]: Conditions reference
   https://docs.semaphoreci.com/reference/conditions-reference/
@@ -91,7 +91,7 @@ To create a parameter, scroll down on the promotion pane and click on *+Add Envi
 
 ![](./figures/05-new-parameter.png){ width=60% }
 
-When the promotion is started manually, we can choose a value from the list. On auto-promotions, the default value is used.
+When the promotion is started manually, we can choose a value from the list. On auto-promotions, however, the default value is used.
 
 ![](./figures/05-parameter-manual.png){ width=95% }
 
@@ -122,7 +122,7 @@ Begin by creating a new promotion and making it automatic. We'll deploy the User
 change_in('/services/users') AND results = 'passed' AND branch = 'master'
 ```
 
-Type the condition on the **when?** field
+Type the condition on the *When?* field
 
 ![](./figures/06-promote1.png){ width=95% }
 
@@ -130,12 +130,12 @@ In the same pane, immediately below, you'll find the parameters section. Click *
 
 - **Name** of the variable: `SVC`
 - **Description**: Service to stage
-- **Valid options:** `users`,`billing`,`ui` (one per line)
+- **Valid options:** `users`, `billing`, `ui` (one per line)
 - **Default value**: `users`
 
 ![](./figures/06-pp1.png){ width=60% }
 
-What we're doing here is creating an environment variable, called `SVC`, that takes one of the three services in the repository When performing a manual promotion, you'll be able to pick the service from a list. On automatic promotions, the default value will be used.
+What we're doing here is creating an environment variable, called `SVC`, that takes one of the three services in the repository.
 
 Next, we'll create the staging pipeline. Click on the newly created pipeline and scroll down to *YAML file path*. Replace the default value with `.semaphore/stage.yml`
 
@@ -143,12 +143,12 @@ Click on the new pipeline and set it's name to: `Stage ${{ parameters.SVC }}`. T
 
 ![](./figures/06-pp2.png){ width=95% }
 
-We'll use the first block in the staging pipeline to deploy `SVC`. Type the deployment commands for this service. Add whatever secrets and environment variables you need to release the new version into the staging environment.![](./figures/05-stage1.png){ width = 95% }
+We'll use the first block in the staging pipeline to deploy `SVC`. Type the deployment commands for this service. Add whatever secrets and environment variables you need to release the new version into the staging environment.![](./figures/05-stage1.png){ width=95% }
 
 If you need inspiration for the commands, we've written a lot about this in the Semaphore blog:
 
 - What Is Canary Deployment: _<https://semaphoreci.com/blog/what-is-canary-deployment>_
-- What Is Blue-Green Deployment?: _<https://semaphoreci.com/blog/blue-green-deployment>_
+- What Is Blue-Green Deployment: _<https://semaphoreci.com/blog/blue-green-deployment>_
 - A Step-by-Step Guide to Continuous Deployment on Kubernetes: _<https://semaphoreci.com/blog/guide-continuous-deployment-kubernetes>_
 - JavaScript Monorepos with Lerna: _<https://semaphoreci.com/blog/javascript-monorepos-lerna>_
 - Android Continuous Integration and Deployment Tutorial: _<https://semaphoreci.com/blog/android-continuous-integration-deployment>_
@@ -171,7 +171,7 @@ curl "https://${SVC}.example.com"
 
 Thanks to parametrization, our staging pipeline is universal. We can reuse it to stage the Billing and UI services.
 
-Create a new promotion below to "Stage users". The criteria for releasing may be different for each service.  Let's say that we want to deploy Billing only on Git-tagged releases. Hence, the *When* should read:
+Create a new promotion below to "Stage users". The criteria for releasing may be different for each service.  Let's say that we want to deploy Billing only on Git-tagged releases. Hence, the *When?* field should read:
 
 ``` text
 change_in('/service/billing') AND result = 'passed' and tag=~ '.*'

@@ -25,10 +25,10 @@ Share this book:
 
 ## Preface
 
-A monorepo is a new name for an old idea: place a bunch of software projects in the same code repository. Organizations that overcome technical challenges in adopting monorepos enjoy many benefits:
+A monorepo is a new name for an old idea — place a bunch of software projects in the same code repository. Organizations that overcome technical challenges in adopting monorepos enjoy many benefits:
 
-- Cultural: increased bandwidth of knowledge transfer and a higher level of collaboration among teams.
-- Technical: common coding and tooling standards, simplified dependency management and configuration reuse.
+- **Cultural**: increased bandwidth of knowledge transfer and a higher level of collaboration among teams.
+- **Technical**: common coding and tooling standards, simplified dependency management, and configuration reuse.
 
 Big companies like Google, Facebook, Twitter, and Airbnb have been using monorepos for years. Today, we see a growing number of smaller teams adopting monorepos as their way of coding. The jury is still out, but the tide seems to be turning.
 
@@ -48,7 +48,7 @@ This book is intended for software engineers who are either exploring the monore
 
 By showing what it takes to build a monorepo-first CI/CD pipeline that saves time and speeds up software development cycles, we hope that CTOs and other engineering leaders will gain some insight into deciding if monorepos are the way forward for their companies and teams.
 
-Chapter 1, “What is a Monorepo,” introduces the basics and relates stories about other companies that have successfully migrated to a monorepo. This chapter will help you decide if monorepo is the right way for you.
+Chapter 1, “Introduction to Monorepo,” introduces the basics and relates stories about other companies that have successfully migrated to a monorepo. This chapter will help you decide if monorepo is the right way for you.
 
 Chapter 2, “Continuous Integration,” explains what you need to know about setting up a CI pipeline that builds and tests only the code that changes.
 
