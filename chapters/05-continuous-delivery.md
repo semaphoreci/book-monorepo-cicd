@@ -226,7 +226,7 @@ At the end of the setup you will have a total of three pipelines (CI, staging, a
 
 ![](./figures/06-pipelines-all.png){ width=95% }
 
-## 5.6 Ready to Go
+## 4.7 Ready to Go
 
 The CI/CD process is 100% configured. The only thing left to do is save it and run it to ensure everything works as expected.
 
