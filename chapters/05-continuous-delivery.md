@@ -1,6 +1,6 @@
 \newpage
 
-## 4. Continuous Deployment for Monorepos
+## 4 Continuous Deployment for Monorepos
 
 Chapter three left us with a working CI pipeline. Now that we're through with the basics, we focus on the final stage of every CI/CD process: continuous deployment (CD), where we deploy the application services into production systems continually, without human intervention.
 
@@ -11,7 +11,7 @@ Before we configure an automated deployment, we'll need to master two Semaphore 
 - **Secrets** hold the access keys required to authenticate with external systems.
 - **Promotions** connect the CI and CD pipelines together, to create complex workflows.
 
-### 4.1 Secrets
+### 4.1 Managing Secrets
 
 Telling Semaphore how to deploy software typicalling means storing a password, some API keys, or other sensitive information as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/)[^secrets] are encrypted variables and files that are decrypted into jobs on a need-to-know basis in order to keep your data secure.
 
@@ -213,7 +213,6 @@ We'll keep things simple by creating a deployment pipeline with one job. The run
 4. Type the deployment commands. The service to deploy is stored on the `SVC` variable.
 
 5. Activate any required secrets and set environment variables as needed.
-
 
 Click on *Run the Workflow* to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
