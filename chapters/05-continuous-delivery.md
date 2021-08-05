@@ -13,10 +13,9 @@ Before we configure an automated deployment, we'll need to master two Semaphore 
 
 ### 4.1 Secrets
 
-Telling Semaphore how to deploy software typicalling means storing a password, some API keys, or other sensitive information as a secret. [Secrets](https://docs.semaphoreci.com/guided-tour/environment-variables-and-secrets/)[^secrets] are encrypted variables and files that are decrypted into jobs on a need-to-know basis in order to keep your data secure.
+Telling Semaphore how to deploy software typicalling means storing a password, some API keys, or other sensitive information as a secret. [Secrets](https://docs.semaphoreci.com/essentials/using-secrets/)[^secrets] are encrypted variables and files that are decrypted into jobs on a need-to-know basis in order to keep your data secure.
 
-[^secrets]: Environment variables and secrets
-  https://docs.semaphoreci.com/essentials/environment-variables/
+[^secrets]: environment variables and secrets - _<https://docs.semaphoreci.com/essentials/environment-variables/>_
 
 Secrets can be accessed through the **Settings** option in the organization menu.
 
@@ -40,10 +39,9 @@ As you can see in the output of the log, you can access the secret value like an
 
 ### 4.1 Deploying With Promotions
 
-[Promotions](https://docs.semaphoreci.com/article/67-deploying-with-promotions)[^promotions] connect pipelines together. While there are no fixed rules, they are usually placed in the natural pause that exists between CI and CD.
+[Promotions](https://docs.semaphoreci.com/essentials/deploying-with-promotions/)[^promotions] connect pipelines together. While there are no fixed rules, they are usually placed in the natural pause that exists between CI and CD.
 
-[^promotions]: Deploying with promotions
-  https://docs.semaphoreci.com/article/67-deploying-with-promotions
+[^promotions]: deploying with promotions - _<https://docs.semaphoreci.com/essentials/deploying-with-promotions/>_
 
 Promotions are created via the *Add Promotion* button in the workflow editor. This will create a new pipeline.
 
@@ -59,8 +57,7 @@ By default, promotions are not automatic, whichs means that you need to manually
 
 *Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the [conditions]( https://docs.semaphoreci.com/reference/conditions-reference/)[^conditions] that determine when the next pipeline starts.
 
-[^conditions]: Conditions reference
-  https://docs.semaphoreci.com/reference/conditions-reference/
+[^conditions]: conditions reference - _<https://docs.semaphoreci.com/reference/conditions-reference/>_
 
 ![](./figures/05-auto-promotion.png){ width=60% }
 

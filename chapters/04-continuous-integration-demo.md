@@ -12,8 +12,8 @@ As said, the demo we're using from now on is divided in three microservices. The
 
 - `/services/user`: a Ruby-based user registration service. Exposes a HTTP REST endpoint.
 
--   `/services/billing`: written in Go, stores payment details.
--   `/services/ui`:  is the frontend, written in Elixir.
+- `/services/billing`: written in Go, stores payment details.
+- `/services/ui`:  is the frontend, written in Elixir.
 
 All these parts are meant to work together, but each one may be maintained by a separate team and written in a different language.
 
@@ -35,7 +35,15 @@ We’ll start with the Billing application. Find the *Go Workflow* and click on 
 
 ### 3.2.1 Billing Service
 
-Next, modify the starter template job in two places:
+The first block in the pipeline builds and tests the Billing service. The starter job uses uses two new commands:
+
+- [checkout](https://docs.semaphoreci.com/reference/toolbox-reference/#checkout)[^checkout]: clones the repository into the Semaphore machine and changes the current directory.
+- [sem-version](https://docs.semaphoreci.com/ci-cd-environment/sem-version-managing-language-versions-on-linux/)[^sem-version]: switches the current version of a language.
+
+[^checkout]: checkout reference page - _<https://docs.semaphoreci.com/reference/toolbox-reference/#checkout>_
+[^sem-version]: sem-version reference page - _<https://docs.semaphoreci.com/ci-cd-environment/sem-version-managing-language-versions-on-linux/>_
+
+We have to modify the job in two places before it works with the project:
 
 1.  The app has been tested on Go version 1.14+. So, add this line to the beginning of the job `sem-version go 1.14`.
 2.  Since the code is located in the `services/billing` folder, add `cd services/billing` after `checkout`.
@@ -71,6 +79,10 @@ bundle install
 cache store
 bundle exec ruby test.rb
 ```
+
+If you look closely, there's something new here: [cache]()[^cache]. It's a built-in command that let us persist files between jobs and workflows. By itself, `cache store` figures out the project structure automagically and saves the relevant files into a project-level storage. The cache speeds up this job by saving the downloaded Ruby Gems.
+
+[^cache]: cache reference page - _<https://docs.semaphoreci.com/reference/toolbox-reference/#cache>_
 
 ![No dependencies in the User block](./figures/04-no-dep-user.png){ width=95% }
 
