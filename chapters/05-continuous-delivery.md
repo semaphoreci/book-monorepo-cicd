@@ -1,6 +1,6 @@
 \newpage
 
-## 4. Continuous Deployment for Monorepos
+# 4. Continuous Deployment for Monorepos
 
 Chapter three left us with a working CI pipeline. Now that we're through with the basics, we focus on the final stage of every CI/CD process: continuous deployment (CD), where we deploy the application services into production systems continually, without human intervention.
 
@@ -11,7 +11,7 @@ Before we configure an automated deployment, we'll need to master two Semaphore 
 - **Secrets** hold the access keys required to authenticate with external systems.
 - **Promotions** connect the CI and CD pipelines together, to create complex workflows.
 
-### 4.1 Secrets
+## 4.1 Secrets
 
 Telling Semaphore how to deploy software typicalling means storing a password, some API keys, or other sensitive information as a secret. [Secrets](https://docs.semaphoreci.com/essentials/using-secrets/)[^secrets] are encrypted variables and files that are decrypted into jobs on a need-to-know basis in order to keep your data secure.
 
@@ -37,7 +37,7 @@ As you can see in the output of the log, you can access the secret value like an
 
 ![](./figures/05-echo-secret.png){ width=95% }
 
-### 4.1 Deploying With Promotions
+## 4.2 Deploying With Promotions
 
 [Promotions](https://docs.semaphoreci.com/essentials/deploying-with-promotions/)[^promotions] connect pipelines together. While there are no fixed rules, they are usually placed in the natural pause that exists between CI and CD.
 
@@ -55,9 +55,7 @@ By default, promotions are not automatic, whichs means that you need to manually
 
 ![](./figures/05-manual-promotion.png){ width=70% }
 
-*Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the [conditions]( https://docs.semaphoreci.com/reference/conditions-reference/)[^conditions] that determine when the next pipeline starts.
-
-[^conditions]: conditions reference - _<https://docs.semaphoreci.com/reference/conditions-reference/>_
+*Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the conditions that determine when the next pipeline starts.
 
 ![](./figures/05-auto-promotion.png){ width=60% }
 
@@ -78,7 +76,7 @@ branch = 'master' AND result = 'passed'
 
 ![](./figures/05-auto-promotion-done.png){ width=95% }
 
-### 4.4 Parametrized Promotions
+## 4.3 Parametrized Promotions
 
 Parametrized promotions let us reuse a pipeline for many tasks. For instance, you can create a deployment pipeline and share it among multiple applications in the monorepo, ensuring you have a unified release process for all the services.
 
@@ -102,7 +100,7 @@ Parameters define global, per-pipeline environment variables that jobs in it can
 
 ![](./figures/05-accessing-parameter.png){ width=95% }
 
-## 4.5 Staging the Demo
+## 4.4 Staging the Demo
 
 Let's see how to apply what we learned to the deploying the demo.
 
@@ -111,7 +109,7 @@ We want a sturdy CI/CD process. Testing the services in CI is no guarantee of ze
 - **Staging**: runs the application in a production-like environment and performs smoke tests.
 - **Production**: if tests succeed, deploys into the production systems.
 
-### 4.5.1 Staging the Users service
+### 4.4.1 Staging the Users Service
 
 Begin by creating a new promotion and making it automatic. We'll deploy the User service on every change commited to the `master` branch. The auto-promotion condition will then be:
 
@@ -151,7 +149,7 @@ If you need inspiration for the commands, we've written a lot about this in the 
 - Android Continuous Integration and Deployment Tutorial: _<https://semaphoreci.com/blog/android-continuous-integration-deployment>_
 - Python Continuous Integration and Deployment From Scratch: _<https://semaphoreci.com/blog/python-continuous-integration-continuous-delivery>_
 
-### 4.5.2 Smoke Testing
+### 4.4.2 Smoke Testing
 
 Having a production-like environment is an invaluable opportunity for testing.
 
@@ -164,7 +162,7 @@ curl "https://${SVC}.example.com"
 
 ![](./figures/05-smoke1.png){ width=95% }
 
-### 4.5.3 Staging the Rest of the Services
+### 4.4.3 Staging the Rest of the Services
 
 Thanks to parametrization, our staging pipeline is universal. We can reuse it to stage the Billing and UI services.
 
@@ -191,11 +189,11 @@ Repeat the same procedure with the UI Service:
 
 ![](./figures/05-all-staging.png){ width=95% }
 
-## 4.6 The Production Pipeline
+## 4.5 The Production Pipeline
 
 If testing on staging passed, chances are that it's pretty safe to continue with production.
 
-### 4.6.1 Promoting Users Service to Production
+### 4.5.1 Promoting Users Service to Production
 
 We'll keep things simple by creating a deployment pipeline with one job. The rundown of the steps is:
 
@@ -216,7 +214,7 @@ Click on *Run the Workflow* to give it a whirl. You may need to manually start t
 
 ![](./figures/06-done2.png){ width=95% }
 
-### 4.6.2 Deploying Billing and UI Services
+### 4.5.2 Deploying Billing and UI Services
 
 The deploy to production pipeline can also be reused for the rest of the services. So, repeat the procedure: add two additional promotions branching of the stage pipeline and set the *YAML pipeline* file to `.semaphore/deploy.yml`.
 
@@ -224,7 +222,7 @@ At the end of the setup you will have a total of three pipelines (CI, staging, a
 
 ![](./figures/06-pipelines-all.png){ width=95% }
 
-## 5.6 Ready to Go
+## 4.6 Ready to Go
 
 The CI/CD process is 100% configured. The only thing left to do is save it and run it to ensure everything works as expected.
 

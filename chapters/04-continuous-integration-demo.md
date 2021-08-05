@@ -145,7 +145,7 @@ If we make a change outside any of the monitored folders, then all the blocks ar
 
 ![Skipping all blocks](./figures/04-skip-all.png){ width=40% }
 
-## 2.6 Tips for Using change_in
+## 3.4 Tips for Using change_in
 
 Tying up a block with a piece of the code results in a smarter pipeline that builds and tests only what has recently changed.
 
