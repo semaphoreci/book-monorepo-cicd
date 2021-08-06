@@ -22,7 +22,7 @@ Semaphore is a CI/CD platform with native monorepo support. Its change-based, pa
 
 If you're new to Semaphore, spend 10 minutes to follow the **getting started guide** to learn the basics of creating a pipeline. You'll find the guide at this address:
 
-_[https://docs.semaphoreci.com/guided-tour/getting-started/](https://docs.semaphoreci.com/guided-tour/getting-started/)_
+_<https://docs.semaphoreci.com/guided-tour/getting-started>_
 
 Back? OK, let's walk you through creating a monorepo pipeline.
 
@@ -53,7 +53,7 @@ After choosing the "hello-semaphore", wait a few seconds for Semaphore to initia
 
 The next screen lets you add people to the project, click  *Continue to Workflow Setup* to proceed.
 
-Finally, you'll reach the template selection screen, select *Single job*, then click *Looks good, start*. 
+Finally, you'll reach the template selection screen, select *Single job*, then click *Looks good, start*.
 
 ![](./figures/03-single-job.png){ width=90% }
 
@@ -83,7 +83,7 @@ Both blocks should run in parallel.
 
 Let's pause for a moment to learn about `change_in`. The [change_in](https://docs.semaphoreci.com/reference/conditions-reference/#change_in)[^changein] function calculates if recent commits have changed code in a given file or folder. We must call this function at block level. If it detects changes, then all the jobs in the block will be executed. Otherwise, the whole block is skipped. The end result is that this function allows us to tie a specific block to parts of the repository.
 
-[^changein]: change_in function reference _<https://docs.semaphoreci.com/reference/conditions-reference/#change_in>_
+[^changein]: change_in reference page - _<https://docs.semaphoreci.com/reference/conditions-reference/#change_in>_
 
 The basic usage of the function is:
 
@@ -131,7 +131,7 @@ change_in('/web/', { exclude: '/web/**/*.md' })
 
 To see the rest of the options, check the [conditions YAML reference](https://docs.semaphoreci.com/reference/conditions-reference/)[^conditions].
 
-[^conditions]: Usage examples of change in (_<https://docs.semaphoreci.com/reference/conditions-reference/#usage-examples-for-change_in>_).
+[^conditions]: usage examples of change in - _<https://docs.semaphoreci.com/reference/conditions-reference/#usage-examples-for-change_in>_
 
 ## 2.4 Using change_in to Speed up Pipelines
 

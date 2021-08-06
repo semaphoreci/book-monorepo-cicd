@@ -32,8 +32,7 @@ Of course, this is just to get started. The hard work comes later, when we get i
 
 Multirepos are not a synonym for *microservices*. In fact, one does not need the other. Later, we'll discuss about companies using monorepos *with* microservices. A monorepo can host any number of microservices as long as you carefully set up your Continuous Integration and Delivery [(CI/CD) pipeline](https://semaphoreci.com/blog/cicd-pipeline)[^pipeline] for deployment.
 
-[^pipeline]: CI/CD Pipeline: A Gentle Introduction
-  https://semaphoreci.com/blog/cicd-pipeline
+[^pipeline]: CI/CD Pipeline, A Gentle Introduction - _<https://semaphoreci.com/blog/cicd-pipeline>_
 
 ## 1.3 What Monorepos Bring to the Table
 
@@ -86,17 +85,13 @@ Comercial companies have also posted about their journey towards monorepos. Besi
 - [Pinterest](https://www.youtube.com/watch?v=r5KHQnS6uP8)[^pinterest]: has an ongoing three-year-long migration. The plan is to move more than 1300 repositories into only four monorepos and then consolidate hundreds of dependencies into a monolithic web application. The objective is to get a more uniform build process and higher quality standard was highly variable. Automation, simplification, and standardization of release practices allowed them to cut down on boilerplate and let developers focus on writing code.
 - [Uber](https://eng.uber.com/go-monorepo-bazel/)[^uber]: their build system used to be a combination of the Golang toolchain and Make. As they moved their mobile development to the monorepo and the number of files reached the 70 thousand mark, Make no longer fulfilled their needs. They choose to adopt a Bazel, an offshoot of Google's build system, designed for scalability and featuring incremental builds, to which they ended contributing several patches and improvements. According to Uber, their monorepo is likely one of the largest Go repositories running on Bazel.
 
-[^segment]: Goodbye Microservices
-  https://segment.com/blog/goodbye-microservices/
+[^segment]: Goodbye Microservices - <https://segment.com/blog/goodbye-microservices/>_
 
-[^airbnb]: From Monorail to Monorepo: Airbnb’s journey into Microservices
-  https://www.youtube.com/watch?v=sakGeE4xVZs
+[^airbnb]: From Monorail to Monorepo, Airbnb’s journey into Microservices - _<https://www.youtube.com/watch?v=sakGeE4xVZs>_
 
-[^pinterest]: Pinterest’s journey to a Bazel monorepo
-  https://www.youtube.com/watch?v=r5KHQnS6uP8
+[^pinterest]: Pinterest’s journey to a Bazel monorepo - _<https://www.youtube.com/watch?v=r5KHQnS6uP8>_
 
-[^uber]: Building Uber’s Go Monorepo with Bazel
-  https://eng.uber.com/go-monorepo-bazel/
+[^uber]: Building Uber’s Go Monorepo with Bazel - _<https://eng.uber.com/go-monorepo-bazel/>_
 
 ## 1.7 Investing in Tooling
 
@@ -146,11 +141,6 @@ Based on the collection of monorepo stories, we can define a minimum set of best
 -   Use CODEOWERS when you need to restrict access to certain projects.
 -   Use a cloud CI/CD platform like [Semaphore](https://semaphoreci.com) to test and deploy your applications at any scale.
 
-[^shallow-clone]: Get up to speed with partial clone and shallow clone
-  https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/
+[^shallow-clone]: Get up to speed with shallow clone - _<https://github.blog/2020-12-21-get-up-to-speed-with-partial-clone-and-shallow-clone/>_
 
-[^filter-branch]: Manpage - git-filter-branch
-  https://git-scm.com/docs/git-filter-branch
-
-
-
+[^filter-branch]: git-filter-branch reference page - _<https://git-scm.com/docs/git-filter-branch>_
