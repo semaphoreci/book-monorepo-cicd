@@ -209,7 +209,6 @@ We'll keep things simple by creating a deployment pipeline with one job. The run
 
 5. Activate any required secrets and set environment variables as needed.
 
-
 Click on *Run the Workflow* to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
 ![](./figures/06-done2.png){ width=95% }
