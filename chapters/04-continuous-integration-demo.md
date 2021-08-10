@@ -143,7 +143,7 @@ Can you guess which application we changed? Yes, that’s right: it was the Bill
 
 If we make a change outside any of the monitored folders, then all the blocks are skipped and the pipeline completes in just a few seconds.
 
-![Skipping all blocks](./figures/04-skip-all.png){ width=20% }
+![Skipping all blocks](./figures/04-skip-all.png){ width=35% }
 
 ## 3.4 Tips for Using change_in
 
