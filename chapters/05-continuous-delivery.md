@@ -138,7 +138,7 @@ Click on the new pipeline and set its name to: `Stage ${{ parameters.SVC }}`. Th
 
 ![](./figures/06-pp2.png){ width=95% }
 
-We'll use the first block in the staging pipeline to deploy `SVC`. Type the deployment commands for this service. Add whichever secrets and environmental variables you need to release the new version into the staging environment.![](./figures/05-stage1.png){ width=95% }
+We'll use the first block in the staging pipeline to deploy `SVC`. Type the deployment commands for this service. Add whichever secrets and environmental variables you need to release the new version into the staging environment.![](./figures/05-stage1.png){ width=85% }
 
 If you need inspiration for setting up the jobs, we've written a lot about this on the Semaphore blog:
 
