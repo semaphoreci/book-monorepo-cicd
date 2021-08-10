@@ -10,13 +10,13 @@ Properly implementing a CI/CD workflow with a monorepo presents its own set of c
 
 A classic CI pipeline will run every job in sequence every time a new commit is pushed into the repository.
 
-![Regular CI pipelines always run the whole pipeline](./figures/03-build1-basic.png){ width=90% }
+![Regular CI pipelines always run the whole pipeline](./figures/03-build1-basic.png){ width=95% }
 
 Running every job in the pipeline is perfectly fine on single-project repositories. But monorepos see a lot more activity. Even the smallest change will re-run the entire pipeline — **this is time-consuming and needlessly expensive**.
 
 Semaphore is a CI/CD platform with native monorepo support. Its change-based, parallel execution feature lets you skip jobs when the relevant code has not changed. This will let you ignore parts of the pipeline you’re not interested in re-running.
 
-![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png){ width=90% }
+![Monorepo CI pipelines skip blocks related to unmodified code](./figures/03-build2.png){ width=95% }
 
 ## 2.2 Hello World Monorepo with Semaphore
 
@@ -45,11 +45,11 @@ $ git push
 
 Next, log in with your Semaphore account and click on *Create New* in the upper left corner.
 
-![Creating a new project](./figures/03-create-new.png){ width=85% }
+![Creating a new project](./figures/03-create-new.png){ width=90% }
 
 After choosing the "hello-semaphore" repository, wait a few seconds for Semaphore to initialize the project.
 
-![](./figures/03-choose-repo.png){ width=85% }
+![](./figures/03-choose-repo.png){ width=90% }
 
 The next screen lets you add people to the project, which we don’t need to do for now. Go ahead and click *Continue to Workflow Setup* to proceed.
 
@@ -59,7 +59,7 @@ Finally, you’ll reach the template selection screen, select *Single job*, then
 
 The initial workflow should start immediately.
 
-![](./figures/03-edit-workflow.png){ width=80% }
+![](./figures/03-edit-workflow.png){ width=85% }
 
 Now click on *Edit Workflow* to edit the pipeline.
 
@@ -73,11 +73,11 @@ Click on *Add Block*, the new block is called "Build service2". Uncheck the Buil
 
 Click on *Run this Workflow*, change the branch to the default branch your repository uses (usually, it's called `main`) and click on *Start*.
 
-![](./figures/03-run1.png){ width=70% }
+![](./figures/03-run1.png){ width=75% }
 
 Both blocks should run in parallel.
 
-![](./figures/03-run1-done.png){ width=30% }
+![](./figures/03-run1-done.png){ width=35% }
 
 ## 2.3 Change-Based Execution
 
@@ -161,7 +161,7 @@ $ git push
 
 This is what we get:
 
-![](./figures/03-run2-done.png){ width=30% }
+![](./figures/03-run2-done.png){ width=35% }
 
 Two things have happened now that change-detection is enabled on the pipeline:
 

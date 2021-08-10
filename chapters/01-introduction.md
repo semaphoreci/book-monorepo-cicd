@@ -30,7 +30,7 @@ A monorepo is a new name for an old idea — placing a bunch of software project
 - **Cultural** — increased bandwidth of knowledge transfer and a higher level of collaboration among teams.
 - **Technical** — common coding and tooling standards, simplified dependency management, and configuration reuse.
 
-Big companies like Google, Facebook, Twitter, and Airbnb have been using monorepos for years. Today, there are a growing number of smaller teams adopting monorepos. The jury is still out, but the tide seems to be turning.
+Big companies like Google, Facebook, Twitter, and Airbnb have been using monorepos for years. Today, there are a growing number of smaller teams adopting monorepos.
 
 Why the change now? On the frontend side, the proliferation of JavaScript-based tools is such that it is possible to develop very complex applications in a single programming language. Architects of frontend projects now face the problems of separating concerns and avoiding code duplication — and they have a good set of tools to solve these problems by working in a monorepo.
 

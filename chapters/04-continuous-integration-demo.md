@@ -113,7 +113,7 @@ mix test
 
 You can try running the pipeline now, just to make sure everything is in order. Now, what happens if we change a file inside the `/services/ui` folder?
 
-![All blocks running](./figures/04-all-blocks1.png){ width=20% }
+![All blocks running](./figures/04-all-blocks1.png){ width=35% }
 
 Yeah, despite the fact that only one of the projects has changed, all the blocks are running. For a big monorepo with hundreds of projects, that’s a lot of restless hours of waiting for the build to end. We can do better.
 
@@ -137,7 +137,7 @@ change_in('/services/users')
 
 With `change_in` in place, Semaphore will only work on microservices that have recently changed.
 
-![Running all blocks](./figures/04-skip-but-billing.png){ width=20% }
+![Running all blocks](./figures/04-skip-but-billing.png){ width=35% }
 
 Can you guess which application we changed? Yes, that’s right: it was the Billing app. As a result, thanks to `change_in`, the other two blocks have been skipped because neither met the change conditions.
 

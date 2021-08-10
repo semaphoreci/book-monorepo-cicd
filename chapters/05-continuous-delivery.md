@@ -27,11 +27,11 @@ The *Secrets* menu lets you manage all the secrets within the organization.
 
 A secret is, in short, one or more variables or files, which are encrypted once you press *Save Secret*.
 
-![](./figures/05-new-secret.png){ width=40% }
+![](./figures/05-new-secret.png){ width=50% }
 
 To use the secret in a job, you need to enable it at the block level. Enabling the secret will make Semaphore decrypt it, import the value as environmental variables or copy attached files into all the jobs in the block.
 
-![](./figures/05-import-secret.png){ width=40% }
+![](./figures/05-import-secret.png){ width=50% }
 
 As you can see in the output of the log, you can access the secret value like any other environment variable.
 
@@ -45,7 +45,7 @@ As you can see in the output of the log, you can access the secret value like an
 
 Promotions are created via the *Add Promotion* button in the workflow editor. This will create a new pipeline.
 
-![](./figures/05-add-promotion.png){ width=60% }
+![](./figures/05-add-promotion.png){ width=70% }
 
 There's nothing special about this pipeline, you can create blocks and jobs as usual.
 
@@ -53,11 +53,11 @@ There's nothing special about this pipeline, you can create blocks and jobs as u
 
 By default, promotions are not automatic, which means that you need to manually start them by clicking a button once the workflow has started.
 
-![](./figures/05-manual-promotion.png){ width=60% }
+![](./figures/05-manual-promotion.png){ width=70% }
 
 *Auto-promotions* are activated when specific conditions are detected, such as when a commit is pushed into a certain branch. Checking the *Enable automatic promotion* box brings up a field to type the conditions that determine when the next pipeline starts.
 
-![](./figures/05-auto-promotion.png){ width=40% }
+![](./figures/05-auto-promotion.png){ width=50% }
 
 Conditions are specified by mixing one or more of the following:
 
@@ -84,7 +84,7 @@ Parametrized promotions work in tandem with environment variables — we define 
 
 To create a parameter, scroll down to the promotion pane and click *+Add Environment Variable*.
 
-![](./figures/05-new-parameter.png){ width=40% }
+![](./figures/05-new-parameter.png){ width=50% }
 
 When the promotion is started manually, we can choose a value from the list. With auto-promotions, however, the default value is used.
 
@@ -128,7 +128,7 @@ In the same pane, immediately below, you'll find the parameters section. Click *
 - **Valid options:** `users`, `billing`, `ui` (one per line)
 - **Default value**: `users`
 
-![](./figures/06-pp1.png){ width=40% }
+![](./figures/06-pp1.png){ width=50% }
 
 What we're doing here is creating an environmental variable, called `SVC`, that takes one of the three services in the repository.
 
@@ -176,7 +176,7 @@ change_in('/service/billing') AND result = 'passed' and tag=~ '.*'
 
 The parameter for this promotion will be almost exactly the same as Users, the only difference is that the default value will be `billing` instead of `users`.
 
-![](./figures/05-billing-svc.png){ width=40%}
+![](./figures/05-billing-svc.png){ width=50%}
 
 Click on the newly-created pipeline and open the *YAML path* section. Replace the path of the file with `.semaphore/stage.yml`.
 
@@ -211,7 +211,7 @@ We'll keep things simple by creating a deployment pipeline with one job. The run
 
 Click on *Run the Workflow* to give it a whirl. You may need to manually start the staging and deployment pipelines. Check that the Users service is deployed to both environments.
 
-![](./figures/06-done2.png){ width=95% }
+![](./figures/06-done2.png){ width=99% }
 
 ### 4.5.2 Deploying the Billing and UI Services
 

@@ -6,7 +6,7 @@ Monorepos can be a great force for fostering rapid development workflows. But, a
 
 ## 1.1 What Is a Monorepo?
 
-Not everyone agrees on a single definition for *monorepo*. Some may only accept the term when it applies to companies hosting *all* their code in a single repository. Google is the most famous example of this; their monorepo is theorized to be the largest code repository ever around, which has thousands of commits per day and exceeds 80 TBs in size.
+Not everyone agrees on a single definition for *monorepo*. Some may only accept the term when it applies to companies hosting *all* their code in a single repository. Google is the most famous example of this; their monorepo is theorized to be the largest code repository in the world, which has thousands of commits per day and exceeds 80 TBs in size.
 
 More relaxed definitions will say that *a monorepo is a version-controlled code repository holding a number of independently-deployable projects*. While these projects may be related, they are often separate, logically-independent, and run by different teams. For instance, Airbnb has two monorepos: one for the frontend code and one for the backend code. In this way, a company or organization can utilize multiple monorepos.
 
@@ -26,7 +26,7 @@ $ git add -A
 $ git commit -m "My first monorepo"
 ```
 
-![Multirepo to Monorepo](./figures/02-multi-to-mono.png){ width=65% }
+![Multirepo to Monorepo](./figures/02-multi-to-mono.png){ width=75% }
 
 Of course, this is just to get started. The hard work comes later, when we get into refactoring and consolidation. To enjoy the full benefits of a monorepo, all shareable code should be moved outside of each project folder and into a common location.
 
