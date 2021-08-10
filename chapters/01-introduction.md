@@ -25,34 +25,36 @@ Share this book:
 
 ## Preface
 
-A monorepo is a new name for an old idea — place a bunch of software projects in the same code repository. Organizations that overcome technical challenges in adopting monorepos enjoy many benefits:
+A monorepo is a new name for an old idea — placing a bunch of software projects into the same code repository. Organizations that overcome the technical challenges associated with adopting monorepos enjoy significant benefits:
 
-- **Cultural**: increased bandwidth of knowledge transfer and a higher level of collaboration among teams.
-- **Technical**: common coding and tooling standards, simplified dependency management, and configuration reuse.
+- **Cultural** — increased bandwidth of knowledge transfer and a higher level of collaboration among teams.
+- **Technical** — common coding and tooling standards, simplified dependency management, and configuration reuse.
 
-Big companies like Google, Facebook, Twitter, and Airbnb have been using monorepos for years. Today, we see a growing number of smaller teams adopting monorepos as their way of coding. The jury is still out, but the tide seems to be turning.
+Big companies like Google, Facebook, Twitter, and Airbnb have been using monorepos for years. Today, there are a growing number of smaller teams adopting monorepos. The jury is still out, but the tide seems to be turning.
 
-Why the change now? On the frontend side, the proliferation of JavaScript-based tools has reached a state of the art in which it is possible to develop very complex applications in a single programming language. Architects of frontend projects now face the problems of separating concerns and avoiding code duplication — and have a good set of tools to solve them by working in a monorepo.
+Why the change now? On the frontend side, the proliferation of JavaScript-based tools is such that it is possible to develop very complex applications in a single programming language. Architects of frontend projects now face the problems of separating concerns and avoiding code duplication — and they have a good set of tools to solve these problems by working in a monorepo.
 
-On the backend side, serverless and microservices-based architectures drive developers to logically isolate their code into small units. Most of these services are written with the same set of tools and coding standards. And they are built, configured, and deployed in the same way. Placing them in a monorepo is an efficient way of avoiding duplicate configurations and processes.
+On the backend side, serverless and microservices-based architectures drive developers to logically isolate their code into small units. Most of these services are written with the same set of tools and coding standards, and built, configured, and deployed in the same way. Placing them into a monorepo is an efficient way of avoiding duplicate configurations and processes.
 
-At Semaphore, we have heard about this trend from a growing number of teams and have solved the technical challenge of running effective CI/CD pipelines for monorepos.
+At Semaphore, we have observed this trend in a growing number of teams and have solved the technical challenge of running effective CI/CD pipelines for monorepos.
 
 Using traditional CI/CD tools in the monorepo context, developers essentially need to build, test, and deploy all services all the time. Using Semaphore, developers run dynamic CI/CD workflows that run the right pipelines at the right time. This gives product teams more time to focus on building the next great feature.
 
 \newpage
 
-## Who Is This Book For, and What Does It Cover?
+## Who Is This Book for, and What Does It Cover?
 
-This book is intended for software engineers who are either exploring the monorepo way of software development or looking to optimize CI/CD the process for their monorepo.
+This book is intended for software engineers who are either exploring using a monorepo for software development or looking to optimize the CI/CD process for their monorepo.
 
-By showing what it takes to build a monorepo-first CI/CD pipeline that saves time and speeds up software development cycles, we hope that CTOs and other engineering leaders will gain some insight into deciding if monorepos are the way forward for their companies and teams.
+By showing what it takes to build a monorepo-first CI/CD pipeline that saves time and speeds up software development cycles, we hope that CTOs and other engineering leaders will be able to determine if monorepos are the way forward for their companies and teams.
 
-Chapter 1, “Introduction to Monorepo,” introduces the basics and relates stories about other companies that have successfully migrated to a monorepo. This chapter will help you decide if monorepo is the right way for you.
+Chapter 1, “Introduction to Monorepo”, introduces the basics and relates stories about other companies that have successfully migrated to a monorepo. This chapter will help you decide if a monorepo is right for you.
 
-Chapter 2, “Continuous Integration,” explains what you need to know about setting up a CI pipeline that builds and tests only the code that changes.
+Chapter 2, “Continuous Integration”, explains what you need to know about setting up a CI pipeline that builds and tests only the code that changes.
 
-Chapter 3, “Continuous Deployment,” describes how to expand the CI pipeline with continuous deployments. We’ll learn how to implement a continuous deployment pipeline on top or a working project.
+In chapter 3, “Continuous Integration Demo”, we apply the knowledge gained so far into building and testing a demo monorepo with working microservices.
+
+Chapter 4, “Continuous Deployment”, describes how to expand the CI pipeline with continuous deployments. We’ll learn how to implement a continuous deployment pipeline on top of a working project.
 
 ## How to Contact Us
 
@@ -70,9 +72,9 @@ Find us on LinkedIn: <https://www.linkedin.com/company/rendered-text>
 
 ## About the Author
 
-**Pablo Tomas Fernandez Zavalia** is an electronic engineer and writer. He started developing for the City of Buenos Aires City Hall (buenosaires.gob.ar). After graduating, he joined British Telecom as head of the Web Services department in Argentina. He then worked on IBM as a database administrator, where he also did tutoring, DevOps, and cloud migrations. In his free time, he enjoys writing, sailing, and board games. Follow Tomas on Twitter at [\@tomfernblog](https://twitter.com/tomfernblog).
+**Pablo Tomas Fernandez Zavalia** is an electronic engineer and writer. He started out developing for the City Hall of Buenos Aires  (buenosaires.gob.ar). After graduating, he joined British Telecom as head of the Web Services department in Argentina. He then worked for IBM as a database administrator, where he also did tutoring, DevOps, and cloud migrations. In his free time, he enjoys writing, sailing, and board games. Follow Tomas on Twitter at [\@tomfernblog](https://twitter.com/tomfernblog).
 
 ## About the Editor
 
-**Marko Anastasov** is a software engineer, author and entrepreneur. Marko co-founded Rendered Text, a software company behind the Semaphore CI/CD service. He worked on building and scaling Semaphore from an idea to a cloud-based platform used by some of the world's best engineering teams. Follow Marko on Twitter at [\@markoa](https://twitter.com/markoa).
+**Marko Anastasov** is a software engineer, author, and entrepreneur. Marko co-founded Rendered Text, the software company behind the Semaphore CI/CD service. He worked on building and scaling Semaphore from an idea to a cloud-based platform used by some of the world’s best engineering teams. Follow Marko on Twitter at [\@markoa](https://twitter.com/markoa).
 
