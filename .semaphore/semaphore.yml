@@ -16,3 +16,8 @@ blocks:
             - make pdf
             - ./deps/cpdf cover/cover.pdf build/pdf/CICD_for_Monorepos.pdf -o CICD_for_Monorepos.pdf
             - artifact push workflow CICD_for_Monorepos.pdf
+promotions:
+  - name: Publish
+    pipeline_file: pipeline_2.yml
+    auto_promote:
+      when: branch = 'master' AND result = 'passed'
