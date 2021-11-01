@@ -6,13 +6,13 @@ TODO: write section
 
 ## 5.1 Share This Book With The World
 
-Please share this book with your colleagues, friends and anyone who you think might benefit from it.
+Please share this book with your colleagues, friends, and anyone who you think might benefit from it.
 
 Share the book on Twitter:
 
-> _Learn CI/CD for Monorepos with this free ebook by @semaphoreci: https://bit.ly/3yopUT2 ([Click to Tweet!](https://ctt.ac/dL5z4))_
+> _Learn "CI/CD for Monorepos" with this free ebook by @semaphoreci: https://bit.ly/3yopUT2 ([Click to Tweet!](https://ctt.ac/dL5z4))_
 
-You can also share it TODO:links
+You can also share it 
 [on Facebook](https://www.facebook.com/sharer/sharer.php?u=https://bit.ly/3yopUT2), share it [on
 LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://bit.ly/3yopUT2) and star the repository
 [on GitHub](https://github.com/semaphoreci/book-monorepo-cicd).
