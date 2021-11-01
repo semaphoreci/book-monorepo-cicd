@@ -15,7 +15,7 @@ Share the book on Twitter:
 You can also share it TODO:links
 [on Facebook](https://www.facebook.com/sharer/sharer.php?u=https://bit.ly/3bJELLQ), share it [on
 LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://bit.ly/3bJELLQ) and star the repository
-[on GitHub](https://github.com/semaphoreci/book-cicd-docker-kubernetes).
+[on GitHub](https://github.com/semaphoreci/book-monorepo-cicd).
 
 ## 5.2 Tell Us What You Think
 
