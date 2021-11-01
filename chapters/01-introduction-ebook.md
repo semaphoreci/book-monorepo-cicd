@@ -19,7 +19,7 @@ $MONTHYEAR: First edition v1.0 (revision $REVISION)
 
 Share this book:
 
-> _I've just started reading "CI/CD for Monorepoes", a free ebook by @semaphoreci: TODO:link https://bit.ly/3bJELLQ ([Tweet this!](TODO: link https://ctt.ac/c5Ub9))_
+> _I've just started reading "CI/CD for Monorepoes", a free ebook by @semaphoreci: https://bit.ly/3yopUT2 ([Tweet this!](TODO: link https://ctt.ac/c5Ub9))_
 
 \newpage
 
