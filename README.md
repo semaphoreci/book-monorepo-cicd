@@ -31,4 +31,4 @@ This work is licensed under CC BY-NC-ND 4.0 <a href="https://creativecommons.org
 
 [pandoc]: https://pandoc.org
 [pandoc-docker]: https://github.com/pandoc/dockerfiles
-[semaphore-project]: https://semaphore-oss.semaphoreci.com/projects/book-cicd-docker-kubernetes
+[semaphore-project]: https://semaphore-oss.semaphoreci.com/projects/book-monorepo-cicd
