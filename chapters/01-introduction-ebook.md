@@ -8,10 +8,10 @@ To view a copy of this license, visit
 <https://creativecommons.org/licenses/by-nc-nd/4.0>
 
 This book is open source:
-<https://github.com/semaphoreci/book-cicd-docker-kubernetes>
+<https://github.com/semaphoreci/book-monorepo-cicd>
 
 Published on the Semaphore website:
-[https://semaphoreci.com](https://semaphoreci.com/?utm_source=ebook&utm_medium=pdf&utm_campaign=cicd-docker-kubernetes-semaphore)
+[https://semaphoreci.com](https://semaphoreci.com/?utm_source=ebook&utm_medium=pdf&utm_campaign=monorepo-cicd)
 
 $MONTHYEAR: First edition v1.0 (revision $REVISION)
 
@@ -19,7 +19,7 @@ $MONTHYEAR: First edition v1.0 (revision $REVISION)
 
 Share this book:
 
-> _I've just started reading "CI/CD for Monorepoes", a free ebook by @semaphoreci: TODO:link https://bit.ly/3bJELLQ ([Tweet this!](TODO: link https://ctt.ac/c5Ub9))_
+> _I've just started reading "CI/CD for Monorepos", a free ebook by @semaphoreci: https://bit.ly/3yopUT2 ([Tweet this!](https://ctt.ac/dL5z4))_
 
 \newpage
 

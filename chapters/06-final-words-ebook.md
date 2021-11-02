@@ -6,16 +6,16 @@ TODO: write section
 
 ## 5.1 Share This Book With The World
 
-Please share this book with your colleagues, friends and anyone who you think might benefit from it.
+Please share this book with your colleagues, friends, and anyone who you think might benefit from it.
 
 Share the book on Twitter:
 
-> _Learn CI/CD for Monorepos with this free ebook by @semaphoreci:TODO:link https://bit.ly/3bJELLQ ([Click to Tweet!](https://ctt.ac/fL5xi))_
+> _Learn "CI/CD for Monorepos" with this free ebook by @semaphoreci: https://bit.ly/3yopUT2 ([Click to Tweet!](https://ctt.ac/dL5z4))_
 
-You can also share it TODO:links
-[on Facebook](https://www.facebook.com/sharer/sharer.php?u=https://bit.ly/3bJELLQ), share it [on
-LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://bit.ly/3bJELLQ) and star the repository
-[on GitHub](https://github.com/semaphoreci/book-cicd-docker-kubernetes).
+You can also share it 
+[on Facebook](https://www.facebook.com/sharer/sharer.php?u=https://bit.ly/3yopUT2), share it [on
+LinkedIn](https://www.linkedin.com/shareArticle?mini=true&url=https://bit.ly/3yopUT2) and star the repository
+[on GitHub](https://github.com/semaphoreci/book-monorepo-cicd).
 
 ## 5.2 Tell Us What You Think
 
@@ -31,4 +31,4 @@ This book is open source and available at
 
 ## 5.3 About Semaphore
 
-Semaphore [https://semaphoreci.com](https://semaphoreci.com/?utm_source=ebook&utm_medium=pdf&utm_campaign=cicd-for-monorepos) helps developers continuously build, test and deploy code at the push of a button. It provides the fastest, enterprise-grade CI/CD pipelines as a serverless service. Trusted by thousands of organizations around the globe, Semaphore can help your team move faster too.
+Semaphore [https://semaphoreci.com](https://semaphoreci.com/?utm_source=ebook&utm_medium=pdf&utm_campaign=monorepo-cicd) helps developers continuously build, test and deploy code at the push of a button. It provides the fastest, enterprise-grade CI/CD pipelines as a serverless service. Trusted by thousands of organizations around the globe, Semaphore can help your team move faster too.
