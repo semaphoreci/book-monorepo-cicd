@@ -8,14 +8,6 @@ CHAPTERS = chapters/01-introduction.md \
 		   chapters/05-continuous-delivery.md \
 		   chapters/06-final-words.md
 
-# chapters/06-continuous-deployment-heroku.md \
-	
-# CHAPTERS_EBOOK = chapters/01-introduction-ebook.md chapters/02-using-docker.md \
-# 	chapters/03-kubernetes-deployment.md chapters/04-cicd-best-practices.md \
-# 	chapters/05-tutorial-intro.md chapters/06-tutorial-semaphore.md \
-# 	chapters/07-tutorial-clouds.md chapters/08-tutorial-deployment.md \
-# 	chapters/09-final-words-ebook.md
-
 # handle non-intel archs
 EXTRA_OPTS =
 ARCH = $(shell arch)
@@ -27,11 +19,7 @@ all: book
 book: pdf #ebook
 docx: $(BUILD)/docx/$(BOOKNAME).docx
 pdf: $(BUILD)/pdf/$(BOOKNAME).pdf
-#ebook: epub mobi
-# epub: $(BUILD)/epub/$(BOOKNAME).epub
-# mobi: $(BUILD)/mobi/$(BOOKNAME).mobi
-# azw3: $(BUILD)/azw3/$(BOOKNAME).azw3
-# html: $(BUILD)/html/$(BOOKNAME).html
+more: $(BUILD)/pdf/more.pdf
 
 clean:
 	rm -r $(BUILD)
@@ -43,7 +31,20 @@ $(BUILD)/docx/$(BOOKNAME).docx: $(TITLE) $(CHAPTERS)
 
 $(BUILD)/pdf/$(BOOKNAME).pdf: $(TITLE) $(CHAPTERS)
 	mkdir -p $(BUILD)/pdf
-	docker run --rm $(EXTRA_OPTS) --volume `pwd`:/data pandoc/latex:2.6 -f markdown-implicit_figures -H make-code-small.tex -V geometry:margin=1.5in -o /data/$@ $^
+	docker run --rm $(EXTRA_OPTS) \
+		--volume `pwd`:/data pandoc/latex:2.6 \
+		-f markdown-implicit_figures \
+		-H make-code-small.tex \
+		-V geometry:margin=1.5in \
+		-o /data/$@ $^
+
+$(BUILD)/pdf/more.pdf: chapters/07-wait-there-is-more.md
+	mkdir -p $(BUILD)/pdf
+	docker run --rm $(EXTRA_OPTS) \
+		--volume `pwd`:/data pandoc/latex:2.6 \
+		-f markdown-implicit_figures \
+		-V geometry:margin=1.5in \
+		-o /data/$@ $^
 
 # intermediate format for epub, uses small figures
 $(BUILD)/html/$(BOOKNAME).html: title.txt $(CHAPTERS_EBOOK)
