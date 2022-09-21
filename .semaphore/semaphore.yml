@@ -10,21 +10,24 @@ blocks:
       jobs:
         - name: Make PDF
           commands:
+            - checkout
+            - mkdir -p uploads
+            - sed -i -e "s/\$MONTHYEAR/$(date +'%b %Y')/g" chapters/01-introduction.md
+            - sed -i -e "s/\$REVISION/$(git rev-parse --short HEAD)/g" chapters/01-introduction.md
+            - make pdf
             - ./deps/cpdf cover/cover.pdf build/pdf/CICD_for_Monorepos.pdf -o uploads/CICD_for_Monorepos.pdf
-            - artifact push workflow uploads
-        - name: Make sample (PDF)
+            - artifact push workflow --force uploads
+  - name: Make sample
+    task:
+      jobs:
+        - name: PDF
           commands:
+            - checkout
+            - artifact pull workflow uploads
             - make more
-            - gs -sDEVICE=pdfwrite -dPrinted=false -dNOPAUSE -dBATCH -dSAFER -dFirstPage=1 -dLastPage=12 -sOutputFile=build/pdf/CICD_for_Monorepos_Sample.pdf build/pdf/CICD_for_Monorepos.pdf
-            - ./deps/cpdf cover/cover-sample.pdf build/pdf/CICD_for_Monorepos_Sample.pdf build/pdf/more.pdf -o uploads/CICD_for_Monorepos.pdf
-            - artifact push workflow uploads
-      prologue:
-        commands:
-          - checkout
-          - mkdir -p uploads
-          - sed -i -e "s/\$MONTHYEAR/$(date +'%b %Y')/g" chapters/01-introduction.md
-          - sed -i -e "s/\$REVISION/$(git rev-parse --short HEAD)/g" chapters/01-introduction.md
-          - make pdf
+            - gs -sDEVICE=pdfwrite -dPrinted=false -dNOPAUSE -dBATCH -dSAFER -dFirstPage=2 -dLastPage=15 -sOutputFile=CICD_for_Monorepos_Sample.pdf uploads/CICD_for_Monorepos.pdf
+            - ./deps/cpdf cover/cover-sample.pdf CICD_for_Monorepos_Sample.pdf build/pdf/more.pdf -o uploads/CICD_for_Monorepos_Sample.pdf
+            - artifact push workflow --force uploads
 promotions:
   - name: Publish
     pipeline_file: pipeline_2.yml
