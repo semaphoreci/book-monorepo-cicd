@@ -10,7 +10,8 @@ blocks:
       jobs:
         - name: Upload PDF
           commands:
-            - artifact pull workflow CICD_for_Monorepos.pdf
+            - artifact pull workflow uploads
             - 'echo "put CICD_for_Monorepos.pdf" | sshpass -p "$FTP_PASSWORD" sftp -P $FTP_PORT -o StrictHostKeyChecking=no $FTP_USER@$FTP_HOST:/wp-content/uploads/2021/08/'
+            - 'echo "put CICD_for_Monorepos_Sample.pdf" | sshpass -p "$FTP_PASSWORD" sftp -P $FTP_PORT -o StrictHostKeyChecking=no $FTP_USER@$FTP_HOST:/wp-content/uploads/2021/08/'
       secrets:
         - name: wordpress-sftp
