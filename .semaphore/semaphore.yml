@@ -11,13 +11,13 @@ blocks:
         - name: Make PDF
           commands:
             - ./deps/cpdf cover/cover.pdf build/pdf/CICD_for_Monorepos.pdf -o uploads/CICD_for_Monorepos.pdf
-            - artifact push workflow uploads
+            - artifact push workflow --force uploads
         - name: Make sample (PDF)
           commands:
             - make more
             - gs -sDEVICE=pdfwrite -dPrinted=false -dNOPAUSE -dBATCH -dSAFER -dFirstPage=1 -dLastPage=12 -sOutputFile=build/pdf/CICD_for_Monorepos_Sample.pdf build/pdf/CICD_for_Monorepos.pdf
             - ./deps/cpdf cover/cover-sample.pdf build/pdf/CICD_for_Monorepos_Sample.pdf build/pdf/more.pdf -o uploads/CICD_for_Monorepos.pdf
-            - artifact push workflow uploads
+            - artifact push workflow --force uploads
       prologue:
         commands:
           - checkout
