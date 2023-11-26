@@ -4,6 +4,8 @@
 
 [![Build Status](https://semaphore-oss.semaphoreci.com/badges/book-monorepo-cicd/branches/master.svg)](https://semaphore-oss.semaphoreci.com/projects/book-monorepo-cicd)
 
+**[Download PDF](https://wpblog.semaphoreci.com/wp-content/uploads/2021/08/CICD_for_Monorepos.pdf)**
+
 Content is written in Markdown, final PDF made with [Pandoc][pandoc].
 
 We're using official [Docker images of Pandoc][pandoc-docker].
